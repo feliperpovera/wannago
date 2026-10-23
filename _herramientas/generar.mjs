@@ -3,11 +3,13 @@
 // Uso, desde sitio/:  node _herramientas/generar.mjs
 // Textos: t('español', 'English'). El inglés de cada página llega a i18n.js como WG_EN_PAGE;
 // los textos sin t() ya están en el diccionario WG_EN de i18n.js.
-import { readFileSync, writeFileSync, mkdirSync } from 'node:fs';
+import { readFileSync, writeFileSync, mkdirSync, readdirSync } from 'node:fs';
 
 const BASE = 'https://feliperpovera.github.io/wannago/'; // cambiar al conectar el dominio propio
 const INDEXAR = false; // true al salir en vivo: quita el noindex de todas las páginas
 const V = '20261023c';  // sube este número cuando cambies un CSS o JS
+const REPO = 'feliperpovera/wannago';
+const OAUTH = ''; // URL del servicio de inicio de sesión del panel (Cloudflare Worker); ver LEEME
 const WA = 'https://wa.me/573122899185';
 const medidas = JSON.parse(readFileSync('fotos/medidas.json', 'utf8'));
 
@@ -16,12 +18,17 @@ const t = (es, en) => {
   if (es in EN && EN[es] !== en) throw new Error(`Traducción distinta para «${es}»`);
   return EN[es] = en, es;
 };
+const L = v => typeof v === 'string' ? v : t(v.es, v.en || v.es);
+// fotos: acepta 'guatape' o '/_originales/guatape.jpg' (como las guarda el panel)
+const nf = f => f.split('/').pop().replace(/\.[a-z]+$/i, '');
 const esc = s => String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/"/g, '&quot;');
 const json = o => JSON.stringify(o).replace(/</g, '\\u003c');
 const wa = texto => `${WA}?text=${encodeURIComponent(texto)}`;
 let pre = ''; // prefijo relativo de la página en curso: '', '../' o '../../'
 const href = ruta => pre + ruta || './';
 const img = (foto, alt = '', sizes = '100vw', portada = false) => {
+  foto = nf(foto);
+  if (!medidas[foto]) throw new Error(`Falta la foto «${foto}»: corre python3 _herramientas/fotos.py`);
   const w = medidas[foto][0];
   return `<img src="${pre}fotos/${foto}.webp" srcset="${pre}fotos/${foto}-800.webp ${Math.round(w / 2)}w, ${pre}fotos/${foto}.webp ${w}w" sizes="${sizes}" alt="${esc(alt)}"${portada ? ' fetchpriority="high"' : ' loading="lazy" decoding="async"'}>`;
 };
@@ -36,218 +43,22 @@ const SERVICIOS = [
 
 const DATOS = [t('Cómo llegar', 'Getting there'), t('Mejor época', 'Best time'), t('Tiempo sugerido', 'Suggested time'), t('Ideal para', 'Ideal for')];
 
-const DESTINOS = [
-  {
-    slug: 'guatape', foto: 'guatape', foto2: 'guatape-calle',
-    nombre: 'Guatapé', h1: t('Guatapé y la Piedra del Peñol', 'Guatapé and the Piedra del Peñol'),
-    alt: t('Embalse de Guatapé con sus islas verdes visto desde lo alto', 'Guatapé reservoir and its green islands seen from above'),
-    alt2: 'Calle con fachadas de colores y zócalos en Guatapé',
-    region: t('Antioquia · a 2 horas de Medellín', 'Antioquia · 2 hours from Medellín'),
-    corto: t('Zócalos de colores y la Piedra del Peñol.', 'Colorful zócalos and the Piedra del Peñol.'),
-    titulo: t('Guatapé y la Piedra del Peñol desde Medellín · Wanna Go', 'Guatapé and the Piedra del Peñol from Medellín · Wanna Go'),
-    desc: 'Viaje a Guatapé desde Medellín: sube la Piedra del Peñol, recorre las calles de zócalos y navega el embalse. Diseñado a tu medida por Wanna Go.',
-    lead: t('El pueblo de los zócalos y la piedra que mira sobre un mar de islas. A dos horas de Medellín, uno de los paisajes más fotografiados de Colombia.', 'The town of painted zócalos and the rock that looks out over a sea of islands. Two hours from Medellín, one of the most photographed landscapes in Colombia.'),
-    h2: t('Color, agua y montaña', 'Color, water and mountains'),
-    ps: [
-      t('Guatapé es un pueblo de calles empedradas donde cada casa cuenta su historia en los zócalos: relieves de colores en la base de las fachadas que muestran oficios, animales y escenas de la vida local.', 'Guatapé is a town of cobbled streets where every house tells its story through its zócalos: colorful reliefs along the base of the façades depicting trades, animals and scenes of local life.'),
-      t('Muy cerca está la Piedra del Peñol. Quien sube sus más de 700 escalones encuentra arriba una vista completa del embalse, con sus islas y penínsulas verdes. Con nosotros lo recorres sin afán, con tiempo para el agua, la cocina local y la conversación.', 'Nearby stands the Piedra del Peñol. Those who climb its more than 700 steps are rewarded with a full view of the reservoir, its islands and green peninsulas. With us you explore it unhurried, with time for the water, local food and conversation.'),
-    ],
-    vivir: [
-      [t('Subir la Piedra del Peñol', 'Climb the Piedra del Peñol'), t('Más de 700 escalones y una de las vistas más amplias de Antioquia.', 'More than 700 steps up to one of the widest views in Antioquia.')],
-      [t('Calles de zócalos', 'Streets of zócalos'), t('Un recorrido a pie por las fachadas pintadas y sus historias.', 'A walk past the painted façades and the stories they tell.')],
-      [t('Paseo por el embalse', 'Out on the reservoir'), t('Lancha o velero entre islas, bahías y fincas a la orilla del agua.', 'Boat or sailboat among islands, bays and lakeside farms.')],
-      [t('Cocina de pueblo', 'Small-town cooking'), t('Trucha, bandeja paisa y postres de la región en lugares que conocemos.', 'Trout, bandeja paisa and regional desserts at places we know well.')],
-    ],
-    datos: [
-      t('2 horas por carretera desde Medellín', '2 hours by road from Medellín'),
-      t('Todo el año', 'Year-round'),
-      t('1 o 2 días', '1 or 2 days'),
-      t('Familias, parejas y grupos', 'Families, couples and groups'),
-    ],
-    otros: ['comuna-13', 'plazas-de-mercado', 'eje-cafetero'],
-  },
-  {
-    slug: 'comuna-13', foto: 'comuna13', foto2: 'medellin-montanas',
-    nombre: 'Comuna 13', h1: 'Comuna 13, Medellín',
-    alt: t('Casas de colores y murales en las laderas de la Comuna 13', 'Colorful houses and murals on the hillsides of Comuna 13'),
-    alt2: 'Edificios de Medellín frente a las montañas',
-    region: t('Medellín · barrio San Javier', 'Medellín · San Javier district'),
-    corto: t('Grafiti, hip hop y una historia de transformación.', 'Graffiti, hip hop and a story of transformation.'),
-    titulo: t('Tour por la Comuna 13 de Medellín · Wanna Go', 'Comuna 13 tour in Medellín · Wanna Go'),
-    desc: 'Recorre la Comuna 13 de Medellín con guías del barrio: grafitis, escaleras eléctricas, hip hop y la historia de su transformación. Con Wanna Go.',
-    lead: t('Grafitis, hip hop y escaleras eléctricas al aire libre en el barrio que se convirtió en símbolo de la transformación de Medellín.', "Graffiti, hip hop and open-air escalators in the neighborhood that became a symbol of Medellín's transformation."),
-    h2: t('Una historia contada desde adentro', 'A story told from the inside'),
-    ps: [
-      t('La Comuna 13 pasó de ser uno de los lugares más difíciles de Medellín a uno de sus barrios más visitados. Sus muros pintados, la música en la calle y las escaleras eléctricas que suben la ladera cuentan ese cambio mejor que cualquier libro.', 'Comuna 13 went from being one of the toughest places in Medellín to one of its most visited neighborhoods. Its painted walls, street music and the escalators climbing the hillside tell that change better than any book.'),
-      t('Lo recorres con guías que nacieron y crecieron en el barrio. Ellos te muestran sus calles, te presentan a artistas locales y te explican el significado de cada mural.', 'You walk it with guides who were born and raised in the neighborhood. They show you their streets, introduce you to local artists and explain the meaning behind each mural.'),
-    ],
-    vivir: [
-      [t('Grafitour', 'Graffiti tour'), t('Los murales más importantes, explicados por quienes los vieron nacer.', 'The key murals, explained by the people who watched them being painted.')],
-      [t('Escaleras eléctricas', 'Outdoor escalators'), t('El recorrido por las escaleras que cambiaron la vida de la ladera.', 'A ride up the escalators that changed life on the hillside.')],
-      [t('Hip hop y baile', 'Hip hop and dance'), t('Música y baile en la calle con los grupos del barrio.', 'Street music and dance with local crews.')],
-      [t('Sabores del barrio', 'Neighborhood flavors'), t('Paletas artesanales, empanadas y café en negocios locales.', 'Handmade ice pops, empanadas and coffee at local businesses.')],
-    ],
-    datos: [
-      t('En Medellín, desde la estación San Javier del metro', 'In Medellín, from the San Javier metro station'),
-      t('Todo el año', 'Year-round'),
-      t('Medio día', 'Half a day'),
-      t('Viajeros curiosos y grupos', 'Curious travelers and groups'),
-    ],
-    otros: ['plazas-de-mercado', 'guatape', 'cartagena'],
-  },
-  {
-    slug: 'cartagena', foto: 'cartagena-casas', foto2: 'cartagena',
-    nombre: 'Cartagena', h1: 'Cartagena de Indias',
-    alt: t('Casas coloniales de colores en el centro histórico de Cartagena', 'Colorful colonial houses in the historic center of Cartagena'),
-    alt2: 'Calle colonial de Cartagena con faroles',
-    region: t('Caribe colombiano · Bolívar', 'Colombian Caribbean · Bolívar'),
-    corto: t('La ciudad amurallada y el mar Caribe.', 'The walled city and the Caribbean Sea.'),
-    titulo: t('Viaje a Cartagena de Indias a tu medida · Wanna Go', 'Tailor-made trip to Cartagena de Indias · Wanna Go'),
-    desc: 'Viaje a Cartagena a tu medida: ciudad amurallada, Getsemaní e Islas del Rosario, con hoteles boutique y guías locales. Diseñado desde Medellín por Wanna Go.',
-    lead: t('Murallas, balcones con flores y atardeceres sobre el Caribe. La ciudad amurallada vista con calma, lejos del recorrido de siempre.', 'City walls, flower-draped balconies and sunsets over the Caribbean. The walled city seen calmly, away from the usual route.'),
-    h2: t('La ciudad que se camina despacio', 'A city meant to be walked slowly'),
-    ps: [
-      t('El centro histórico de Cartagena, con su puerto, sus fortalezas y su conjunto monumental, es Patrimonio de la Humanidad de la UNESCO desde 1984. Sus calles coloniales, plazas y casas de colores se disfrutan mejor a pie, al ritmo del Caribe.', "Cartagena's historic center, with its port, fortresses and monumental ensemble, has been a UNESCO World Heritage Site since 1984. Its colonial streets, squares and colorful houses are best enjoyed on foot, at a Caribbean pace."),
-      t('Diseñamos tu viaje combinando la ciudad amurallada, el barrio de Getsemaní y el mar de las Islas del Rosario, con hoteles boutique y restaurantes que hemos probado.', 'We design your trip combining the walled city, the Getsemaní neighborhood and the sea around the Rosario Islands, with boutique hotels and restaurants we have tried ourselves.'),
-    ],
-    vivir: [
-      [t('Ciudad amurallada', 'The walled city'), t('Plazas, iglesias y balcones con un guía local.', 'Squares, churches and balconies with a local guide.')],
-      ['Getsemaní', t('Murales, música y la vida de barrio al caer la tarde.', 'Murals, music and neighborhood life as evening falls.')],
-      [t('Islas del Rosario', 'Rosario Islands'), t('Un día de mar turquesa y playas tranquilas.', 'A day of turquoise water and quiet beaches.')],
-      [t('Cocina del Caribe', 'Caribbean cuisine'), t('Pescado fresco, arroz con coco y frutas tropicales.', 'Fresh fish, coconut rice and tropical fruit.')],
-    ],
-    datos: [
-      t('Vuelo directo desde Medellín', 'Direct flight from Medellín'),
-      t('De diciembre a abril, la temporada más seca', 'December to April, the driest season'),
-      t('3 a 4 días', '3 to 4 days'),
-      t('Parejas, amigas y celebraciones', 'Couples, friends and celebrations'),
-    ],
-    otros: ['tayrona', 'eje-cafetero', 'guatape'],
-  },
-  {
-    slug: 'valle-de-cocora', foto: 'salento', foto2: 'cafe',
-    nombre: 'Valle de Cocora', h1: t('Valle de Cocora y Salento', 'Cocora Valley and Salento'),
-    alt: 'Palmas de cera en el valle de Cocora',
-    alt2: 'Granos de café maduros en la rama',
-    region: t('Quindío · Eje Cafetero', 'Quindío · Coffee Region'),
-    corto: t('Caminatas entre las palmas de cera.', 'Hikes among the wax palms.'),
-    titulo: t('Valle de Cocora y Salento: palmas de cera · Wanna Go', 'Cocora Valley and Salento: wax palms · Wanna Go'),
-    desc: 'Camina entre las palmas de cera del Valle de Cocora, conoce Salento y visita una finca cafetera. Viaje al Quindío diseñado por Wanna Go.',
-    lead: t('Caminar entre palmas de cera, el árbol nacional de Colombia, en un valle de niebla y montaña a las afueras de Salento.', "Walk among wax palms, Colombia's national tree, in a misty mountain valley just outside Salento."),
-    h2: t('El valle de las palmas más altas', 'The valley of the tallest palms'),
-    ps: [
-      t('La palma de cera del Quindío es el árbol nacional de Colombia y una de las palmas más altas del mundo: puede llegar a los 60 metros. En el Valle de Cocora crecen cientos de ellas sobre potreros verdes y laderas cubiertas de niebla.', "The Quindío wax palm is Colombia's national tree and one of the tallest palms in the world: it can reach 60 meters. Hundreds of them rise over green pastures and mist-covered slopes in the Cocora Valley."),
-      t('Combinamos la caminata con Salento, uno de los pueblos más tradicionales del Eje Cafetero, y con una finca cafetera para entender el café desde la semilla hasta la taza.', 'We pair the hike with Salento, one of the most traditional towns in the Coffee Region, and with a coffee farm to understand coffee from seed to cup.'),
-    ],
-    vivir: [
-      [t('Caminata entre palmas', 'Hike among the palms'), t('Senderos de distintos niveles, a tu ritmo.', 'Trails for different levels, at your own pace.')],
-      ['Salento', t('Calle Real, balcones de colores y artesanías.', 'Calle Real, colorful balconies and local crafts.')],
-      [t('Finca cafetera', 'Coffee farm'), t('Recolección, tostión y cata con productores.', 'Picking, roasting and tasting with growers.')],
-      [t('Trucha y patacón', 'Trout and patacón'), t('El plato típico del valle, frente a las montañas.', "The valley's classic dish, with mountain views.")],
-    ],
-    datos: [
-      t('Vuelo a Pereira o Armenia y 1 hora por carretera', 'Flight to Pereira or Armenia, then 1 hour by road'),
-      t('Todo el año; las mañanas suelen ser más despejadas', 'Year-round; mornings tend to be clearer'),
-      t('2 o 3 días con Salento', '2 or 3 days including Salento'),
-      t('Amantes de la naturaleza y la caminata', 'Nature and hiking lovers'),
-    ],
-    otros: ['eje-cafetero', 'guatape', 'tayrona'],
-  },
-  {
-    slug: 'tayrona', foto: 'tayrona', foto2: 'grupo-atardecer',
-    nombre: t('Parque Tayrona', 'Tayrona Park'), h1: t('Parque Nacional Natural Tayrona', 'Tayrona National Natural Park'),
-    alt: t('Playa del Parque Tayrona con selva y rocas junto al mar', 'Tayrona Park beach with jungle and boulders by the sea'),
-    alt2: 'Grupo de viajeros contemplando el atardecer',
-    region: t('Caribe colombiano · Magdalena', 'Colombian Caribbean · Magdalena'),
-    corto: t('Selva y playas al pie de la Sierra Nevada.', 'Jungle and beaches at the foot of the Sierra Nevada.'),
-    titulo: t('Viaje al Parque Tayrona con Wanna Go', 'Trip to Tayrona Park with Wanna Go'),
-    desc: 'Viaje al Parque Tayrona: senderos de selva, Cabo San Juan y la cultura de la Sierra Nevada de Santa Marta, con guías locales. Diseñado por Wanna Go.',
-    lead: t('Selva que baja de la Sierra Nevada hasta playas de arena dorada. Un parque nacional para recorrer con respeto y sin prisa.', 'Jungle that runs down from the Sierra Nevada to golden-sand beaches. A national park to explore respectfully and unhurried.'),
-    h2: t('Donde la sierra se encuentra con el mar', 'Where the mountains meet the sea'),
-    ps: [
-      t('El Parque Nacional Natural Tayrona, cerca de Santa Marta, protege bosques, bahías y playas al pie de la Sierra Nevada de Santa Marta, territorio ancestral de los pueblos kogui, arhuaco, wiwa y kankuamo.', 'Tayrona National Natural Park, near Santa Marta, protects forests, bays and beaches at the foot of the Sierra Nevada de Santa Marta, ancestral land of the Kogi, Arhuaco, Wiwa and Kankuamo peoples.'),
-      t('Organizamos tu visita con guías locales, alojamiento en la zona y los tiempos del parque, que cierra algunas temporadas al año para su descanso ecológico. Te confirmamos las fechas antes de reservar.', 'We plan your visit with local guides, nearby lodging and the park schedule, since it closes for a few periods each year to let the ecosystem rest. We confirm the dates before booking.'),
-    ],
-    vivir: [
-      [t('Senderos de selva', 'Jungle trails'), t('Caminatas entre bosque tropical, monos y rocas gigantes.', 'Walks through tropical forest, monkeys and giant boulders.')],
-      ['Cabo San Juan', t('Una de las playas más bonitas del Caribe colombiano.', "One of the most beautiful beaches on Colombia's Caribbean coast.")],
-      [t('Cultura de la Sierra', 'Culture of the Sierra'), t('Un acercamiento a la visión de los pueblos indígenas de la Sierra Nevada.', "An introduction to the worldview of the Sierra Nevada's Indigenous peoples.")],
-      ['Santa Marta', t('La ciudad más antigua de Colombia, como base del viaje.', "Colombia's oldest city, as your base.")],
-    ],
-    datos: [
-      t('Vuelo directo a Santa Marta y 1 hora por carretera', 'Direct flight to Santa Marta, then 1 hour by road'),
-      t('De diciembre a abril, la temporada más seca', 'December to April, the driest season'),
-      t('3 a 4 días', '3 to 4 days'),
-      t('Naturaleza, mar y aventura suave', 'Nature, sea and gentle adventure'),
-    ],
-    otros: ['cartagena', 'valle-de-cocora', 'comuna-13'],
-  },
-  {
-    slug: 'eje-cafetero', foto: 'cafe', foto2: 'salento',
-    nombre: 'Eje Cafetero', h1: t('Eje Cafetero', 'Coffee Region'),
-    alt: 'Granos de café maduros en la rama',
-    alt2: 'Palmas de cera en el valle de Cocora',
-    region: t('Caldas, Risaralda y Quindío', 'Caldas, Risaralda and Quindío'),
-    corto: t('Fincas, pueblos y café de origen.', 'Farms, villages and single-origin coffee.'),
-    titulo: t('Viaje al Eje Cafetero: fincas y café · Wanna Go', 'Trip to the Coffee Region: farms and coffee · Wanna Go'),
-    desc: 'Viaje al Eje Cafetero de Colombia: fincas cafeteras, Salento, Filandia y el Valle de Cocora, en el Paisaje Cultural Cafetero. Diseñado por Wanna Go.',
-    lead: t('Montañas sembradas de café, pueblos de bahareque y fincas donde el día empieza con una taza recién hecha.', 'Coffee-planted mountains, bahareque villages and farms where the day starts with a freshly brewed cup.'),
-    h2: t('Un paisaje que es patrimonio', 'A landscape that is World Heritage'),
-    ps: [
-      t('El Paisaje Cultural Cafetero de Colombia es Patrimonio Mundial de la UNESCO desde 2011. Reconoce una forma de vida: familias que cultivan café en laderas empinadas desde hace generaciones y pueblos con arquitectura de colores.', "Colombia's Coffee Cultural Landscape has been a UNESCO World Heritage Site since 2011. It recognizes a way of life: families who have grown coffee on steep slopes for generations and villages with colorful architecture."),
-      t('Te llevamos a fincas donde los productores te enseñan su oficio, a pueblos como Filandia y Salento, y a paisajes como el Valle de Cocora. Dormir en una finca es parte del viaje.', 'We take you to farms where growers share their craft, to villages like Filandia and Salento, and to landscapes like the Cocora Valley. Staying on a farm is part of the trip.'),
-    ],
-    vivir: [
-      [t('Del grano a la taza', 'From bean to cup'), t('Recolección, secado, tostión y cata con una familia cafetera.', 'Picking, drying, roasting and tasting with a coffee-growing family.')],
-      [t('Filandia y Salento', 'Filandia and Salento'), t('Pueblos de balcones de colores y miradores.', 'Villages of colorful balconies and lookouts.')],
-      [t('Dormir en una finca', 'Stay on a farm'), t('Casas tradicionales rodeadas de cafetales.', 'Traditional houses surrounded by coffee plantations.')],
-      [t('Termales y naturaleza', 'Hot springs and nature'), t('Aguas termales, avistamiento de aves y jardines botánicos.', 'Hot springs, birdwatching and botanical gardens.')],
-    ],
-    datos: [
-      t('Vuelo a Pereira o Armenia, o 5 a 6 horas por carretera desde Medellín', 'Flight to Pereira or Armenia, or 5 to 6 hours by road from Medellín'),
-      t('Todo el año; la cosecha principal va de septiembre a diciembre', 'Year-round; the main harvest runs from September to December'),
-      t('3 a 5 días', '3 to 5 days'),
-      t('Amantes del café, familias y parejas', 'Coffee lovers, families and couples'),
-    ],
-    otros: ['valle-de-cocora', 'guatape', 'plazas-de-mercado'],
-  },
-  {
-    slug: 'plazas-de-mercado', foto: 'frutas', foto2: 'medellin',
-    nombre: 'Plazas de mercado', h1: t('Plazas de mercado de Medellín', "Medellín's market halls"),
-    alt: t('Puesto de frutas tropicales en una plaza de mercado', 'Tropical fruit stall at a market hall'),
-    alt2: 'Medellín iluminada al atardecer, rodeada de montañas',
-    region: 'Medellín',
-    corto: t('Frutas exóticas y cocina popular.', 'Exotic fruit and home-style cooking.'),
-    titulo: t('Tour de frutas en plazas de mercado de Medellín · Wanna Go', 'Fruit tour in Medellín market halls · Wanna Go'),
-    desc: 'Tour de frutas exóticas por las plazas de mercado de Medellín: cata en el puesto, yerbateros y almuerzo típico, con guías locales de Wanna Go.',
-    lead: t('Lulo, granadilla, maracuyá, guanábana. Colombia se prueba en sus plazas de mercado, entre puestos de frutas, hierbas y cocina popular.', 'Lulo, granadilla, passion fruit, soursop. Colombia is tasted in its market halls, among stalls of fruit, herbs and home-style cooking.'),
-    h2: t('La despensa de Medellín', "Medellín's pantry"),
-    ps: [
-      t('Las plazas de mercado son el lugar donde se cruza todo Antioquia: campesinos, cocineras, yerbateros y vendedores que llevan toda la vida en el mismo puesto. Colombia tiene una enorme variedad de frutas y aquí se ve, se huele y se prueba.', 'Market halls are where all of Antioquia meets: farmers, cooks, herbalists and vendors who have spent a lifetime at the same stall. Colombia has an enormous variety of fruit, and here you see it, smell it and taste it.'),
-      t('Recorremos plazas como la Minorista con guías locales, probamos frutas que no encontrarás en otro país y terminamos en la mesa, con un almuerzo típico.', "We walk through market halls like La Minorista with local guides, taste fruit you won't find anywhere else and finish at the table with a traditional lunch."),
-    ],
-    vivir: [
-      [t('Cata de frutas', 'Fruit tasting'), t('Frutas exóticas explicadas y probadas en el puesto.', 'Exotic fruits explained and tasted right at the stall.')],
-      [t('Hierbas y saberes', 'Herbs and folk wisdom'), t('Los yerbateros y sus remedios tradicionales.', 'Herbalists and their traditional remedies.')],
-      [t('Almuerzo de plaza', 'Market lunch'), t('Sopa, frijoles o sancocho donde comen los que trabajan ahí.', 'Soup, beans or sancocho where the market workers eat.')],
-      [t('Café y arepa', 'Coffee and arepa'), t('Desayuno paisa para empezar con energía.', 'A paisa breakfast to start the day.')],
-    ],
-    datos: [
-      t('En Medellín, cerca del centro', 'In Medellín, near downtown'),
-      t('Todo el año, mejor en la mañana', 'Year-round, best in the morning'),
-      t('Medio día', 'Half a day'),
-      t('Viajeros curiosos y amantes de la cocina', 'Curious travelers and food lovers'),
-    ],
-    otros: ['comuna-13', 'guatape', 'eje-cafetero'],
-  },
-];
+// Destinos: un archivo por destino en _datos/destinos/ (se editan desde /admin)
+const DESTINOS = readdirSync('_datos/destinos').filter(f => f.endsWith('.json'))
+  .map(f => JSON.parse(readFileSync('_datos/destinos/' + f, 'utf8')))
+  .sort((a, b) => (a.orden ?? 99) - (b.orden ?? 99))
+  .map(d => ({
+    slug: d.url, foto: d.foto, foto2: d.foto2, nombre: L(d.nombre), h1: L(d.h1), alt: L(d.alt), alt2: L(d.alt2),
+    region: L(d.region), corto: L(d.corto), titulo: L(d.titulo_seo), desc: d.descripcion_seo, lead: L(d.lead), h2: L(d.h2),
+    ps: d.parrafos.map(L), vivir: d.vivir.map(v => [L(v.titulo), L(v.texto)]),
+    datos: ['llegar', 'epoca', 'tiempo', 'ideal'].map(k => L(d.datos[k])), otros: d.otros || [],
+  }));
 const D = Object.fromEntries(DESTINOS.map(d => [d.slug, d]));
 
 // Viaje de temporada y cuadros de Colombia: se editan en _datos/viajes.json
 const VIAJES = JSON.parse(readFileSync('_datos/viajes.json', 'utf8'));
 const hoy = new Date().toLocaleDateString('en-CA', { timeZone: 'America/Bogota' }); // AAAA-MM-DD en Colombia
 const TEMP = VIAJES.temporadas.find(v => v.activo && (!v.hasta || v.hasta >= hoy)) || null;
-const L = v => typeof v === 'string' ? v : t(v.es, v.en);
 
 // ---------- Datos estructurados ----------
 
@@ -366,13 +177,13 @@ const destinos = (ceja, titulo, slugs, fondo = '') => `<section class="sec${fond
   <div class="wrap">
     ${encabezado(ceja, titulo)}
     <div class="services${slugs.length > 3 ? ' four' : ''}">
-      ${slugs.map(s => tarjetaDestino(D[s])).join('\n      ')}
+      ${slugs.filter(s => D[s]).map(s => tarjetaDestino(D[s])).join('\n      ')}
     </div>
   </div>
 </section>`;
 
 const tituloTemp = () => `${L(TEMP.titulo)} <em>${L(TEMP.titulo_resalte)}</em>`;
-const datosTemp = () => TEMP.datos.map(([n, u]) => `<span><b>${n}</b> ${L(u)}</span>`).join('') +
+const datosTemp = () => TEMP.datos.map(({ numero, texto }) => `<span><b>${numero}</b> ${L(texto)}</span>`).join('') +
   `<span>Salida <span${TEMP.salida_por_definir ? ' class="tbd"' : ''}>${TEMP.salida}</span></span>`;
 
 // Inicio, después de la portada: viaje de temporada arriba y cuadros de Colombia debajo
@@ -391,8 +202,8 @@ const seccionViajes = () => `<section class="sec bg-arena" id="viajes">
       </div>
     </a>` : ''}
     <div class="squares">
-      ${VIAJES.colombia.map(({ destino, aviso }) => { const d = D[destino]; return `<a class="svc rv" href="${href('destinos/' + d.slug + '/')}">
-        ${img(d.foto, '', '(max-width:900px) 50vw, 300px')}${aviso ? `<span class="badge">${L(aviso)}</span>` : ''}
+      ${VIAJES.colombia.filter(v => D[v.destino]).map(({ destino, aviso }) => { const d = D[destino]; return `<a class="svc rv" href="${href('destinos/' + d.slug + '/')}">
+        ${img(d.foto, '', '(max-width:900px) 50vw, 300px')}${aviso?.es ? `<span class="badge">${L(aviso)}</span>` : ''}
         <div><span class="label">${d.region}</span><h3>${d.nombre}</h3></div>
       </a>`; }).join('\n      ')}
       <a class="svc sq-cta rv" href="${href('viajes-a-la-medida/')}">
@@ -402,7 +213,7 @@ const seccionViajes = () => `<section class="sec bg-arena" id="viajes">
   </div>
 </section>`;
 
-const promo = () => TEMP ? `<dialog class="promo" id="promo" aria-labelledby="promo-title">
+const promo = () => VIAJES.popup && TEMP ? `<dialog class="promo" id="promo" aria-labelledby="promo-title">
   <button class="promo-close" type="button" aria-label="Cerrar" data-close><svg viewBox="0 0 24 24"><path d="M6 6l12 12M18 6 6 18"/></svg></button>
   <div class="promo-in">
     <figure>${img(TEMP.foto, L(TEMP.alt), '(max-width:720px) 100vw, 420px')}<span class="badge">${L(TEMP.aviso)}</span></figure>
@@ -497,7 +308,7 @@ function seo(p, texto) {
     `<meta property="og:title" content="${esc(p.titulo)}">`,
     `<meta property="og:description" content="${esc(p.desc)}">`,
     `<meta property="og:url" content="${url}">`,
-    `<meta property="og:image" content="${BASE}fotos/og/${p.foto}.jpg">`,
+    `<meta property="og:image" content="${BASE}fotos/og/${nf(p.foto)}.jpg">`,
     `<meta property="og:image:width" content="1200">`,
     `<meta property="og:image:height" content="630">`,
     `<meta name="twitter:card" content="summary_large_image">`,
@@ -514,7 +325,7 @@ for (const d of DESTINOS) pagina(`destinos/${d.slug}/`, () => {
   return {
     titulo: d.titulo, desc: d.desc, foto: d.foto, alt: d.alt, migas: m,
     label: d.region, h1: d.h1, lead: d.lead, boton: `Hola Wanna Go, quiero viajar a ${d.nombre}.`,
-    schema: [migas(m), { '@type': 'TouristDestination', name: d.h1, description: d.desc, url: BASE + ruta, image: BASE + `fotos/og/${d.foto}.jpg` }],
+    schema: [migas(m), { '@type': 'TouristDestination', name: d.h1, description: d.desc, url: BASE + ruta, image: BASE + `fotos/og/${nf(d.foto)}.jpg` }],
     cuerpo: [
       intro(t('01 · Por qué ir', '01 · Why go'), d.h2, d.ps, d.foto2, d.alt2),
       tarjetas(t('02 · Qué vivir', '02 · What to experience'), t(`Qué hacer en ${d.nombre}`, `Things to do in ${EN[d.nombre] || d.nombre}`), d.vivir),
@@ -533,7 +344,7 @@ pagina('destinos/', () => {
     desc: 'Guatapé, Comuna 13, Cartagena, Valle de Cocora, Tayrona y el Eje Cafetero: viajes por Colombia diseñados desde Medellín por Wanna Go.',
     foto: 'guatape', alt: D.guatape.alt, migas: m,
     label: t('Destinos en Colombia', 'Destinations in Colombia'), h1: 'Conoce Colombia desde adentro',
-    lead: t('Siete lugares que diseñamos con cariño, desde Medellín hasta el Caribe. Cada uno se puede combinar en un viaje a tu medida.', 'Seven places we design with care, from Medellín to the Caribbean. Each one can be combined into a tailor-made trip.'),
+    lead: t('Lugares que diseñamos con cariño, desde Medellín hasta el Caribe. Cada uno se puede combinar en un viaje a tu medida.', 'Places we design with care, from Medellín to the Caribbean. Each one can be combined into a tailor-made trip.'),
     schema: [migas(m), { '@type': 'ItemList', itemListElement: DESTINOS.map((d, i) => ({ '@type': 'ListItem', position: i + 1, url: BASE + `destinos/${d.slug}/`, name: d.h1 })) }],
     cuerpo: [
       destinos(t('Destinos', 'Destinations'), t('Elige por dónde empezar', 'Choose where to start'), DESTINOS.map(d => d.slug)),
@@ -741,6 +552,88 @@ parche('marruecos/index.html', 'marruecos/', {
     schema: [migas(m), { '@type': 'TouristTrip', name: 'Marruecos entre mujeres', description: 'Viaje grupal solo para mujeres a Marruecos: 10 días, 7 destinos y máximo 16 viajeras.', url: BASE + 'marruecos/', image: BASE + 'fotos/og/mujer-dunas.jpg', touristType: 'Mujeres', provider: { '@id': ORG['@id'] } }],
   }, ''),
 });
+
+// ---------- Panel /admin (Decap CMS): admin/config.yml ----------
+// Se escribe como JSON (que también es YAML válido) para no tener errores de sangría.
+
+const tx = (label, name, { largo, opcional, ayuda } = {}) => ({
+  label, name, widget: 'object', collapsed: false, required: !opcional, ...(ayuda && { hint: ayuda }),
+  fields: [
+    { label: 'Español', name: 'es', widget: largo ? 'text' : 'string', required: !opcional },
+    { label: 'English', name: 'en', widget: largo ? 'text' : 'string', required: false },
+  ],
+});
+const foto = (label, name) => ({ label, name, widget: 'image', choose_url: false, hint: 'JPG o PNG horizontal de al menos 1600 px. El sitio la optimiza solo.' });
+const aDestino = (label, name, multiple) => ({ label, name, widget: 'relation', collection: 'destinos', value_field: 'url', search_fields: ['url'], display_fields: ['url'], multiple, ...(multiple && { required: false }) });
+
+const CMS = {
+  backend: {
+    name: 'github', repo: REPO, branch: 'main', ...(OAUTH && { base_url: OAUTH, auth_endpoint: 'auth' }),
+    commit_messages: { create: 'Panel: crear «{{slug}}»', update: 'Panel: actualizar «{{slug}}»', delete: 'Panel: borrar «{{slug}}»', uploadMedia: 'Panel: subir foto «{{path}}»', deleteMedia: 'Panel: borrar foto «{{path}}»' },
+  },
+  local_backend: true,
+  locale: 'es',
+  logo_url: 'logo.svg',
+  site_url: BASE, display_url: BASE,
+  media_folder: '_originales', public_folder: '/_originales',
+  collections: [
+    {
+      name: 'inicio', label: 'Viajes del inicio', editor: { preview: false },
+      files: [{
+        name: 'viajes', label: 'Viaje de temporada, pop-up y cuadros de Colombia', file: '_datos/viajes.json',
+        fields: [
+          { label: 'Mostrar el pop-up del viaje de temporada', name: 'popup', widget: 'boolean', default: true },
+          {
+            label: 'Viajes de temporada', label_singular: 'viaje de temporada', name: 'temporadas', widget: 'list',
+            hint: 'Se muestra el primero activo cuya fecha «hasta» no haya pasado. Agrega aquí el siguiente viaje para que entre solo.',
+            summary: '{{fields.titulo.es}} {{fields.titulo_resalte.es}} · hasta {{fields.hasta}}',
+            fields: [
+              { label: 'Activo', name: 'activo', widget: 'boolean', default: true },
+              { label: 'Mostrar hasta (último día)', name: 'hasta', widget: 'datetime', format: 'YYYY-MM-DD', date_format: 'YYYY-MM-DD', time_format: false, required: false, hint: 'Normalmente la fecha de salida. Vacío: sin límite.' },
+              { label: 'Página del viaje', name: 'enlace', widget: 'string', hint: 'Ej.: marruecos/ o destinos/cartagena/' },
+              foto('Foto', 'foto'),
+              tx('Descripción de la foto', 'alt'),
+              tx('Título', 'titulo'),
+              tx('Título, parte resaltada', 'titulo_resalte'),
+              tx('Etiqueta', 'etiqueta', { ayuda: 'Ej.: Viaje grupal · Solo mujeres' }),
+              tx('Aviso', 'aviso', { ayuda: 'Ej.: Cupos abiertos' }),
+              tx('Resumen', 'resumen', { largo: true }),
+              { label: 'Datos', label_singular: 'dato', name: 'datos', widget: 'list', summary: '{{fields.numero}} {{fields.texto.es}}', fields: [{ label: 'Número', name: 'numero', widget: 'string' }, tx('Texto', 'texto')] },
+              { label: 'Salida', name: 'salida', widget: 'string', hint: 'Ej.: 2027 o 15 de marzo de 2027' },
+              { label: 'Salida por definir (se marca como borrador)', name: 'salida_por_definir', widget: 'boolean', default: false },
+              tx('Texto del botón', 'boton'),
+            ],
+          },
+          {
+            label: 'Cuadros de Colombia', label_singular: 'cuadro', name: 'colombia', widget: 'list', summary: '{{fields.destino}}',
+            fields: [aDestino('Destino', 'destino', false), tx('Aviso (opcional)', 'aviso', { opcional: true, ayuda: 'Ej.: Salida grupal próximamente' })],
+          },
+        ],
+      }],
+    },
+    {
+      name: 'destinos', label: 'Destinos', label_singular: 'destino', folder: '_datos/destinos', format: 'json', extension: 'json',
+      create: true, delete: true, slug: '{{fields.url}}', identifier_field: 'url', summary: '{{fields.orden}}. {{fields.url}}', sortable_fields: ['orden', 'url'],
+      editor: { preview: false },
+      fields: [
+        { label: 'Dirección (url)', name: 'url', widget: 'string', pattern: ['^[a-z0-9-]+$', 'Solo minúsculas, números y guiones'], hint: 'La página queda en destinos/<url>/. No la cambies después de publicar.' },
+        { label: 'Orden', name: 'orden', widget: 'number', value_type: 'int', default: 99 },
+        tx('Nombre', 'nombre'), tx('Título grande (H1)', 'h1'), tx('Región', 'region'), tx('Frase corta para tarjetas', 'corto'),
+        foto('Foto de portada', 'foto'), tx('Descripción de la foto de portada', 'alt'),
+        foto('Segunda foto', 'foto2'), tx('Descripción de la segunda foto', 'alt2'),
+        tx('Título para Google (máx. 60 caracteres)', 'titulo_seo'),
+        { label: 'Descripción para Google (máx. 155 caracteres)', name: 'descripcion_seo', widget: 'text' },
+        tx('Introducción', 'lead', { largo: true }), tx('Subtítulo de «Por qué ir»', 'h2'),
+        { label: 'Párrafos de «Por qué ir»', label_singular: 'párrafo', name: 'parrafos', widget: 'list', summary: '{{fields.es}}', fields: [{ label: 'Español', name: 'es', widget: 'text' }, { label: 'English', name: 'en', widget: 'text', required: false }] },
+        { label: 'Qué vivir', label_singular: 'experiencia', name: 'vivir', widget: 'list', summary: '{{fields.titulo.es}}', fields: [tx('Título', 'titulo'), tx('Texto', 'texto')] },
+        { label: 'Datos prácticos', name: 'datos', widget: 'object', collapsed: false, fields: [tx('Cómo llegar', 'llegar'), tx('Mejor época', 'epoca'), tx('Tiempo sugerido', 'tiempo'), tx('Ideal para', 'ideal')] },
+        aDestino('Combínalo con', 'otros', true),
+      ],
+    },
+  ],
+};
+mkdirSync('admin', { recursive: true });
+writeFileSync('admin/config.yml', '# Generado por _herramientas/generar.mjs: no editar a mano\n' + JSON.stringify(CMS, null, 2) + '\n');
 
 // ---------- sitemap.xml y robots.txt ----------
 

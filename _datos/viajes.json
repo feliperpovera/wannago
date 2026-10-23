@@ -1,11 +1,11 @@
 {
-  "_ayuda": "Viajes del inicio. 'temporadas' es la fila de viajes destacados, en orden: se muestra el primero con \"activo\": true cuya fecha 'hasta' (AAAA-MM-DD, último día que se muestra, hora de Colombia) no haya pasado; vacío = sin fecha límite. Ese viaje sale en el inicio, en el pop-up y en Viajes grupales. Para preparar el siguiente, agrégalo debajo de Marruecos: el sitio se actualiza solo cada mañana (.github/workflows/temporada.yml). 'colombia' son los cuadros, en este orden ('destino' es la carpeta en destinos/; 'aviso' es opcional). Fotos: nombres de fotos/ sin extensión. Textos en {\"es\", \"en\"}. Después de editar corre: node _herramientas/generar.mjs",
+  "popup": true,
   "temporadas": [
     {
       "activo": true,
       "hasta": "",
       "enlace": "marruecos/",
-      "foto": "mujer-dunas",
+      "foto": "/_originales/mujer-dunas.jpg",
       "alt": {
         "es": "Viajera sentada en las dunas del Sahara al atardecer",
         "en": "Traveler sitting in the Sahara dunes at sunset"
@@ -31,27 +31,27 @@
         "en": "Blue medinas, mosaic palaces and a night under the Sahara stars. A small group, with a Wanna Go host from start to finish."
       },
       "datos": [
-        [
-          "10",
-          {
+        {
+          "numero": "10",
+          "texto": {
             "es": "días",
             "en": "days"
           }
-        ],
-        [
-          "7",
-          {
+        },
+        {
+          "numero": "7",
+          "texto": {
             "es": "destinos",
             "en": "destinations"
           }
-        ],
-        [
-          "16",
-          {
+        },
+        {
+          "numero": "16",
+          "texto": {
             "es": "viajeras máx.",
             "en": "travelers max."
           }
-        ]
+        }
       ],
       "salida": "2027",
       "salida_por_definir": true,

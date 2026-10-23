@@ -1,0 +1,49 @@
+# Regenera el sitio (fotos + páginas) cuando cambian los datos, las fotos o las herramientas
+# (por ejemplo, al guardar en el panel /admin) y cada mañana para el cambio de viaje de temporada.
+name: Generar sitio
+
+on:
+  push:
+    branches: [main]
+    paths: ['_datos/**', '_originales/**', '_herramientas/**']
+  schedule:
+    - cron: '0 11 * * *' # 6:00 a. m. en Colombia
+  workflow_dispatch:
+
+concurrency:
+  group: generar-sitio
+  cancel-in-progress: false
+
+permissions:
+  contents: write
+  pages: write
+
+jobs:
+  generar:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: pip install pillow
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - run: python3 _herramientas/fotos.py
+      - run: node _herramientas/generar.mjs
+      - name: Publicar si cambió algo
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          # sitemap.xml cambia de fecha todos los días; eso solo no amerita publicar
+          git add -A
+          git diff --cached --quiet -- . ':!sitemap.xml' && exit 0
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git commit -m "Sitio regenerado automáticamente"
+          git pull --rebase origin main
+          git push
+          gh api -X POST "repos/${{ github.repository }}/pages/builds" || true

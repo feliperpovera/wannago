@@ -1,0 +1,751 @@
+# Generado por _herramientas/generar.mjs: no editar a mano
+{
+  "backend": {
+    "name": "github",
+    "repo": "feliperpovera/wannago",
+    "branch": "main",
+    "commit_messages": {
+      "create": "Panel: crear «{{slug}}»",
+      "update": "Panel: actualizar «{{slug}}»",
+      "delete": "Panel: borrar «{{slug}}»",
+      "uploadMedia": "Panel: subir foto «{{path}}»",
+      "deleteMedia": "Panel: borrar foto «{{path}}»"
+    }
+  },
+  "local_backend": true,
+  "locale": "es",
+  "logo_url": "logo.svg",
+  "site_url": "https://feliperpovera.github.io/wannago/",
+  "display_url": "https://feliperpovera.github.io/wannago/",
+  "media_folder": "_originales",
+  "public_folder": "/_originales",
+  "collections": [
+    {
+      "name": "inicio",
+      "label": "Viajes del inicio",
+      "editor": {
+        "preview": false
+      },
+      "files": [
+        {
+          "name": "viajes",
+          "label": "Viaje de temporada, pop-up y cuadros de Colombia",
+          "file": "_datos/viajes.json",
+          "fields": [
+            {
+              "label": "Mostrar el pop-up del viaje de temporada",
+              "name": "popup",
+              "widget": "boolean",
+              "default": true
+            },
+            {
+              "label": "Viajes de temporada",
+              "label_singular": "viaje de temporada",
+              "name": "temporadas",
+              "widget": "list",
+              "hint": "Se muestra el primero activo cuya fecha «hasta» no haya pasado. Agrega aquí el siguiente viaje para que entre solo.",
+              "summary": "{{fields.titulo.es}} {{fields.titulo_resalte.es}} · hasta {{fields.hasta}}",
+              "fields": [
+                {
+                  "label": "Activo",
+                  "name": "activo",
+                  "widget": "boolean",
+                  "default": true
+                },
+                {
+                  "label": "Mostrar hasta (último día)",
+                  "name": "hasta",
+                  "widget": "datetime",
+                  "format": "YYYY-MM-DD",
+                  "date_format": "YYYY-MM-DD",
+                  "time_format": false,
+                  "required": false,
+                  "hint": "Normalmente la fecha de salida. Vacío: sin límite."
+                },
+                {
+                  "label": "Página del viaje",
+                  "name": "enlace",
+                  "widget": "string",
+                  "hint": "Ej.: marruecos/ o destinos/cartagena/"
+                },
+                {
+                  "label": "Foto",
+                  "name": "foto",
+                  "widget": "image",
+                  "choose_url": false,
+                  "hint": "JPG o PNG horizontal de al menos 1600 px. El sitio la optimiza solo."
+                },
+                {
+                  "label": "Descripción de la foto",
+                  "name": "alt",
+                  "widget": "object",
+                  "collapsed": false,
+                  "required": true,
+                  "fields": [
+                    {
+                      "label": "Español",
+                      "name": "es",
+                      "widget": "string",
+                      "required": true
+                    },
+                    {
+                      "label": "English",
+                      "name": "en",
+                      "widget": "string",
+                      "required": false
+                    }
+                  ]
+                },
+                {
+                  "label": "Título",
+                  "name": "titulo",
+                  "widget": "object",
+                  "collapsed": false,
+                  "required": true,
+                  "fields": [
+                    {
+                      "label": "Español",
+                      "name": "es",
+                      "widget": "string",
+                      "required": true
+                    },
+                    {
+                      "label": "English",
+                      "name": "en",
+                      "widget": "string",
+                      "required": false
+                    }
+                  ]
+                },
+                {
+                  "label": "Título, parte resaltada",
+                  "name": "titulo_resalte",
+                  "widget": "object",
+                  "collapsed": false,
+                  "required": true,
+                  "fields": [
+                    {
+                      "label": "Español",
+                      "name": "es",
+                      "widget": "string",
+                      "required": true
+                    },
+                    {
+                      "label": "English",
+                      "name": "en",
+                      "widget": "string",
+                      "required": false
+                    }
+                  ]
+                },
+                {
+                  "label": "Etiqueta",
+                  "name": "etiqueta",
+                  "widget": "object",
+                  "collapsed": false,
+                  "required": true,
+                  "hint": "Ej.: Viaje grupal · Solo mujeres",
+                  "fields": [
+                    {
+                      "label": "Español",
+                      "name": "es",
+                      "widget": "string",
+                      "required": true
+                    },
+                    {
+                      "label": "English",
+                      "name": "en",
+                      "widget": "string",
+                      "required": false
+                    }
+                  ]
+                },
+                {
+                  "label": "Aviso",
+                  "name": "aviso",
+                  "widget": "object",
+                  "collapsed": false,
+                  "required": true,
+                  "hint": "Ej.: Cupos abiertos",
+                  "fields": [
+                    {
+                      "label": "Español",
+                      "name": "es",
+                      "widget": "string",
+                      "required": true
+                    },
+                    {
+                      "label": "English",
+                      "name": "en",
+                      "widget": "string",
+                      "required": false
+                    }
+                  ]
+                },
+                {
+                  "label": "Resumen",
+                  "name": "resumen",
+                  "widget": "object",
+                  "collapsed": false,
+                  "required": true,
+                  "fields": [
+                    {
+                      "label": "Español",
+                      "name": "es",
+                      "widget": "text",
+                      "required": true
+                    },
+                    {
+                      "label": "English",
+                      "name": "en",
+                      "widget": "text",
+                      "required": false
+                    }
+                  ]
+                },
+                {
+                  "label": "Datos",
+                  "label_singular": "dato",
+                  "name": "datos",
+                  "widget": "list",
+                  "summary": "{{fields.numero}} {{fields.texto.es}}",
+                  "fields": [
+                    {
+                      "label": "Número",
+                      "name": "numero",
+                      "widget": "string"
+                    },
+                    {
+                      "label": "Texto",
+                      "name": "texto",
+                      "widget": "object",
+                      "collapsed": false,
+                      "required": true,
+                      "fields": [
+                        {
+                          "label": "Español",
+                          "name": "es",
+                          "widget": "string",
+                          "required": true
+                        },
+                        {
+                          "label": "English",
+                          "name": "en",
+                          "widget": "string",
+                          "required": false
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "label": "Salida",
+                  "name": "salida",
+                  "widget": "string",
+                  "hint": "Ej.: 2027 o 15 de marzo de 2027"
+                },
+                {
+                  "label": "Salida por definir (se marca como borrador)",
+                  "name": "salida_por_definir",
+                  "widget": "boolean",
+                  "default": false
+                },
+                {
+                  "label": "Texto del botón",
+                  "name": "boton",
+                  "widget": "object",
+                  "collapsed": false,
+                  "required": true,
+                  "fields": [
+                    {
+                      "label": "Español",
+                      "name": "es",
+                      "widget": "string",
+                      "required": true
+                    },
+                    {
+                      "label": "English",
+                      "name": "en",
+                      "widget": "string",
+                      "required": false
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "label": "Cuadros de Colombia",
+              "label_singular": "cuadro",
+              "name": "colombia",
+              "widget": "list",
+              "summary": "{{fields.destino}}",
+              "fields": [
+                {
+                  "label": "Destino",
+                  "name": "destino",
+                  "widget": "relation",
+                  "collection": "destinos",
+                  "value_field": "url",
+                  "search_fields": [
+                    "url"
+                  ],
+                  "display_fields": [
+                    "url"
+                  ],
+                  "multiple": false
+                },
+                {
+                  "label": "Aviso (opcional)",
+                  "name": "aviso",
+                  "widget": "object",
+                  "collapsed": false,
+                  "required": false,
+                  "hint": "Ej.: Salida grupal próximamente",
+                  "fields": [
+                    {
+                      "label": "Español",
+                      "name": "es",
+                      "widget": "string",
+                      "required": false
+                    },
+                    {
+                      "label": "English",
+                      "name": "en",
+                      "widget": "string",
+                      "required": false
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "destinos",
+      "label": "Destinos",
+      "label_singular": "destino",
+      "folder": "_datos/destinos",
+      "format": "json",
+      "extension": "json",
+      "create": true,
+      "delete": true,
+      "slug": "{{fields.url}}",
+      "identifier_field": "url",
+      "summary": "{{fields.orden}}. {{fields.url}}",
+      "sortable_fields": [
+        "orden",
+        "url"
+      ],
+      "editor": {
+        "preview": false
+      },
+      "fields": [
+        {
+          "label": "Dirección (url)",
+          "name": "url",
+          "widget": "string",
+          "pattern": [
+            "^[a-z0-9-]+$",
+            "Solo minúsculas, números y guiones"
+          ],
+          "hint": "La página queda en destinos/<url>/. No la cambies después de publicar."
+        },
+        {
+          "label": "Orden",
+          "name": "orden",
+          "widget": "number",
+          "value_type": "int",
+          "default": 99
+        },
+        {
+          "label": "Nombre",
+          "name": "nombre",
+          "widget": "object",
+          "collapsed": false,
+          "required": true,
+          "fields": [
+            {
+              "label": "Español",
+              "name": "es",
+              "widget": "string",
+              "required": true
+            },
+            {
+              "label": "English",
+              "name": "en",
+              "widget": "string",
+              "required": false
+            }
+          ]
+        },
+        {
+          "label": "Título grande (H1)",
+          "name": "h1",
+          "widget": "object",
+          "collapsed": false,
+          "required": true,
+          "fields": [
+            {
+              "label": "Español",
+              "name": "es",
+              "widget": "string",
+              "required": true
+            },
+            {
+              "label": "English",
+              "name": "en",
+              "widget": "string",
+              "required": false
+            }
+          ]
+        },
+        {
+          "label": "Región",
+          "name": "region",
+          "widget": "object",
+          "collapsed": false,
+          "required": true,
+          "fields": [
+            {
+              "label": "Español",
+              "name": "es",
+              "widget": "string",
+              "required": true
+            },
+            {
+              "label": "English",
+              "name": "en",
+              "widget": "string",
+              "required": false
+            }
+          ]
+        },
+        {
+          "label": "Frase corta para tarjetas",
+          "name": "corto",
+          "widget": "object",
+          "collapsed": false,
+          "required": true,
+          "fields": [
+            {
+              "label": "Español",
+              "name": "es",
+              "widget": "string",
+              "required": true
+            },
+            {
+              "label": "English",
+              "name": "en",
+              "widget": "string",
+              "required": false
+            }
+          ]
+        },
+        {
+          "label": "Foto de portada",
+          "name": "foto",
+          "widget": "image",
+          "choose_url": false,
+          "hint": "JPG o PNG horizontal de al menos 1600 px. El sitio la optimiza solo."
+        },
+        {
+          "label": "Descripción de la foto de portada",
+          "name": "alt",
+          "widget": "object",
+          "collapsed": false,
+          "required": true,
+          "fields": [
+            {
+              "label": "Español",
+              "name": "es",
+              "widget": "string",
+              "required": true
+            },
+            {
+              "label": "English",
+              "name": "en",
+              "widget": "string",
+              "required": false
+            }
+          ]
+        },
+        {
+          "label": "Segunda foto",
+          "name": "foto2",
+          "widget": "image",
+          "choose_url": false,
+          "hint": "JPG o PNG horizontal de al menos 1600 px. El sitio la optimiza solo."
+        },
+        {
+          "label": "Descripción de la segunda foto",
+          "name": "alt2",
+          "widget": "object",
+          "collapsed": false,
+          "required": true,
+          "fields": [
+            {
+              "label": "Español",
+              "name": "es",
+              "widget": "string",
+              "required": true
+            },
+            {
+              "label": "English",
+              "name": "en",
+              "widget": "string",
+              "required": false
+            }
+          ]
+        },
+        {
+          "label": "Título para Google (máx. 60 caracteres)",
+          "name": "titulo_seo",
+          "widget": "object",
+          "collapsed": false,
+          "required": true,
+          "fields": [
+            {
+              "label": "Español",
+              "name": "es",
+              "widget": "string",
+              "required": true
+            },
+            {
+              "label": "English",
+              "name": "en",
+              "widget": "string",
+              "required": false
+            }
+          ]
+        },
+        {
+          "label": "Descripción para Google (máx. 155 caracteres)",
+          "name": "descripcion_seo",
+          "widget": "text"
+        },
+        {
+          "label": "Introducción",
+          "name": "lead",
+          "widget": "object",
+          "collapsed": false,
+          "required": true,
+          "fields": [
+            {
+              "label": "Español",
+              "name": "es",
+              "widget": "text",
+              "required": true
+            },
+            {
+              "label": "English",
+              "name": "en",
+              "widget": "text",
+              "required": false
+            }
+          ]
+        },
+        {
+          "label": "Subtítulo de «Por qué ir»",
+          "name": "h2",
+          "widget": "object",
+          "collapsed": false,
+          "required": true,
+          "fields": [
+            {
+              "label": "Español",
+              "name": "es",
+              "widget": "string",
+              "required": true
+            },
+            {
+              "label": "English",
+              "name": "en",
+              "widget": "string",
+              "required": false
+            }
+          ]
+        },
+        {
+          "label": "Párrafos de «Por qué ir»",
+          "label_singular": "párrafo",
+          "name": "parrafos",
+          "widget": "list",
+          "summary": "{{fields.es}}",
+          "fields": [
+            {
+              "label": "Español",
+              "name": "es",
+              "widget": "text"
+            },
+            {
+              "label": "English",
+              "name": "en",
+              "widget": "text",
+              "required": false
+            }
+          ]
+        },
+        {
+          "label": "Qué vivir",
+          "label_singular": "experiencia",
+          "name": "vivir",
+          "widget": "list",
+          "summary": "{{fields.titulo.es}}",
+          "fields": [
+            {
+              "label": "Título",
+              "name": "titulo",
+              "widget": "object",
+              "collapsed": false,
+              "required": true,
+              "fields": [
+                {
+                  "label": "Español",
+                  "name": "es",
+                  "widget": "string",
+                  "required": true
+                },
+                {
+                  "label": "English",
+                  "name": "en",
+                  "widget": "string",
+                  "required": false
+                }
+              ]
+            },
+            {
+              "label": "Texto",
+              "name": "texto",
+              "widget": "object",
+              "collapsed": false,
+              "required": true,
+              "fields": [
+                {
+                  "label": "Español",
+                  "name": "es",
+                  "widget": "string",
+                  "required": true
+                },
+                {
+                  "label": "English",
+                  "name": "en",
+                  "widget": "string",
+                  "required": false
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "label": "Datos prácticos",
+          "name": "datos",
+          "widget": "object",
+          "collapsed": false,
+          "fields": [
+            {
+              "label": "Cómo llegar",
+              "name": "llegar",
+              "widget": "object",
+              "collapsed": false,
+              "required": true,
+              "fields": [
+                {
+                  "label": "Español",
+                  "name": "es",
+                  "widget": "string",
+                  "required": true
+                },
+                {
+                  "label": "English",
+                  "name": "en",
+                  "widget": "string",
+                  "required": false
+                }
+              ]
+            },
+            {
+              "label": "Mejor época",
+              "name": "epoca",
+              "widget": "object",
+              "collapsed": false,
+              "required": true,
+              "fields": [
+                {
+                  "label": "Español",
+                  "name": "es",
+                  "widget": "string",
+                  "required": true
+                },
+                {
+                  "label": "English",
+                  "name": "en",
+                  "widget": "string",
+                  "required": false
+                }
+              ]
+            },
+            {
+              "label": "Tiempo sugerido",
+              "name": "tiempo",
+              "widget": "object",
+              "collapsed": false,
+              "required": true,
+              "fields": [
+                {
+                  "label": "Español",
+                  "name": "es",
+                  "widget": "string",
+                  "required": true
+                },
+                {
+                  "label": "English",
+                  "name": "en",
+                  "widget": "string",
+                  "required": false
+                }
+              ]
+            },
+            {
+              "label": "Ideal para",
+              "name": "ideal",
+              "widget": "object",
+              "collapsed": false,
+              "required": true,
+              "fields": [
+                {
+                  "label": "Español",
+                  "name": "es",
+                  "widget": "string",
+                  "required": true
+                },
+                {
+                  "label": "English",
+                  "name": "en",
+                  "widget": "string",
+                  "required": false
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "label": "Combínalo con",
+          "name": "otros",
+          "widget": "relation",
+          "collection": "destinos",
+          "value_field": "url",
+          "search_fields": [
+            "url"
+          ],
+          "display_fields": [
+            "url"
+          ],
+          "multiple": true,
+          "required": false
+        }
+      ]
+    }
+  ]
+}

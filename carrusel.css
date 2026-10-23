@@ -1,0 +1,14 @@
+/* Carrusel de fotos: desplazamiento libre + flechas + avance automático */
+.carousel{position:relative}
+.carousel .strip-track{display:flex;gap:16px;overflow-x:auto;scroll-snap-type:x mandatory;scroll-behavior:smooth;scrollbar-width:none;padding-inline:max(20px,env(safe-area-inset-left,0px)) max(20px,env(safe-area-inset-right,0px));scroll-padding-inline:max(20px,env(safe-area-inset-left,0px));padding-bottom:4px}
+.carousel .strip-track::-webkit-scrollbar{display:none}
+.carousel .strip-track:focus-visible{outline:2px solid #ED3237;outline-offset:4px}
+.carousel figure{scroll-snap-align:start}
+.car-btn{position:absolute;top:50%;translate:0 -50%;z-index:2;width:52px;height:52px;border-radius:50%;border:0;background:#13484F;color:#FFFFFF;display:grid;place-items:center;cursor:pointer;box-shadow:0 10px 24px -10px rgba(31,42,44,.6);transition:transform .25s cubic-bezier(.2,.8,.2,1),background .25s,opacity .25s}
+.car-btn:hover{background:#ED3237;transform:scale(1.08)}
+.car-btn:active{transform:scale(.95)}
+.car-btn:focus-visible{outline:2px solid #ED3237;outline-offset:3px}
+.car-btn svg{width:22px;height:22px;fill:none;stroke:currentColor;stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round}
+.car-btn.prev{left:max(12px,env(safe-area-inset-left,0px))}
+.car-btn.next{right:max(12px,env(safe-area-inset-right,0px))}
+@media (max-width:600px){.car-btn{width:44px;height:44px}}

@@ -1,0 +1,24 @@
+/* WhatsApp flotante: pulso, saludo que se despliega, sacudida periódica y aviso */
+.wa-float{position:fixed;-webkit-tap-highlight-color:transparent;z-index:40;right:max(20px,calc(env(safe-area-inset-right,0px) + 16px));bottom:max(20px,calc(env(safe-area-inset-bottom,0px) + 16px));display:flex;align-items:center;flex-direction:row-reverse;gap:0;text-decoration:none;color:#FFFFFF;font-family:"Montserrat","Helvetica Neue",Arial,sans-serif}
+.wa-btn{position:relative;width:64px;height:64px;border-radius:50%;background:#25D366;display:grid;place-items:center;flex:none;box-shadow:0 14px 30px -10px rgba(31,42,44,.6);transition:transform .35s cubic-bezier(.2,.8,.2,1)}
+.wa-btn svg{width:34px;height:34px;fill:currentColor}
+.wa-btn::before,.wa-btn::after{content:"";position:absolute;inset:0;border-radius:50%;border:2px solid #25D366;z-index:-1;animation:wa-ring 2.4s cubic-bezier(.2,.8,.2,1) infinite}
+.wa-btn::after{animation-delay:1.2s}
+@keyframes wa-ring{0%{transform:scale(1);opacity:.8}100%{transform:scale(1.9);opacity:0}}
+.wa-float.shake .wa-btn{animation:wa-shake .9s cubic-bezier(.36,.07,.19,.97)}
+@keyframes wa-shake{0%,100%{transform:rotate(0)}15%{transform:rotate(-16deg) scale(1.08)}30%{transform:rotate(14deg) scale(1.08)}45%{transform:rotate(-10deg)}60%{transform:rotate(8deg)}75%{transform:rotate(-4deg)}}
+@media (hover:hover){.wa-float:hover .wa-btn{transform:scale(1.1)}}
+.wa-badge{position:absolute;top:-2px;right:-2px;min-width:22px;height:22px;padding:0 6px;border-radius:999px;background:#ED3237;color:#FFFFFF;font-size:12px;font-weight:600;display:grid;place-items:center;border:2px solid #FFFFFF;animation:wa-pop .5s cubic-bezier(.2,1.6,.4,1) 2s both}
+@keyframes wa-pop{from{transform:scale(0)}to{transform:scale(1)}}
+.wa-float.seen .wa-badge{display:none}
+.wa-label{background:#FFFFFF;color:#13484F;border-radius:999px;padding:12px 18px;margin-right:12px;font-size:14px;font-weight:500;white-space:nowrap;box-shadow:0 12px 28px -12px rgba(31,42,44,.5);max-width:0;opacity:0;padding-inline:0;margin-right:0;overflow:hidden;transition:max-width .6s cubic-bezier(.2,.8,.2,1),opacity .4s,padding .6s,margin .6s}
+.wa-label b{font-weight:600;color:#ED3237}
+@media (hover:hover){.wa-float:hover .wa-label{max-width:300px;opacity:1;padding-inline:18px;margin-right:12px}}
+.wa-float.open .wa-label,.wa-float:focus-visible .wa-label{max-width:300px;opacity:1;padding-inline:18px;margin-right:12px}
+.wa-float:focus-visible{outline:none}
+.wa-float:focus-visible .wa-btn{outline:3px solid #ED3237;outline-offset:4px}
+@media (max-width:480px){.wa-btn{width:58px;height:58px}.wa-label{font-size:13px}}
+@media (prefers-reduced-motion:reduce){.wa-btn::before,.wa-btn::after,.wa-badge{animation:none}.wa-float.shake .wa-btn{animation:none}}
+/* que el botón no tape el final de la página */
+body>footer{padding-bottom:max(96px,calc(env(safe-area-inset-bottom,0px) + 96px))!important}
+@media (min-width:900px){body>footer{padding-bottom:40px!important}}

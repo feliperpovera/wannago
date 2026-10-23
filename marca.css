@@ -1,0 +1,116 @@
+/* Wanna Go · base de marca (Manual de marca: color, Montserrat, logo, etiquetas) */
+:root{
+  --petroleo:#13484F; --rojo:#ED3237; --agua:#4E8A8A; --arena:#F4EEE6; --carbon:#1F2A2C; --blanco:#FFFFFF;
+  --ink:#1F2A2C; --muted:#5B6668; --line:#E3DBD0;
+  --font:"Montserrat", "Helvetica Neue", Arial, sans-serif;
+  --r:10px;
+  --iso:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 40 40'%3E%3Ccircle cx='20' cy='20' r='20' fill='%23ED3237'/%3E%3Cpath d='M20 7a10 10 0 0 1 10 10c0 7-10 23-10 23S10 24 10 17A10 10 0 0 1 20 7z' fill='%23fff'/%3E%3Ccircle cx='20' cy='17' r='4.4' fill='%23ED3237'/%3E%3C/svg%3E");
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--blanco);color:var(--ink);font-family:var(--font);font-weight:400;font-size:17px;line-height:1.65;overflow-x:hidden;-webkit-font-smoothing:antialiased}
+h1,h2,h3{font-weight:600;line-height:1.08;margin:0;letter-spacing:-.015em;text-wrap:balance}
+p{margin:0}
+a{color:inherit}
+img{display:block;max-width:100%}
+:focus-visible{outline:2px solid var(--rojo);outline-offset:3px}
+.wrap{max-width:1200px;margin:0 auto;padding-left:max(20px,env(safe-area-inset-left,0px));padding-right:max(20px,env(safe-area-inset-right,0px))}
+
+/* tipografía (manual: titular SemiBold, subtítulo Medium, texto Regular, largos Light, etiqueta mayúsculas espaciada) */
+.h2{font-size:clamp(34px,4.6vw,56px);color:var(--petroleo)}
+.eyebrow{display:block;font-size:13px;letter-spacing:.06em;text-transform:uppercase;color:var(--rojo);margin-bottom:14px}
+.eyebrow.on-dark{color:var(--arena);opacity:.85}
+.label{font-size:12px;letter-spacing:.22em;text-transform:uppercase;font-weight:400}
+.body-lg{font-size:18px;margin-top:18px;max-width:56ch}
+.tbd{display:inline-block;border:1px dashed currentColor;border-radius:4px;padding:0 .45em;font-size:.85em;letter-spacing:normal;text-transform:none;background:rgba(237,50,55,.12)}
+
+/* secciones */
+.sec{padding-block:110px}
+@media (max-width:700px){.sec{padding-block:80px}}
+.head{display:grid;max-width:760px;margin-bottom:52px}
+.bg-arena{background:var(--arena)}
+.bg-petroleo{background:var(--petroleo);color:#fff}
+.bg-petroleo .h2{color:#fff}
+
+/* logo (wordmark + isotipo); mínimo digital 140 px de ancho */
+.logo{display:inline-grid;justify-items:center;text-decoration:none;color:var(--petroleo);line-height:1;font-size:30px}
+.logo .lt{font-weight:600;letter-spacing:-.02em;white-space:nowrap}
+.logo .iso{display:inline-block;width:.78em;height:.78em;margin-left:.03em;vertical-align:-.04em;background:var(--iso) center/contain no-repeat}
+.logo .ds{font-weight:400;font-size:.29em;letter-spacing:.5em;margin-top:.45em;padding-left:.5em}
+.on-photo .logo,.foot .logo{color:#fff}
+
+/* botones */
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:10px;border:0;border-radius:999px;padding:15px 28px;font:500 15px var(--font);cursor:pointer;text-decoration:none;transition:transform .3s cubic-bezier(.2,.8,.2,1),background .3s}
+.btn:hover{transform:translateY(-2px)}
+.btn:active{transform:scale(.98)}
+.btn-rojo{background:var(--rojo);color:#fff}
+.btn-rojo:hover{background:var(--carbon)}
+.btn-line{color:inherit;box-shadow:inset 0 0 0 1.5px currentColor}
+
+/* nav: sobre la foto con veladura, sólida al bajar */
+.nav{position:fixed;left:0;right:0;top:0;z-index:20;padding-top:env(safe-area-inset-top,0px);color:#fff;transition:background .4s,color .4s,box-shadow .4s}
+.nav .logo{color:#fff;transition:color .4s}
+.nav.solid{background:rgba(255,255,255,.96);color:var(--petroleo);backdrop-filter:blur(12px);box-shadow:0 1px 0 var(--line)}
+.nav.solid .logo{color:var(--petroleo)}
+.nav>.wrap{display:flex;align-items:center;justify-content:space-between;gap:16px;padding-block:16px}
+.nav ul{display:flex;gap:30px;list-style:none;margin:0;padding:0;font-size:14px;font-weight:500}
+.nav ul a{text-decoration:none;opacity:.88}
+.nav ul a:hover{opacity:1}
+.nav .btn{padding:11px 20px;font-size:14px}
+@media (max-width:900px){.nav ul{display:none}}
+@media (max-width:420px){.nav .logo{font-size:28px}.nav .btn{padding:10px 14px}}
+
+.lang-btn{border:0;background:transparent;color:inherit;box-shadow:inset 0 0 0 1.5px currentColor;border-radius:999px;padding:8px 13px;font:600 13px var(--font, "Montserrat", sans-serif);letter-spacing:.08em;cursor:pointer;transition:background .25s,color .25s}
+.lang-btn:hover{background:var(--rojo, #ED3237);color:#fff;box-shadow:none}
+.nav-actions{display:flex;align-items:center;gap:10px}
+
+
+
+/* reseñas en movimiento */
+.reviews{overflow:hidden}
+.rv-head{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:flex-end;gap:24px;margin-bottom:48px}
+.rv-score{display:flex;align-items:center;gap:16px;background:var(--blanco);border-radius:var(--r);padding:16px 22px;text-decoration:none;transition:transform .3s}
+.rv-score:hover{transform:translateY(-3px)}
+.rv-score b{font-weight:600;font-size:40px;line-height:1;color:var(--petroleo)}
+.rv-score .rv-stars{font-size:18px}
+.rv-score small{display:block;font-size:13px;color:var(--muted)}
+.rv-row{overflow:hidden;-webkit-mask-image:linear-gradient(90deg,transparent,#000 6%,#000 94%,transparent);mask-image:linear-gradient(90deg,transparent,#000 6%,#000 94%,transparent)}
+.rv-row+.rv-row{margin-top:20px}
+.rv-track{display:flex;gap:20px;width:max-content;animation:rv-slide 55s linear infinite;padding-block:6px}
+.rv-row.rev .rv-track{animation-direction:reverse;animation-duration:62s}
+.rv-row:hover .rv-track{animation-play-state:paused}
+@keyframes rv-slide{to{transform:translateX(calc(-50% - 10px))}}
+.rv-card{width:min(380px,82vw);flex:none;background:var(--blanco);border-radius:var(--r);padding:26px;display:grid;gap:16px;align-content:space-between;transition:transform .35s cubic-bezier(.2,.8,.2,1),box-shadow .35s}
+.rv-card:hover{transform:translateY(-4px);box-shadow:0 20px 40px -26px rgba(19,72,79,.45)}
+.rv-card p{font-size:15.5px;line-height:1.6;color:var(--ink)}
+.rv-stars{color:var(--rojo);letter-spacing:.12em;font-size:15px}
+.rv-card footer{display:flex;align-items:center;gap:12px}
+.rv-av{width:42px;height:42px;border-radius:50%;display:grid;place-items:center;color:#FFFFFF;font-weight:600;flex:none}
+.rv-card b{display:block;font-weight:600;color:var(--petroleo);font-size:15px}
+.rv-card small{font-size:12.5px;color:var(--muted)}
+@media (prefers-reduced-motion:reduce){.rv-row{overflow-x:auto}}
+
+/* íconos en círculo (manual: círculos petróleo / rojo con pictograma blanco) */
+.ico{display:inline-grid;place-items:center;width:56px;height:56px;border-radius:50%;flex:none}
+.ico.sm{width:42px;height:42px}
+.ico svg{width:46%;height:46%;fill:none;stroke:#fff;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.ico.petroleo{background:var(--petroleo)}.ico.rojo{background:var(--rojo)}.ico.agua{background:var(--agua)}
+
+/* formulario */
+.form{background:var(--blanco);border-radius:var(--r);padding:32px;display:grid;gap:16px;color:var(--ink)}
+.form label{display:grid;gap:6px;font-size:13px;font-weight:500}
+.form input,.form select,.form textarea{font:300 16px var(--font);padding:14px;border-radius:6px;border:1px solid var(--line);background:var(--arena);color:var(--ink);width:100%;resize:vertical}
+.form input:focus,.form select:focus,.form textarea:focus{outline:none;border-color:var(--petroleo)}
+.two{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+@media (max-width:480px){.two{grid-template-columns:1fr}}
+.ok{background:rgba(78,138,138,.14);padding:14px;border-radius:6px;font-size:15px}
+
+/* pie */
+.foot{background:var(--carbon);color:rgba(255,255,255,.72);padding-block:40px;font-size:13px}
+.foot .wrap{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:center;gap:20px}
+.foot .logo{font-size:28px}
+
+/* aparición suave (visible en reposo) */
+.rv{transition:transform 1s cubic-bezier(.2,.8,.2,1),opacity 1s}
+.rv.pre{transform:translateY(28px);opacity:.3}
+@media (prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;transition:none!important}.rv.pre{transform:none;opacity:1}}

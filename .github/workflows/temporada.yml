@@ -1,0 +1,33 @@
+# Cada mañana regenera el sitio para que el viaje de temporada cambie solo
+# cuando pasa su fecha 'hasta' (_datos/viajes.json). Si nada cambió, no publica.
+name: Viaje de temporada
+
+on:
+  schedule:
+    - cron: '0 11 * * *' # 6:00 a. m. en Colombia
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  pages: write
+
+jobs:
+  actualizar:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - run: node _herramientas/generar.mjs
+      - name: Publicar si cambió el viaje
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          # sitemap.xml cambia de fecha todos los días; eso solo no amerita publicar
+          git diff --quiet -- . ':!sitemap.xml' && exit 0
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git commit -am "Viaje de temporada: actualización automática"
+          git push
+          gh api -X POST "repos/${{ github.repository }}/pages/builds" || true

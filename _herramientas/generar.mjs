@@ -245,7 +245,8 @@ const D = Object.fromEntries(DESTINOS.map(d => [d.slug, d]));
 
 // Viaje de temporada y cuadros de Colombia: se editan en _datos/viajes.json
 const VIAJES = JSON.parse(readFileSync('_datos/viajes.json', 'utf8'));
-const TEMP = VIAJES.temporada.activo ? VIAJES.temporada : null;
+const hoy = new Date().toLocaleDateString('en-CA', { timeZone: 'America/Bogota' }); // AAAA-MM-DD en Colombia
+const TEMP = VIAJES.temporadas.find(v => v.activo && (!v.hasta || v.hasta >= hoy)) || null;
 const L = v => typeof v === 'string' ? v : t(v.es, v.en);
 
 // ---------- Datos estructurados ----------
@@ -743,7 +744,6 @@ parche('marruecos/index.html', 'marruecos/', {
 
 // ---------- sitemap.xml y robots.txt ----------
 
-const hoy = new Date().toISOString().slice(0, 10);
 writeFileSync('sitemap.xml', `<?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 ${URLS.map(u => `  <url><loc>${BASE}${u}</loc><lastmod>${hoy}</lastmod></url>`).join('\n')}
@@ -751,4 +751,4 @@ ${URLS.map(u => `  <url><loc>${BASE}${u}</loc><lastmod>${hoy}</lastmod></url>`).
 `);
 writeFileSync('robots.txt', `User-agent: *\nAllow: /\n\nSitemap: ${BASE}sitemap.xml\n`);
 
-console.log(`${URLS.length} URLs · ${INDEXAR ? 'indexables' : 'con noindex (borrador)'}`);
+console.log(`Temporada: ${TEMP ? L(TEMP.titulo) + ' ' + L(TEMP.titulo_resalte) : 'ninguna'} · ${URLS.length} URLs · ${INDEXAR ? 'indexables' : 'con noindex (borrador)'}`);

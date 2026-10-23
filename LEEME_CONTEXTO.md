@@ -38,6 +38,7 @@ Documento de traspaso para continuar el proyecto en otra conversación con Claud
 | `marca.css` | Base de marca: colores, tipografía, logo, botones, nav, formulario, pie y aparición suave. Solo la usa el inicio. |
 | `marca.js` | Nav sólida al bajar, aparición suave y parallax (solo inicio). |
 | `carrusel.css/js` | Carruseles de fotos con flechas, teclado, arrastre y avance automático. Se pausa al interactuar. Lo usan las dos páginas. |
+| `menu.css` | Menú de celular (popover nativo, sin librerías): aparece por debajo de 900 px en todas las páginas. Los enlaces de las páginas generadas salen de `generar.mjs`; los de Marruecos están en su HTML. |
 | `wa.css/js` | Botón flotante de WhatsApp: aros, sacudida, aviso "1" y saludo. No se anima mientras hay un pop-up abierto. |
 | `i18n.js` | Traducción ES ⇄ EN con el botón EN/ES de la nav. El HTML está en español y el diccionario `WG_EN` lo pasa a inglés por coincidencia exacta de texto. **Si cambias o agregas un texto en español, agrega su traducción a `WG_EN`**, o se queda en español en la versión en inglés. Guarda el idioma en localStorage y lanza el evento `wg-lang`. |
 | `resenas.js` | 9 reseñas reales de Google, en dos filas que se mueven. Cada una tiene su texto original y su traducción. Escucha `wg-lang`. |

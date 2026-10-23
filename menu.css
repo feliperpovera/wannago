@@ -1,0 +1,19 @@
+/* Menú para celular (popover nativo): fondo verde petróleo, Montserrat SemiBold, botón rojo destino */
+.menu-btn{display:none;width:44px;height:44px;border:0;border-radius:50%;background:transparent;color:inherit;box-shadow:inset 0 0 0 1.5px currentColor;place-items:center;cursor:pointer;padding:0}
+.menu-btn svg,.menu-close svg{width:20px;height:20px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round}
+@media (max-width:900px){.menu-btn{display:grid}}
+@media (max-width:560px){.nav-actions>.lang-btn{display:none}}
+
+.menu{inset:0;width:100%;height:100%;max-width:none;max-height:none;margin:0;border:0;background:#13484F;color:#fff;font-family:inherit;padding:calc(16px + env(safe-area-inset-top,0px)) max(20px,env(safe-area-inset-right,0px)) calc(28px + env(safe-area-inset-bottom,0px)) max(20px,env(safe-area-inset-left,0px));overflow-y:auto}
+.menu:popover-open{display:flex;flex-direction:column;gap:28px;animation:menu-in .45s cubic-bezier(.2,.8,.2,1)}
+@keyframes menu-in{from{opacity:0;transform:translateY(-12px)}}
+.menu-top{display:flex;align-items:center;justify-content:space-between;min-height:44px}
+.menu-top .label{color:#F4EEE6;opacity:.8;font-size:12px;letter-spacing:.22em;text-transform:uppercase}
+.menu-top .lang-btn{margin-left:auto;margin-right:10px;color:#fff}
+.menu-close{width:44px;height:44px;border:0;border-radius:50%;background:#fff;color:#13484F;display:grid;place-items:center;cursor:pointer;padding:0}
+.menu ul{display:grid;gap:4px;list-style:none;margin:0;padding:0}
+.menu ul a{display:block;padding:10px 0;font-weight:600;font-size:clamp(26px,7.5vw,34px);line-height:1.15;letter-spacing:-.015em;text-decoration:none;color:#fff;opacity:1}
+.menu ul a:active,.menu ul a:hover{color:#ED3237}
+.menu-foot{margin-top:auto;display:grid;gap:16px;justify-items:start}
+.menu-foot .btn{padding:15px 28px;font-size:15px}
+.menu-foot p{font-size:13px;opacity:.7;font-weight:300}

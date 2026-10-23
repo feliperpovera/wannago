@@ -7,7 +7,7 @@ import { readFileSync, writeFileSync, mkdirSync } from 'node:fs';
 
 const BASE = 'https://feliperpovera.github.io/wannago/'; // cambiar al conectar el dominio propio
 const INDEXAR = false; // true al salir en vivo: quita el noindex de todas las páginas
-const V = '20261023';  // sube este número cuando cambies un CSS o JS
+const V = '20261023b';  // sube este número cuando cambies un CSS o JS
 const WA = 'https://wa.me/573122899185';
 const medidas = JSON.parse(readFileSync('fotos/medidas.json', 'utf8'));
 
@@ -272,7 +272,22 @@ const nav = () => `<nav class="nav" id="nav">
       <li><a href="${href('destinos/')}">${t('Destinos', 'Destinations')}</a></li>
       <li><a href="${href('contacto/')}">Contacto</a></li>
     </ul>
-    <div class="nav-actions"><button class="lang-btn" type="button" aria-label="Switch to English">EN</button><a class="btn btn-rojo" href="${WA}" target="_blank" rel="noopener">Escríbenos</a></div>
+    <div class="nav-actions"><button class="lang-btn" type="button" aria-label="Switch to English">EN</button><a class="btn btn-rojo" href="${WA}" target="_blank" rel="noopener">Escríbenos</a><button class="menu-btn" type="button" popovertarget="menu" aria-label="${t('Abrir menú', 'Open menu')}"><svg viewBox="0 0 24 24"><path d="M4 8h16M4 16h16"/></svg></button></div>
+  </div>
+  <div class="menu" id="menu" popover>
+    <div class="menu-top"><span class="label">${t('Menú', 'Menu')}</span><button class="lang-btn" type="button" aria-label="Switch to English">EN</button><button class="menu-close" type="button" popovertarget="menu" popovertargetaction="hide" aria-label="Cerrar"><svg viewBox="0 0 24 24"><path d="M6 6l12 12M18 6 6 18"/></svg></button></div>
+    <ul>
+      <li><a href="${href('')}">${t('Inicio', 'Home')}</a></li>
+      <li><a href="${href('nosotros/')}">Nosotros</a></li>
+      ${SERVICIOS.map(s => `<li><a href="${href(s.slug + '/')}">${s.nombre}</a></li>`).join('\n      ')}
+      <li><a href="${href('destinos/')}">${t('Destinos', 'Destinations')}</a></li>
+      <li><a href="${href('marruecos/')}">Marruecos entre mujeres</a></li>
+      <li><a href="${href('contacto/')}">Contacto</a></li>
+    </ul>
+    <div class="menu-foot">
+      <a class="btn btn-rojo" href="${WA}" target="_blank" rel="noopener">Escríbenos por WhatsApp</a>
+      <p>Viajes con propósito · RNT 65568 · Medellín, Colombia</p>
+    </div>
   </div>
 </nav>`;
 
@@ -396,6 +411,7 @@ ${seo({ ...p, ruta }, p.titulo + cuerpo)}
 <link rel="icon" href="${ICONO}">
 <link rel="stylesheet" href="${pre}marca.css?v=${V}">
 <link rel="stylesheet" href="${pre}wa.css?v=${V}">
+<link rel="stylesheet" href="${pre}menu.css?v=${V}">
 </head>
 <body>
 

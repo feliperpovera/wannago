@@ -216,8 +216,9 @@ footer .logo{color:#fff}
 .nav-actions{display:flex;align-items:center;gap:10px}
 
 </style>
-<link rel="stylesheet" href="../carrusel.css?v=20261023">
-<link rel="stylesheet" href="../wa.css?v=20261023">
+<link rel="stylesheet" href="../carrusel.css?v=20261023b">
+<link rel="stylesheet" href="../wa.css?v=20261023b">
+<link rel="stylesheet" href="../menu.css?v=20261023b">
 </head>
 <body>
 <nav id="nav">
@@ -232,7 +233,22 @@ footer .logo{color:#fff}
       <li><a href="#precio">Inversión</a></li>
       <li><a href="#faq">Preguntas</a></li>
     </ul>
-    <div class="nav-actions"><button class="lang-btn" type="button" aria-label="Switch to English">EN</button><a class="btn btn-coral" href="#reserva">Reservar</a></div>
+    <div class="nav-actions"><button class="lang-btn" type="button" aria-label="Switch to English">EN</button><a class="btn btn-coral" href="#reserva">Reservar</a><button class="menu-btn" type="button" popovertarget="menu" aria-label="Abrir menú"><svg viewBox="0 0 24 24"><path d="M4 8h16M4 16h16"/></svg></button></div>
+  </div>
+  <div class="menu" id="menu" popover>
+    <div class="menu-top"><span class="label">Menú</span><button class="lang-btn" type="button" aria-label="Switch to English">EN</button><button class="menu-close" type="button" popovertarget="menu" popovertargetaction="hide" aria-label="Cerrar"><svg viewBox="0 0 24 24"><path d="M6 6l12 12M18 6 6 18"/></svg></button></div>
+    <ul>
+      <li><a href="#viaje">El viaje</a></li>
+      <li><a href="#ruta">Itinerario</a></li>
+      <li><a href="#incluye">Incluye</a></li>
+      <li><a href="#precio">Inversión</a></li>
+      <li><a href="#faq">Preguntas</a></li>
+      <li><a href="../">Wanna Go</a></li>
+    </ul>
+    <div class="menu-foot">
+      <a class="btn btn-coral" href="#reserva">Quiero mi cupo</a>
+      <p>Viajes con propósito · RNT 65568 · Medellín, Colombia</p>
+    </div>
   </div>
 </nav>
 
@@ -486,6 +502,7 @@ footer .logo{color:#fff}
 const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
 
 // Nav turns solid after the hero
+document.querySelectorAll('.menu a').forEach(a => a.addEventListener('click', () => a.closest('.menu').hidePopover?.()));
 const nav = document.getElementById('nav');
 const onScroll = () => nav.classList.toggle('solid', scrollY > innerHeight * .7);
 addEventListener('scroll', onScroll, { passive: true }); onScroll();
@@ -528,8 +545,8 @@ document.getElementById('lead').addEventListener('submit', e => {
   f.reset();
 });
 </script>
-<script src="../carrusel.js?v=20261023"></script>
-<script src="../i18n.js?v=20261023"></script>
-<script src="../wa.js?v=20261023"></script>
+<script src="../carrusel.js?v=20261023b"></script>
+<script src="../i18n.js?v=20261023b"></script>
+<script src="../wa.js?v=20261023b"></script>
 </body>
 </html>

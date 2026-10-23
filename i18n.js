@@ -12,7 +12,7 @@ const WG_EN = {
   "Foto anterior": "Previous photo", "Foto siguiente": "Next photo",
 
   // home
-  "Conocer más": "Learn more", "Ver todos los destinos": "See all destinations", "Ver todos los viajes grupales": "See all group trips",
+  "Menú": "Menu", "Abrir menú": "Open menu", "Conocer más": "Learn more", "Ver todos los destinos": "See all destinations", "Ver todos los viajes grupales": "See all group trips",
   "Medellín iluminada al atardecer, rodeada de montañas": "Medellín lit up at dusk, surrounded by mountains",
   "Agencia de turismo receptivo · Medellín": "Inbound travel agency · Medellín",
   "Colombia se vive mejor en buena compañía": "Colombia is best experienced in good company",

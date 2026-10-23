@@ -32,3 +32,6 @@ document.getElementById('lead')?.addEventListener('submit', e => {
   window.open('https://wa.me/573122899185?text=' + encodeURIComponent(text), '_blank', 'noopener');
   msg.textContent = wgT('Te abrimos WhatsApp con tu mensaje listo para enviar.');
 });
+
+// Menú de celular: se cierra al tocar un enlace
+document.querySelectorAll('.menu a').forEach(a => a.addEventListener('click', () => a.closest('.menu').hidePopover?.()));

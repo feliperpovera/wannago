@@ -8,8 +8,6 @@ import { readFileSync, writeFileSync, mkdirSync, readdirSync } from 'node:fs';
 const BASE = 'https://feliperpovera.github.io/wannago/'; // cambiar al conectar el dominio propio
 const INDEXAR = false; // true al salir en vivo: quita el noindex de todas las páginas
 const V = '20261023c';  // sube este número cuando cambies un CSS o JS
-const REPO = 'feliperpovera/wannago';
-const OAUTH = ''; // URL del servicio de inicio de sesión del panel (Cloudflare Worker); ver LEEME
 const WA = 'https://wa.me/573122899185';
 const medidas = JSON.parse(readFileSync('fotos/medidas.json', 'utf8'));
 
@@ -552,88 +550,6 @@ parche('marruecos/index.html', 'marruecos/', {
     schema: [migas(m), { '@type': 'TouristTrip', name: 'Marruecos entre mujeres', description: 'Viaje grupal solo para mujeres a Marruecos: 10 días, 7 destinos y máximo 16 viajeras.', url: BASE + 'marruecos/', image: BASE + 'fotos/og/mujer-dunas.jpg', touristType: 'Mujeres', provider: { '@id': ORG['@id'] } }],
   }, ''),
 });
-
-// ---------- Panel /admin (Decap CMS): admin/config.yml ----------
-// Se escribe como JSON (que también es YAML válido) para no tener errores de sangría.
-
-const tx = (label, name, { largo, opcional, ayuda } = {}) => ({
-  label, name, widget: 'object', collapsed: false, required: !opcional, ...(ayuda && { hint: ayuda }),
-  fields: [
-    { label: 'Español', name: 'es', widget: largo ? 'text' : 'string', required: !opcional },
-    { label: 'English', name: 'en', widget: largo ? 'text' : 'string', required: false },
-  ],
-});
-const foto = (label, name) => ({ label, name, widget: 'image', choose_url: false, hint: 'JPG o PNG horizontal de al menos 1600 px. El sitio la optimiza solo.' });
-const aDestino = (label, name, multiple) => ({ label, name, widget: 'relation', collection: 'destinos', value_field: 'url', search_fields: ['url'], display_fields: ['url'], multiple, ...(multiple && { required: false }) });
-
-const CMS = {
-  backend: {
-    name: 'github', repo: REPO, branch: 'main', ...(OAUTH && { base_url: OAUTH, auth_endpoint: 'auth' }),
-    commit_messages: { create: 'Panel: crear «{{slug}}»', update: 'Panel: actualizar «{{slug}}»', delete: 'Panel: borrar «{{slug}}»', uploadMedia: 'Panel: subir foto «{{path}}»', deleteMedia: 'Panel: borrar foto «{{path}}»' },
-  },
-  local_backend: true,
-  locale: 'es',
-  logo_url: 'logo.svg',
-  site_url: BASE, display_url: BASE,
-  media_folder: '_originales', public_folder: '/_originales',
-  collections: [
-    {
-      name: 'inicio', label: 'Viajes del inicio', editor: { preview: false },
-      files: [{
-        name: 'viajes', label: 'Viaje de temporada, pop-up y cuadros de Colombia', file: '_datos/viajes.json',
-        fields: [
-          { label: 'Mostrar el pop-up del viaje de temporada', name: 'popup', widget: 'boolean', default: true },
-          {
-            label: 'Viajes de temporada', label_singular: 'viaje de temporada', name: 'temporadas', widget: 'list',
-            hint: 'Se muestra el primero activo cuya fecha «hasta» no haya pasado. Agrega aquí el siguiente viaje para que entre solo.',
-            summary: '{{fields.titulo.es}} {{fields.titulo_resalte.es}} · hasta {{fields.hasta}}',
-            fields: [
-              { label: 'Activo', name: 'activo', widget: 'boolean', default: true },
-              { label: 'Mostrar hasta (último día)', name: 'hasta', widget: 'datetime', format: 'YYYY-MM-DD', date_format: 'YYYY-MM-DD', time_format: false, required: false, hint: 'Normalmente la fecha de salida. Vacío: sin límite.' },
-              { label: 'Página del viaje', name: 'enlace', widget: 'string', hint: 'Ej.: marruecos/ o destinos/cartagena/' },
-              foto('Foto', 'foto'),
-              tx('Descripción de la foto', 'alt'),
-              tx('Título', 'titulo'),
-              tx('Título, parte resaltada', 'titulo_resalte'),
-              tx('Etiqueta', 'etiqueta', { ayuda: 'Ej.: Viaje grupal · Solo mujeres' }),
-              tx('Aviso', 'aviso', { ayuda: 'Ej.: Cupos abiertos' }),
-              tx('Resumen', 'resumen', { largo: true }),
-              { label: 'Datos', label_singular: 'dato', name: 'datos', widget: 'list', summary: '{{fields.numero}} {{fields.texto.es}}', fields: [{ label: 'Número', name: 'numero', widget: 'string' }, tx('Texto', 'texto')] },
-              { label: 'Salida', name: 'salida', widget: 'string', hint: 'Ej.: 2027 o 15 de marzo de 2027' },
-              { label: 'Salida por definir (se marca como borrador)', name: 'salida_por_definir', widget: 'boolean', default: false },
-              tx('Texto del botón', 'boton'),
-            ],
-          },
-          {
-            label: 'Cuadros de Colombia', label_singular: 'cuadro', name: 'colombia', widget: 'list', summary: '{{fields.destino}}',
-            fields: [aDestino('Destino', 'destino', false), tx('Aviso (opcional)', 'aviso', { opcional: true, ayuda: 'Ej.: Salida grupal próximamente' })],
-          },
-        ],
-      }],
-    },
-    {
-      name: 'destinos', label: 'Destinos', label_singular: 'destino', folder: '_datos/destinos', format: 'json', extension: 'json',
-      create: true, delete: true, slug: '{{fields.url}}', identifier_field: 'url', summary: '{{fields.orden}}. {{fields.url}}', sortable_fields: ['orden', 'url'],
-      editor: { preview: false },
-      fields: [
-        { label: 'Dirección (url)', name: 'url', widget: 'string', pattern: ['^[a-z0-9-]+$', 'Solo minúsculas, números y guiones'], hint: 'La página queda en destinos/<url>/. No la cambies después de publicar.' },
-        { label: 'Orden', name: 'orden', widget: 'number', value_type: 'int', default: 99 },
-        tx('Nombre', 'nombre'), tx('Título grande (H1)', 'h1'), tx('Región', 'region'), tx('Frase corta para tarjetas', 'corto'),
-        foto('Foto de portada', 'foto'), tx('Descripción de la foto de portada', 'alt'),
-        foto('Segunda foto', 'foto2'), tx('Descripción de la segunda foto', 'alt2'),
-        tx('Título para Google (máx. 60 caracteres)', 'titulo_seo'),
-        { label: 'Descripción para Google (máx. 155 caracteres)', name: 'descripcion_seo', widget: 'text' },
-        tx('Introducción', 'lead', { largo: true }), tx('Subtítulo de «Por qué ir»', 'h2'),
-        { label: 'Párrafos de «Por qué ir»', label_singular: 'párrafo', name: 'parrafos', widget: 'list', summary: '{{fields.es}}', fields: [{ label: 'Español', name: 'es', widget: 'text' }, { label: 'English', name: 'en', widget: 'text', required: false }] },
-        { label: 'Qué vivir', label_singular: 'experiencia', name: 'vivir', widget: 'list', summary: '{{fields.titulo.es}}', fields: [tx('Título', 'titulo'), tx('Texto', 'texto')] },
-        { label: 'Datos prácticos', name: 'datos', widget: 'object', collapsed: false, fields: [tx('Cómo llegar', 'llegar'), tx('Mejor época', 'epoca'), tx('Tiempo sugerido', 'tiempo'), tx('Ideal para', 'ideal')] },
-        aDestino('Combínalo con', 'otros', true),
-      ],
-    },
-  ],
-};
-mkdirSync('admin', { recursive: true });
-writeFileSync('admin/config.yml', '# Generado por _herramientas/generar.mjs: no editar a mano\n' + JSON.stringify(CMS, null, 2) + '\n');
 
 // ---------- sitemap.xml y robots.txt ----------
 

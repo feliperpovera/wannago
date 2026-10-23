@@ -1,5 +1,6 @@
-# Regenera el sitio (fotos + páginas) cuando cambian los datos, las fotos o las herramientas
-# (por ejemplo, al guardar en el panel /admin) y cada mañana para el cambio de viaje de temporada.
+# Regenera el sitio (fotos + páginas): al pulsar «Publicar cambios» en el panel /admin (Supabase),
+# cuando cambian los datos, las fotos o las herramientas en el repositorio, y cada mañana
+# para el cambio de viaje de temporada. Variables del repositorio: SUPABASE_URL y SUPABASE_ANON_KEY.
 name: Generar sitio
 
 on:
@@ -9,6 +10,8 @@ on:
   schedule:
     - cron: '0 11 * * *' # 6:00 a. m. en Colombia
   workflow_dispatch:
+  repository_dispatch:
+    types: [publicar]
 
 concurrency:
   group: generar-sitio
@@ -32,18 +35,24 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: 22
+      - name: Bajar contenido de Supabase
+        env:
+          SUPABASE_URL: ${{ vars.SUPABASE_URL }}
+          SUPABASE_ANON_KEY: ${{ vars.SUPABASE_ANON_KEY }}
+        run: node _herramientas/supabase/bajar.mjs
       - run: python3 _herramientas/fotos.py
       - run: node _herramientas/generar.mjs
       - name: Publicar si cambió algo
         env:
           GH_TOKEN: ${{ github.token }}
+          POR: ${{ github.event.client_payload.por }}
         run: |
           # sitemap.xml cambia de fecha todos los días; eso solo no amerita publicar
           git add -A
           git diff --cached --quiet -- . ':!sitemap.xml' && exit 0
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git commit -m "Sitio regenerado automáticamente"
+          git commit -m "Sitio regenerado automáticamente${POR:+ (publicado por $POR)}"
           git pull --rebase origin main
           git push
           gh api -X POST "repos/${{ github.repository }}/pages/builds" || true

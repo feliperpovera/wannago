@@ -51,29 +51,33 @@ Documento de traspaso para continuar el proyecto en otra conversación con Claud
   node _herramientas/generar.mjs
   ```
   El generador también reescribe el menú y el pie del inicio, el bloque SEO del inicio y de Marruecos (entre los marcadores `<!-- seo -->`, `<!-- nav -->`, `<!-- pie -->`), `sitemap.xml` y `robots.txt`.
-- **Viaje de temporada y cuadros de Colombia:** se editan en `_datos/viajes.json`, no en el HTML. `temporadas` es una fila en orden: se muestra el primer viaje con `"activo": true` cuya fecha `hasta` (AAAA-MM-DD, último día visible, hora de Colombia) no haya pasado. Ese viaje sale arriba en "01 · Nuestros viajes" del inicio, en el pop-up y como tarjeta grande en Viajes grupales. **Cuando se sepa la salida de Marruecos**, pon esa fecha en su `hasta` y agrega debajo el siguiente viaje: el día después, el sitio cambia solo. Lo hace `.github/workflows/sitio.yml`, que cada día a las 6:00 a. m. de Colombia regenera el sitio y publica si cambió algo; también se puede correr a mano desde la pestaña Actions de GitHub. Si no queda ningún viaje vigente, la tarjeta y el pop-up desaparecen. `colombia` es la lista y el orden de los cuadros, cada uno con un `aviso` opcional. Después de editar, corre `node _herramientas/generar.mjs` y publica.
+- **Viaje de temporada y cuadros de Colombia:** se editan desde el panel `/admin` (sección 3c); mientras Supabase no esté conectado, en `_datos/viajes.json`. `temporadas` es una fila en orden: se muestra el primer viaje con `"activo": true` cuya fecha `hasta` (AAAA-MM-DD, último día visible, hora de Colombia) no haya pasado. Ese viaje sale arriba en "01 · Nuestros viajes" del inicio, en el pop-up y como tarjeta grande en Viajes grupales. **Cuando se sepa la salida de Marruecos**, pon esa fecha en su `hasta` y agrega debajo el siguiente viaje: el día después, el sitio cambia solo. Lo hace `.github/workflows/sitio.yml`, que cada día a las 6:00 a. m. de Colombia regenera el sitio y publica si cambió algo; también se puede correr a mano desde la pestaña Actions de GitHub. Si no queda ningún viaje vigente, la tarjeta y el pop-up desaparecen. `colombia` es la lista y el orden de los cuadros, cada uno con un `aviso` opcional. Después de editar, corre `node _herramientas/generar.mjs` y publica.
 - **Textos de los destinos y servicios:** borrador escrito por nosotros. Falta la revisión de Luchy.
 - **Al salir en vivo o conectar el dominio:** en `generar.mjs`, cambia `BASE` (dominio) y pon `INDEXAR = true`, luego corre el generador.
 - **Fotos:** los originales están en `_originales/` (Jekyll no publica carpetas que empiezan con `_`). Para agregar o cambiar una foto, ponla ahí y corre `python3 _herramientas/fotos.py`: crea `fotos/NOMBRE.webp` (1600 px), `NOMBRE-800.webp` y `fotos/og/NOMBRE.jpg` (1200×630 para compartir).
 - **Fuente:** Montserrat va alojada en `fuentes/montserrat.woff2` (ya no se carga desde Google Fonts).
 - **Caché:** la versión `?v=` está en `V` de `generar.mjs` y, a mano, en `index.html` y `marruecos/index.html`.
 
-## 3c. Panel de edición `/admin` (Decap CMS, gratis)
+## 3c. Panel de edición `/admin` con Supabase (código listo, falta conectar)
 
-- **Dirección:** https://feliperpovera.github.io/wannago/admin/
-- **Qué se edita hoy:** viajes de temporada (fecha `hasta`, foto, textos, datos), el pop-up (activar o desactivar) y los cuadros de Colombia (colección "Viajes del inicio"); y los destinos: editar, crear destinos nuevos con su propia página o borrarlos (colección "Destinos"). Las fotos se suben desde el panel a `_originales/`.
-- **Qué pasa al guardar:** el panel guarda el cambio en GitHub; la acción `.github/workflows/sitio.yml` optimiza las fotos nuevas, vuelve a generar las páginas y publica. Tarda unos 2 a 3 minutos en verse en vivo.
-- **Todavía en el código (siguiente fase):** textos del inicio, servicios, nosotros, reseñas y datos de contacto; y la landing completa de Marruecos.
-- **Configuración del panel:** la escribe `generar.mjs` en `admin/config.yml`. No se edita a mano.
+**Cómo funciona:** el panel (`admin/`) guarda en Supabase. El botón «Publicar cambios» llama a la función `publicar` (`supabase/functions/publicar/`), que verifica que sea un editor y le pide a GitHub regenerar el sitio. La acción `.github/workflows/sitio.yml` baja el contenido con `_herramientas/supabase/bajar.mjs` a `_datos/` (queda como copia versionada), baja las fotos nuevas a `_originales/`, las optimiza y genera las páginas. El sitio sigue siendo estático: rápido y con el mismo SEO.
 
-**Activar el inicio de sesión (una sola vez):** GitHub Pages no trae el inicio de sesión que necesita el panel, así que se usa un Cloudflare Worker gratuito (`_herramientas/oauth-worker.js`).
-1. En Cloudflare → Workers & Pages → Create → Worker: nómbralo `wannago-panel`, pega el contenido de `_herramientas/oauth-worker.js` y publícalo. Anota su URL (`https://wannago-panel.<cuenta>.workers.dev`).
-2. En GitHub → Settings → Developer settings → OAuth Apps → New OAuth App. Homepage: `https://feliperpovera.github.io/wannago/`. Authorization callback URL: `<URL del Worker>/callback`. Copia el Client ID y genera un Client Secret.
-3. En el Worker → Settings → Variables: `GITHUB_CLIENT_ID` (texto), `GITHUB_CLIENT_SECRET` (secreto) y `ORIGEN` = `https://feliperpovera.github.io`.
-4. Pon la URL del Worker en `OAUTH` dentro de `_herramientas/generar.mjs`, corre el generador y publica.
-5. Para que otra persona edite (por ejemplo, Luchy), agrégala como colaboradora del repositorio (Settings → Collaborators). Necesita una cuenta de GitHub gratuita.
+- **Qué se edita:** viajes de temporada (con fecha «hasta» y orden de la fila), cuadros de Colombia, destinos (editar, crear y borrar, con fotos), el pop-up y la lista de solicitudes de los formularios.
+- **Acceso:** con enlace al correo, sin contraseña. Solo entran los correos de la tabla `editores`.
+- **Seguridad:** todas las tablas tienen RLS. El público solo lee el contenido publicado y puede enviar formularios; solo los editores escriben, suben fotos y leen solicitudes. Probado en Postgres con las políticas reales.
+- **Probarlo sin Supabase:** con el servidor local, abre http://localhost:8765/admin/?demo. Lee `_datos/` y no guarda nada.
+- **Archivos:** esquema en `supabase/migrations/`, semilla en `supabase/seed.sql` (la escribe `_herramientas/supabase/semilla.mjs` desde `_datos/`), panel en `admin/`.
+- **Todavía en el código (siguiente fase):** textos del inicio, servicios, nosotros, reseñas, datos de contacto y la landing de Marruecos. Los formularios se conectan a `solicitudes` cuando esté la política de tratamiento de datos (Ley 1581).
 
-**Usar el panel en local, sin inicio de sesión:** en una terminal corre `npx decap-server@3.11.3` dentro de `sitio/`, en otra `python3 -m http.server 8765 --directory sitio`, y abre http://localhost:8765/admin/. Los cambios se guardan directo en los archivos.
+**Conectar cuando exista el proyecto (en orden):**
+1. Crear el proyecto en Supabase (región São Paulo, la más cercana).
+2. Aplicar `supabase/migrations/20261023000000_esquema_inicial.sql` (SQL Editor, o con la herramienta de Supabase desde Claude).
+3. Cargar el contenido: `node _herramientas/supabase/semilla.mjs`, quitar el comentario de la línea de editores en `supabase/seed.sql` con los correos reales y ejecutarlo. Subir las fotos: `SUPABASE_URL=… SUPABASE_SERVICE_ROLE_KEY=… node _herramientas/supabase/semilla.mjs --fotos` (la clave service_role solo en la terminal, nunca en el repositorio).
+4. Authentication → URL Configuration: Site URL y Redirect URL `https://feliperpovera.github.io/wannago/admin/`. Invitar a cada editor en Authentication → Users.
+5. Correo: el envío de correos de Supabase por defecto tiene un límite bajo; para uso real, configurar un SMTP propio (Authentication → Emails).
+6. Desplegar la función `publicar` y ponerle los secretos `GITHUB_REPO` = `feliperpovera/wannago` y `GITHUB_TOKEN` (token fine-grained solo de este repositorio, permiso Contents: Read and write).
+7. Llenar `admin/config.js` con la URL del proyecto y la clave anon/publishable.
+8. En GitHub → Settings → Secrets and variables → Actions → Variables: `SUPABASE_URL` y `SUPABASE_ANON_KEY`.
 
 ## 4. Manual de marca (seguirlo al pie de la letra)
 

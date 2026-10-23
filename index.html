@@ -3,151 +3,50 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<!-- seo -->
 <meta name="robots" content="noindex">
-<title>Wanna Go Colombia</title>
+<title>Wanna Go Colombia · Agencia de viajes con propósito en Medellín</title>
 <meta name="description" content="Wanna Go: agencia de turismo receptivo en Medellín. Viajes a la medida, viajes grupales y eventos corporativos con propósito.">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&display=swap">
+<link rel="canonical" href="https://feliperpovera.github.io/wannago/">
+<meta property="og:type" content="website">
+<meta property="og:locale" content="es_CO">
+<meta property="og:site_name" content="Wanna Go Colombia">
+<meta property="og:title" content="Wanna Go Colombia · Agencia de viajes con propósito en Medellín">
+<meta property="og:description" content="Wanna Go: agencia de turismo receptivo en Medellín. Viajes a la medida, viajes grupales y eventos corporativos con propósito.">
+<meta property="og:url" content="https://feliperpovera.github.io/wannago/">
+<meta property="og:image" content="https://feliperpovera.github.io/wannago/fotos/og/medellin.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="preload" href="fuentes/montserrat.woff2" as="font" type="font/woff2" crossorigin>
+<script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"WebSite","@id":"https://feliperpovera.github.io/wannago/#sitio","name":"Wanna Go Colombia","url":"https://feliperpovera.github.io/wannago/","inLanguage":"es","publisher":{"@id":"https://feliperpovera.github.io/wannago/#agencia"}},{"@type":"TravelAgency","@id":"https://feliperpovera.github.io/wannago/#agencia","name":"Wanna Go Colombia","url":"https://feliperpovera.github.io/wannago/","image":"https://feliperpovera.github.io/wannago/fotos/og/medellin.jpg","telephone":"+57 312 289 9185","email":"wannagoco@gmail.com","foundingDate":"2019","founder":{"@type":"Person","name":"María Lucía Vásquez Cock"},"address":{"@type":"PostalAddress","streetAddress":"Cra. 30 #5F-185 Int 701, El Poblado","addressLocality":"Medellín","addressRegion":"Antioquia","addressCountry":"CO"},"areaServed":{"@type":"Country","name":"Colombia"},"sameAs":["https://www.instagram.com/wannagocol/"]}]}</script>
+<script>self.WG_EN_PAGE={"Parque Tayrona":"Tayrona Park","Eje Cafetero":"Coffee Region","Destinos":"Destinations","A la medida":"Tailor-made","Agencia de turismo receptivo en Medellín. Viajar con propósito, volver con historias.":"Inbound travel agency in Medellín. Travel with purpose, come back with stories.","Wanna Go Colombia · Agencia de viajes con propósito en Medellín":"Wanna Go Colombia · Purposeful travel agency in Medellín"}</script>
+<!-- /seo -->
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 40 40'%3E%3Ccircle cx='20' cy='20' r='20' fill='%23ED3237'/%3E%3Cpath d='M20 7a10 10 0 0 1 10 10c0 7-10 23-10 23S10 24 10 17A10 10 0 0 1 20 7z' fill='%23fff'/%3E%3Ccircle cx='20' cy='17' r='4.4' fill='%23ED3237'/%3E%3C/svg%3E">
-<link rel="stylesheet" href="marca.css?v=1792589817">
-<link rel="stylesheet" href="carrusel.css?v=1792589817">
-<link rel="stylesheet" href="wa.css?v=1792589817">
-<style>
-/* Home: bandas a sangre completa siguiendo la proporción del manual (petróleo 50 / blanco 20 / arena 15 / rojo 10 / agua 5) */
-.hero{position:relative;min-height:min(92svh,860px);display:flex;align-items:flex-end;color:#fff;overflow:hidden;background:var(--petroleo)}
-.hero>img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;animation:kb 24s ease-out both}
-.hero::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(19,72,79,.55),rgba(19,72,79,.35) 40%,rgba(19,72,79,.9))}
-.hero .wrap{position:relative;z-index:1;width:100%;padding-block:150px 64px;display:grid;gap:24px}
-.hero h1{font-size:clamp(44px,7.5vw,96px);max-width:13ch}
-.hero .lead{font-weight:300;font-size:clamp(17px,1.7vw,20px);max-width:48ch;opacity:.95}
-.hero .row{display:flex;flex-wrap:wrap;gap:12px}
-@keyframes kb{from{transform:scale(1.12)}to{transform:none}}
-
-/* quiénes somos */
-.about{display:grid;grid-template-columns:1.1fr 1fr;gap:64px;align-items:center}
-@media (max-width:900px){.about{grid-template-columns:1fr;gap:40px}}
-.about p+p{margin-top:16px}
-.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-top:32px}
-@media (max-width:520px){.stats{grid-template-columns:1fr}}
-.stat{background:var(--arena);border-radius:var(--r);padding:18px}
-.stat b{display:block;font-weight:600;font-size:22px;color:var(--petroleo)}
-.stat span{font-size:13px;color:var(--muted)}
-.about figure{margin:0;aspect-ratio:4/5;max-width:100%;border-radius:var(--r);overflow:hidden}
-.about figure img{width:100%;height:100%;object-fit:cover}
-
-/* servicios */
-.services{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
-@media (max-width:900px){.services{grid-template-columns:1fr}}
-.svc{position:relative;aspect-ratio:3/4;max-width:100%;border-radius:var(--r);overflow:hidden;color:#fff;display:flex;align-items:flex-end;isolation:isolate}
-@media (max-width:900px){.svc{aspect-ratio:16/11}}
-.svc img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:-2;transition:transform 1.2s cubic-bezier(.2,.8,.2,1)}
-.svc::before{content:"";position:absolute;inset:0;z-index:-1;background:linear-gradient(180deg,rgba(31,42,44,0) 30%,rgba(31,42,44,.85))}
-.svc:hover img{transform:scale(1.06)}
-.svc div{padding:28px;display:grid;gap:8px}
-.svc h3{font-size:26px}
-.svc p{font-weight:300;font-size:15px;opacity:.92}
-
-/* pilares */
-.pillars{display:grid;grid-template-columns:repeat(4,1fr);gap:20px}
-@media (max-width:1000px){.pillars{grid-template-columns:repeat(2,1fr)}}
-@media (max-width:560px){.pillars{grid-template-columns:1fr}}
-.pillar{background:var(--blanco);border-radius:var(--r);padding:28px;display:grid;gap:14px;align-content:start;transition:transform .4s cubic-bezier(.2,.8,.2,1),box-shadow .4s}
-.pillar:hover{transform:translateY(-6px);box-shadow:0 20px 40px -24px rgba(19,72,79,.35)}
-.pillar h3{font-size:20px}
-.pillar p{color:var(--muted);font-size:15px}
-
-/* próximos viajes */
-.trips{display:grid;grid-template-columns:1.4fr 1fr;gap:20px}
-@media (max-width:900px){.trips{grid-template-columns:1fr}}
-.trip{position:relative;border-radius:var(--r);overflow:hidden;color:#fff;display:flex;align-items:flex-end;min-height:320px;text-decoration:none;isolation:isolate}
-.trip img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:-2;transition:transform 1.4s cubic-bezier(.2,.8,.2,1)}
-.trip::before{content:"";position:absolute;inset:0;z-index:-1;background:linear-gradient(180deg,rgba(19,72,79,.1),rgba(19,72,79,.88))}
-.trip:hover img{transform:scale(1.05)}
-.trip .in{padding:28px;display:grid;gap:10px;width:100%}
-.trip h3{font-size:clamp(26px,3vw,38px)}
-.trip .meta{font-size:12px;letter-spacing:.2em;text-transform:uppercase}
-.trip .go{display:inline-flex;align-items:center;gap:8px;font-weight:500;font-size:15px}
-.trip .go span{transition:transform .3s}
-.trip:hover .go span{transform:translateX(6px)}
-.trip.big{min-height:560px;grid-row:span 2}
-@media (max-width:900px){.trip.big{min-height:440px;grid-row:auto}}
-.badge{justify-self:start;background:var(--rojo);color:#fff;font-size:11px;font-weight:500;letter-spacing:.18em;text-transform:uppercase;padding:6px 12px;border-radius:999px}
-.badge.soon{background:rgba(255,255,255,.18);backdrop-filter:blur(6px)}
-
-/* destinos colombia: franja */
-.strip figure{margin:0;flex:none;width:clamp(220px,24vw,330px);aspect-ratio:3/4;border-radius:var(--r);overflow:hidden;position:relative}
-.strip figure:nth-child(even){margin-top:44px}
-.strip img{width:100%;height:100%;object-fit:cover}
-.strip figcaption{position:absolute;left:0;right:0;bottom:0;padding:40px 16px 14px;color:#fff;font-weight:500;font-size:15px;background:linear-gradient(transparent,rgba(31,42,44,.75))}
-
-/* fundadora */
-.founder{display:grid;grid-template-columns:1fr 1.2fr;gap:64px;align-items:center}
-@media (max-width:860px){.founder{grid-template-columns:1fr}}
-.founder .ph{aspect-ratio:4/5;max-width:100%;border-radius:var(--r);background:rgba(255,255,255,.08);border:1px dashed rgba(255,255,255,.45);display:grid;place-items:center;text-align:center;padding:20px;font-size:13px;letter-spacing:.14em;text-transform:uppercase;color:rgba(255,255,255,.75)}
-.founder blockquote{margin:0;font-weight:500;font-size:clamp(22px,2.6vw,30px);line-height:1.35}
-.founder .who{margin-top:24px;display:grid;gap:2px}
-.founder .who b{font-weight:600;font-size:18px}
-.founder .who span{color:var(--arena);opacity:.8;font-size:15px}
-
-/* frase */
-.quote{position:relative;color:#fff;text-align:center;overflow:hidden;background:var(--petroleo)}
-.quote img{position:absolute;inset:-10% 0;width:100%;height:120%;object-fit:cover;will-change:transform}
-.quote::after{content:"";position:absolute;inset:0;background:rgba(19,72,79,.72)}
-.quote .wrap{position:relative;z-index:1;padding-block:150px;display:grid;gap:22px;justify-items:center}
-.quote h2{font-size:clamp(32px,5vw,64px);max-width:18ch}
-.quote .label{color:rgba(255,255,255,.8)}
-
-/* contacto */
-.contact{display:grid;grid-template-columns:1fr 1fr;gap:56px;align-items:start}
-@media (max-width:900px){.contact{grid-template-columns:1fr}}
-.channels{display:grid;gap:12px;margin-top:28px}
-.channel{display:flex;gap:16px;align-items:center;background:var(--blanco);border-radius:var(--r);padding:18px 20px;text-decoration:none;transition:transform .3s}
-.channel:hover{transform:translateX(4px)}
-.channel small{display:block;font-size:12px;letter-spacing:.16em;text-transform:uppercase;color:var(--agua)}
-.channel b{font-weight:500;color:var(--petroleo);word-break:break-word}
-
-/* pop-up: viaje destacado */
-.promo{border:0;padding:0;border-radius:14px;width:min(860px,calc(100% - 32px));max-height:calc(100svh - 32px);overflow:auto;background:var(--blanco);color:var(--ink);box-shadow:0 40px 80px -30px rgba(31,42,44,.6)}
-.promo::backdrop{background:rgba(31,42,44,.62);backdrop-filter:blur(4px)}
-.promo[open]{animation:pop .6s cubic-bezier(.2,.8,.2,1)}
-.promo[open]::backdrop{animation:fade .5s ease}
-@keyframes pop{from{transform:translateY(24px) scale(.97);opacity:0}to{transform:none;opacity:1}}
-@keyframes fade{from{opacity:0}}
-.promo-in{display:grid;grid-template-columns:1fr 1.05fr}
-@media (max-width:720px){.promo-in{grid-template-columns:1fr}}
-.promo figure{margin:0;position:relative;min-height:260px;background:var(--petroleo)}
-.promo figure img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
-.promo figure .badge{position:absolute;left:18px;top:18px}
-.promo-body{padding:40px 36px 34px;display:grid;gap:16px;align-content:center}
-.promo-body h2{font-size:clamp(30px,3.6vw,42px);color:var(--petroleo)}
-.promo-body h2 em{font-style:normal;color:var(--rojo)}
-.promo-body .label{color:var(--agua)}
-.promo-facts{display:flex;flex-wrap:wrap;gap:8px 22px;font-size:14px;color:var(--muted)}
-.promo-facts b{color:var(--petroleo);font-weight:600}
-.promo-actions{display:flex;flex-wrap:wrap;gap:10px;margin-top:6px}
-.promo-close{position:absolute;right:14px;top:14px;z-index:2;width:42px;height:42px;border-radius:50%;border:0;background:var(--blanco);color:var(--petroleo);display:grid;place-items:center;cursor:pointer;box-shadow:0 6px 16px -8px rgba(31,42,44,.5);transition:transform .2s}
-.promo-close:hover{transform:rotate(90deg)}
-.promo-close svg{width:18px;height:18px;stroke:currentColor;stroke-width:2.2;stroke-linecap:round}
-.btn-quiet{color:var(--petroleo);box-shadow:inset 0 0 0 1.5px var(--line)}
-</style>
+<link rel="stylesheet" href="marca.css?v=20261023">
+<link rel="stylesheet" href="carrusel.css?v=20261023">
+<link rel="stylesheet" href="wa.css?v=20261023">
 </head>
 <body>
 
+<!-- nav -->
 <nav class="nav" id="nav">
   <div class="wrap">
     <a class="logo" href="./" aria-label="Wanna Go Colombia, inicio"><span class="lt">Wanna G<i class="iso"></i></span><span class="ds">COLOMBIA</span></a>
     <ul>
-      <li><a href="#nosotros">Nosotros</a></li>
-      <li><a href="#experiencias">Experiencias</a></li>
-      <li><a href="#viajes">Viajes grupales</a></li>
-      <li><a href="#contacto">Contacto</a></li>
+      <li><a href="nosotros/">Nosotros</a></li>
+      <li><a href="viajes-a-la-medida/">A la medida</a></li>
+      <li><a href="viajes-grupales/">Viajes grupales</a></li>
+      <li><a href="destinos/">Destinos</a></li>
+      <li><a href="contacto/">Contacto</a></li>
     </ul>
     <div class="nav-actions"><button class="lang-btn" type="button" aria-label="Switch to English">EN</button><a class="btn btn-rojo" href="https://wa.me/573122899185" target="_blank" rel="noopener">Escríbenos</a></div>
   </div>
 </nav>
+<!-- /nav -->
 
 <header class="hero">
-  <img src="fotos/medellin.jpg" alt="Medellín iluminada al atardecer, rodeada de montañas">
+  <img fetchpriority="high" src="fotos/medellin.webp" srcset="fotos/medellin-800.webp 800w, fotos/medellin.webp 1600w" sizes="100vw" alt="Medellín iluminada al atardecer, rodeada de montañas">
   <div class="wrap">
     <span class="label">Agencia de turismo receptivo · Medellín</span>
     <h1>Colombia se vive mejor en buena compañía</h1>
@@ -166,13 +65,14 @@
       <h2 class="h2">Viajes con propósito</h2>
       <p class="body-lg">Wanna Go es una agencia de turismo receptivo con sede en Medellín, fundada en 2019 por María Lucía Vásquez Cock, Luchy.</p>
       <p class="body-lg">Huimos del turismo masivo y de lo predecible. Te mostramos cada destino desde adentro, con su gente, su cocina y sus paisajes, para que vuelvas distinto de como te fuiste.</p>
+      <a class="more" href="nosotros/">Conocer más <span>→</span></a>
       <div class="stats">
         <div class="stat"><b>2019</b><span>Año de fundación</span></div>
         <div class="stat"><b>RNT 65568</b><span>Registro Nacional de Turismo</span></div>
         <div class="stat"><b>Medellín</b><span>Colombia</span></div>
       </div>
     </div>
-    <figure class="rv"><img src="fotos/guatape-calle.jpg" alt="Calle con fachadas de colores y zócalos en Guatapé" loading="lazy"></figure>
+    <figure class="rv"><img src="fotos/guatape-calle.webp" srcset="fotos/guatape-calle-800.webp 800w, fotos/guatape-calle.webp 1600w" sizes="(max-width:900px) 100vw, 50vw" alt="Calle con fachadas de colores y zócalos en Guatapé" loading="lazy"></figure>
   </div>
 </section>
 
@@ -183,18 +83,18 @@
       <h2 class="h2">Tres formas de viajar con nosotros</h2>
     </div>
     <div class="services">
-      <article class="svc rv">
-        <img src="fotos/salento.jpg" alt="Palmas de cera en el valle de Cocora" loading="lazy">
-        <div><span class="label">A tu ritmo</span><h3>Viajes a la medida</h3><p>Itinerarios privados diseñados alrededor de lo que te mueve: café, naturaleza, cocina, arte o descanso.</p></div>
-      </article>
-      <article class="svc rv">
-        <img src="fotos/grupo-atardecer.jpg" alt="Grupo de viajeros contemplando el atardecer" loading="lazy">
-        <div><span class="label">Grupos pequeños</span><h3>Viajes grupales</h3><p>Salidas acompañadas en Colombia y el mundo, con anfitriona Wanna Go de principio a fin.</p></div>
-      </article>
-      <article class="svc rv">
-        <img src="fotos/medellin-montanas.jpg" alt="Edificios de Medellín frente a las montañas" loading="lazy">
-        <div><span class="label">Empresas</span><h3>Eventos corporativos</h3><p>Incentivos, convenciones y experiencias de equipo con logística completa en Medellín y Antioquia.</p></div>
-      </article>
+      <a class="svc rv" href="viajes-a-la-medida/">
+        <img src="fotos/salento.webp" srcset="fotos/salento-800.webp 800w, fotos/salento.webp 1600w" sizes="(max-width:900px) 100vw, 33vw" alt="Palmas de cera en el valle de Cocora" loading="lazy">
+        <div><span class="label">A tu ritmo</span><h3>Viajes a la medida</h3><p>Itinerarios privados diseñados alrededor de lo que te mueve: café, naturaleza, cocina, arte o descanso.</p><span class="go">Conocer más <span>→</span></span></div>
+      </a>
+      <a class="svc rv" href="viajes-grupales/">
+        <img src="fotos/grupo-atardecer.webp" srcset="fotos/grupo-atardecer-800.webp 800w, fotos/grupo-atardecer.webp 1600w" sizes="(max-width:900px) 100vw, 33vw" alt="Grupo de viajeros contemplando el atardecer" loading="lazy">
+        <div><span class="label">Grupos pequeños</span><h3>Viajes grupales</h3><p>Salidas acompañadas en Colombia y el mundo, con anfitriona Wanna Go de principio a fin.</p><span class="go">Conocer más <span>→</span></span></div>
+      </a>
+      <a class="svc rv" href="eventos-corporativos/">
+        <img src="fotos/medellin-montanas.webp" srcset="fotos/medellin-montanas-800.webp 800w, fotos/medellin-montanas.webp 1600w" sizes="(max-width:900px) 100vw, 33vw" alt="Edificios de Medellín frente a las montañas" loading="lazy">
+        <div><span class="label">Empresas</span><h3>Eventos corporativos</h3><p>Incentivos, convenciones y experiencias de equipo con logística completa en Medellín y Antioquia.</p><span class="go">Conocer más <span>→</span></span></div>
+      </a>
     </div>
   </div>
 </section>
@@ -232,10 +132,11 @@
       <span class="eyebrow on-dark">04 · Próximas salidas</span>
       <h2 class="h2">Viajes grupales</h2>
       <p class="body-lg" style="opacity:.85">Salidas con fecha fija, grupos pequeños y una anfitriona de Wanna Go acompañándote todo el camino.</p>
+      <a class="more" href="viajes-grupales/">Ver todos los viajes grupales <span>→</span></a>
     </div>
     <div class="trips">
       <a class="trip big rv" href="marruecos/">
-        <img src="fotos/mujer-dunas.jpg" alt="Viajera en las dunas del Sahara al atardecer" loading="lazy">
+        <img src="fotos/mujer-dunas.webp" srcset="fotos/mujer-dunas-800.webp 790w, fotos/mujer-dunas.webp 1580w" sizes="(max-width:900px) 100vw, 60vw" alt="Viajera en las dunas del Sahara al atardecer" loading="lazy">
         <div class="in">
           <span class="badge">Solo mujeres · Cupos abiertos</span>
           <span class="meta">10 días · 7 destinos · Salida <span class="tbd">2027</span></span>
@@ -243,22 +144,22 @@
           <span class="go">Ver el viaje <span>→</span></span>
         </div>
       </a>
-      <div class="trip rv">
-        <img src="fotos/cartagena.jpg" alt="Calle colonial de Cartagena con faroles" loading="lazy">
+      <a class="trip rv" href="destinos/cartagena/">
+        <img src="fotos/cartagena.webp" srcset="fotos/cartagena-800.webp 700w, fotos/cartagena.webp 1400w" sizes="(max-width:900px) 100vw, 40vw" alt="Calle colonial de Cartagena con faroles" loading="lazy">
         <div class="in">
           <span class="badge soon">Próximamente</span>
           <span class="meta"><span class="tbd">Fecha por definir</span></span>
           <h3>Cartagena y el Caribe</h3>
         </div>
-      </div>
-      <div class="trip rv">
-        <img src="fotos/cafe.jpg" alt="Granos de café maduros en la rama" loading="lazy">
+      </a>
+      <a class="trip rv" href="destinos/eje-cafetero/">
+        <img src="fotos/cafe.webp" srcset="fotos/cafe-800.webp 534w, fotos/cafe.webp 1067w" sizes="(max-width:900px) 100vw, 40vw" alt="Granos de café maduros en la rama" loading="lazy">
         <div class="in">
           <span class="badge soon">Próximamente</span>
           <span class="meta"><span class="tbd">Fecha por definir</span></span>
           <h3>Paisaje Cultural Cafetero</h3>
         </div>
-      </div>
+      </a>
     </div>
   </div>
 </section>
@@ -267,17 +168,18 @@
   <div class="wrap head rv">
     <span class="eyebrow">05 · Destinos en Colombia</span>
     <h2 class="h2">Conoce Colombia desde adentro</h2>
+    <a class="more" href="destinos/">Ver todos los destinos <span>→</span></a>
   </div>
 </section>
 <div class="strip carousel" aria-label="Destinos en Colombia" style="padding-bottom:110px">
   <div class="strip-track" tabindex="0">
-    <figure><img src="fotos/guatape.jpg" alt="" loading="lazy"><figcaption>Guatapé</figcaption></figure>
-    <figure><img src="fotos/comuna13.jpg" alt="" loading="lazy"><figcaption>Comuna 13, Medellín</figcaption></figure>
-    <figure><img src="fotos/cartagena-casas.jpg" alt="" loading="lazy"><figcaption>Cartagena</figcaption></figure>
-    <figure><img src="fotos/salento.jpg" alt="" loading="lazy"><figcaption>Valle de Cocora</figcaption></figure>
-    <figure><img src="fotos/frutas.jpg" alt="" loading="lazy"><figcaption>Plazas de mercado</figcaption></figure>
-    <figure><img src="fotos/tayrona.jpg" alt="" loading="lazy"><figcaption>Tayrona</figcaption></figure>
-    <figure><img src="fotos/cafe.jpg" alt="" loading="lazy"><figcaption>Eje Cafetero</figcaption></figure>
+    <figure><img src="fotos/guatape.webp" srcset="fotos/guatape-800.webp 800w, fotos/guatape.webp 1600w" sizes="(max-width:700px) 70vw, 330px" alt="" loading="lazy"><figcaption><a href="destinos/guatape/">Guatapé</a></figcaption></figure>
+    <figure><img src="fotos/comuna13.webp" srcset="fotos/comuna13-800.webp 800w, fotos/comuna13.webp 1600w" sizes="(max-width:700px) 70vw, 330px" alt="" loading="lazy"><figcaption><a href="destinos/comuna-13/">Comuna 13, Medellín</a></figcaption></figure>
+    <figure><img src="fotos/cartagena-casas.webp" srcset="fotos/cartagena-casas-800.webp 800w, fotos/cartagena-casas.webp 1600w" sizes="(max-width:700px) 70vw, 330px" alt="" loading="lazy"><figcaption><a href="destinos/cartagena/">Cartagena</a></figcaption></figure>
+    <figure><img src="fotos/salento.webp" srcset="fotos/salento-800.webp 800w, fotos/salento.webp 1600w" sizes="(max-width:700px) 70vw, 330px" alt="" loading="lazy"><figcaption><a href="destinos/valle-de-cocora/">Valle de Cocora</a></figcaption></figure>
+    <figure><img src="fotos/frutas.webp" srcset="fotos/frutas-800.webp 534w, fotos/frutas.webp 1067w" sizes="(max-width:700px) 70vw, 330px" alt="" loading="lazy"><figcaption><a href="destinos/plazas-de-mercado/">Plazas de mercado</a></figcaption></figure>
+    <figure><img src="fotos/tayrona.webp" srcset="fotos/tayrona-800.webp 800w, fotos/tayrona.webp 1600w" sizes="(max-width:700px) 70vw, 330px" alt="" loading="lazy"><figcaption><a href="destinos/tayrona/">Tayrona</a></figcaption></figure>
+    <figure><img src="fotos/cafe.webp" srcset="fotos/cafe-800.webp 534w, fotos/cafe.webp 1067w" sizes="(max-width:700px) 70vw, 330px" alt="" loading="lazy"><figcaption><a href="destinos/eje-cafetero/">Eje Cafetero</a></figcaption></figure>
   </div>
 </div>
 
@@ -308,7 +210,7 @@
 </section>
 
 <section class="quote">
-  <img id="par" src="fotos/guatape.jpg" alt="" loading="lazy">
+  <img id="par" src="fotos/guatape.webp" srcset="fotos/guatape-800.webp 800w, fotos/guatape.webp 1600w" sizes="100vw" alt="" loading="lazy">
   <div class="wrap">
     <h2>“Viajar con propósito, volver con historias.”</h2>
     <span class="label">Wanna Go Colombia</span>
@@ -342,19 +244,26 @@
   </div>
 </section>
 
+<!-- pie -->
 <footer class="foot">
-  <div class="wrap">
-    <span class="logo" aria-label="Wanna Go Colombia"><span class="lt">Wanna G<i class="iso"></i></span><span class="ds">COLOMBIA</span></span>
-    <span>Viajes con propósito · RNT 65568 · Medellín, Colombia</span>
-    <span>Fotos de referencia: Unsplash</span>
+  <div class="wrap foot-grid">
+    <div>
+      <a class="logo" href="./" aria-label="Wanna Go Colombia, inicio"><span class="lt">Wanna G<i class="iso"></i></span><span class="ds">COLOMBIA</span></a>
+      <p>Agencia de turismo receptivo en Medellín. Viajar con propósito, volver con historias.</p>
+    </div>
+    <nav aria-label="Experiencias"><b>Experiencias</b><a href="viajes-a-la-medida/">Viajes a la medida</a><a href="viajes-grupales/">Viajes grupales</a><a href="eventos-corporativos/">Eventos corporativos</a><a href="marruecos/">Marruecos entre mujeres</a></nav>
+    <nav aria-label="Destinos"><b>Destinos</b><a href="destinos/guatape/">Guatapé</a><a href="destinos/comuna-13/">Comuna 13</a><a href="destinos/cartagena/">Cartagena</a><a href="destinos/valle-de-cocora/">Valle de Cocora</a><a href="destinos/tayrona/">Parque Tayrona</a><a href="destinos/eje-cafetero/">Eje Cafetero</a><a href="destinos/plazas-de-mercado/">Plazas de mercado</a></nav>
+    <nav aria-label="Wanna Go"><b>Wanna Go</b><a href="nosotros/">Nosotros</a><a href="contacto/">Contacto</a><a href="https://wa.me/573122899185" target="_blank" rel="noopener">WhatsApp</a><a href="mailto:wannagoco@gmail.com">wannagoco@gmail.com</a><a href="https://www.instagram.com/wannagocol/" target="_blank" rel="noopener">Instagram</a></nav>
   </div>
+  <div class="wrap foot-bottom"><span>Viajes con propósito · RNT 65568 · Medellín, Colombia</span><span>Fotos de referencia: Unsplash</span></div>
 </footer>
+<!-- /pie -->
 
 
 <dialog class="promo" id="promo" aria-labelledby="promo-title">
   <button class="promo-close" type="button" aria-label="Cerrar" data-close><svg viewBox="0 0 24 24"><path d="M6 6l12 12M18 6 6 18"/></svg></button>
   <div class="promo-in">
-    <figure><img src="fotos/mujer-dunas.jpg" alt="Viajera sentada en las dunas del Sahara al atardecer"><span class="badge">Cupos abiertos</span></figure>
+    <figure><img loading="lazy" src="fotos/mujer-dunas.webp" srcset="fotos/mujer-dunas-800.webp 790w, fotos/mujer-dunas.webp 1580w" sizes="(max-width:720px) 100vw, 420px" alt="Viajera sentada en las dunas del Sahara al atardecer"><span class="badge">Cupos abiertos</span></figure>
     <div class="promo-body">
       <span class="label">Viaje grupal · Solo mujeres</span>
       <h2 id="promo-title">Marruecos <em>entre mujeres</em></h2>
@@ -370,11 +279,11 @@
 
 <a class="wa-float" href="https://wa.me/573122899185" target="_blank" rel="noopener" aria-label="Escríbenos por WhatsApp"><span class="wa-btn"><svg viewBox="0 0 32 32"><path d="M16 3a13 13 0 0 0-11.2 19.6L3 29l6.6-1.7A13 13 0 1 0 16 3zm0 23.7c-2 0-4-.6-5.7-1.6l-.4-.2-3.9 1 1-3.8-.3-.4A10.7 10.7 0 1 1 16 26.7zm5.9-8c-.3-.2-1.9-1-2.2-1-.3-.1-.5-.2-.7.2l-1 1.2c-.2.2-.4.3-.7.1-.3-.2-1.4-.5-2.6-1.6-1-.9-1.6-1.9-1.8-2.2-.2-.3 0-.5.1-.7l.5-.6.3-.5v-.6l-1-2.4c-.3-.6-.5-.5-.7-.5h-.6c-.2 0-.6.1-.9.4-.3.3-1.2 1.1-1.2 2.8s1.2 3.2 1.4 3.5c.2.2 2.4 3.6 5.7 5 2.8 1.1 3.4.9 4 .8.6-.1 1.9-.8 2.2-1.5.3-.8.3-1.4.2-1.5l-.6-.4z"/></svg><span class="wa-badge" aria-hidden="true">1</span></span><span class="wa-label">¿Planeamos tu viaje? <b>Escríbenos</b></span></a>
 
-<script src="marca.js?v=1792589817"></script>
-<script src="carrusel.js?v=1792589817"></script>
-<script src="i18n.js?v=1792589817"></script>
-<script src="wa.js?v=1792589817"></script>
-<script src="resenas.js?v=1792589817"></script>
+<script src="marca.js?v=20261023"></script>
+<script src="carrusel.js?v=20261023"></script>
+<script src="i18n.js?v=20261023"></script>
+<script src="wa.js?v=20261023"></script>
+<script src="resenas.js?v=20261023"></script>
 <script>
 // Pop-up del viaje destacado: una vez por visita, tras un momento
 (() => {
@@ -389,17 +298,6 @@
   if (!seen) setTimeout(() => d.showModal(), 1400);
 })();
 
-// Formulario → abre WhatsApp con el mensaje armado
-document.getElementById('lead').addEventListener('submit', e => {
-  e.preventDefault();
-  const f = e.target, msg = document.getElementById('msg');
-  const name = f.name.value.trim();
-  msg.hidden = false;
-  if (!name) { msg.textContent = wgT('Escribe tu nombre para que sepamos a quién responder.'); return; }
-  const text = `Hola Wanna Go, soy ${name}. Me interesa un ${f.type.value.toLowerCase()}. ${f.msg.value.trim()}`.trim();
-  window.open('https://wa.me/573122899185?text=' + encodeURIComponent(text), '_blank', 'noopener');
-  msg.textContent = wgT('Te abrimos WhatsApp con tu mensaje listo para enviar.');
-});
 </script>
 </body>
 </html>

@@ -12,6 +12,7 @@ const WG_EN = {
   "Foto anterior": "Previous photo", "Foto siguiente": "Next photo",
 
   // home
+  "Conocer más": "Learn more", "Ver todos los destinos": "See all destinations", "Ver todos los viajes grupales": "See all group trips",
   "Medellín iluminada al atardecer, rodeada de montañas": "Medellín lit up at dusk, surrounded by mountains",
   "Agencia de turismo receptivo · Medellín": "Inbound travel agency · Medellín",
   "Colombia se vive mejor en buena compañía": "Colombia is best experienced in good company",
@@ -199,6 +200,8 @@ const WG_EN = {
   "Te abrimos WhatsApp con tu mensaje listo para enviar.": "We opened WhatsApp with your message ready to send.",
   "Escribe tu nombre y un WhatsApp válido para poder contactarte.": "Please enter your name and a valid WhatsApp number so we can reach you.",
 };
+// Textos propios de cada página interna (los escribe _herramientas/generar.mjs)
+Object.assign(WG_EN, self.WG_EN_PAGE);
 const WG_ATTRS = ['alt', 'placeholder', 'aria-label', 'title'];
 
 let wgLang = 'es';

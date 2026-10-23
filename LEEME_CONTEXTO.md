@@ -15,7 +15,7 @@ Documento de traspaso para continuar el proyecto en otra conversación con Claud
 
 - **En vivo (borrador):** https://revupag.github.io/wannago-marruecos/
   - Landing: https://revupag.github.io/wannago-marruecos/marruecos/
-- **Repositorio:** https://github.com/RevUpAG/wannago-marruecos. Es público, con GitHub Pages en la rama `main` y la raíz `/`.
+- **Repositorio actual:** https://github.com/feliperpovera/wannago (en vivo: https://feliperpovera.github.io/wannago/). El original era https://github.com/RevUpAG/wannago-marruecos. Es público, con GitHub Pages en la rama `main` y la raíz `/`.
 - **Carpeta local original:** `/Users/martinruiz/Paginas Web Claude/wannago-site/`
 - **Para publicar cambios:**
   ```
@@ -42,6 +42,19 @@ Documento de traspaso para continuar el proyecto en otra conversación con Claud
 | `i18n.js` | Traducción ES ⇄ EN con el botón EN/ES de la nav. El HTML está en español y el diccionario `WG_EN` lo pasa a inglés por coincidencia exacta de texto. **Si cambias o agregas un texto en español, agrega su traducción a `WG_EN`**, o se queda en español en la versión en inglés. Guarda el idioma en localStorage y lanza el evento `wg-lang`. |
 | `resenas.js` | 9 reseñas reales de Google, en dos filas que se mueven. Cada una tiene su texto original y su traducción. Escucha `wg-lang`. |
 | `fotos/` | Fotos de Unsplash, que tienen licencia comercial gratuita. Son de referencia hasta que el cliente mande las suyas. |
+
+## 3b. Páginas individuales, SEO y velocidad (octubre 2026)
+
+- **Páginas generadas:** `nosotros/`, `viajes-a-la-medida/`, `viajes-grupales/`, `eventos-corporativos/`, `contacto/`, `destinos/` y 7 destinos (`destinos/guatape/`, `comuna-13/`, `cartagena/`, `valle-de-cocora/`, `tayrona/`, `eje-cafetero/`, `plazas-de-mercado/`). **No se editan a mano:** el contenido (español + inglés) está en `_herramientas/generar.mjs`. Después de cambiarlo:
+  ```
+  node _herramientas/generar.mjs
+  ```
+  El generador también reescribe el menú y el pie del inicio, el bloque SEO del inicio y de Marruecos (entre los marcadores `<!-- seo -->`, `<!-- nav -->`, `<!-- pie -->`), `sitemap.xml` y `robots.txt`.
+- **Textos de los destinos y servicios:** borrador escrito por nosotros. Falta la revisión de Luchy.
+- **Al salir en vivo o conectar el dominio:** en `generar.mjs`, cambia `BASE` (dominio) y pon `INDEXAR = true`, luego corre el generador.
+- **Fotos:** los originales están en `_originales/` (Jekyll no publica carpetas que empiezan con `_`). Para agregar o cambiar una foto, ponla ahí y corre `python3 _herramientas/fotos.py`: crea `fotos/NOMBRE.webp` (1600 px), `NOMBRE-800.webp` y `fotos/og/NOMBRE.jpg` (1200×630 para compartir).
+- **Fuente:** Montserrat va alojada en `fuentes/montserrat.woff2` (ya no se carga desde Google Fonts).
+- **Caché:** la versión `?v=` está en `V` de `generar.mjs` y, a mano, en `index.html` y `marruecos/index.html`.
 
 ## 4. Manual de marca (seguirlo al pie de la letra)
 

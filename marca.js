@@ -20,3 +20,15 @@
     if (r.bottom > 0 && r.top < innerHeight) par.style.transform = `translateY(${(r.top / innerHeight) * -8}%)`;
   }, { passive: true });
 })();
+
+// Formulario → abre WhatsApp con el mensaje armado
+document.getElementById('lead')?.addEventListener('submit', e => {
+  e.preventDefault();
+  const f = e.target, msg = document.getElementById('msg');
+  const name = f.name.value.trim();
+  msg.hidden = false;
+  if (!name) { msg.textContent = wgT('Escribe tu nombre para que sepamos a quién responder.'); return; }
+  const text = `Hola Wanna Go, soy ${name}. Me interesa un ${f.type.value.toLowerCase()}. ${f.msg.value.trim()}`.trim();
+  window.open('https://wa.me/573122899185?text=' + encodeURIComponent(text), '_blank', 'noopener');
+  msg.textContent = wgT('Te abrimos WhatsApp con tu mensaje listo para enviar.');
+});

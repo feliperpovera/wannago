@@ -12,6 +12,7 @@ const WG_EN = {
   "Foto anterior": "Previous photo", "Foto siguiente": "Next photo",
 
   // home
+  "02 · Quiénes somos": "02 · Who we are", "03 · Lo que hacemos": "03 · What we do", "04 · Nuestro sello": "04 · Our signature", "05 · Lo que dicen": "05 · What people say",
   "Menú": "Menu", "Abrir menú": "Open menu", "Conocer más": "Learn more", "Ver todos los destinos": "See all destinations", "Ver todos los viajes grupales": "See all group trips",
   "Medellín iluminada al atardecer, rodeada de montañas": "Medellín lit up at dusk, surrounded by mountains",
   "Agencia de turismo receptivo · Medellín": "Inbound travel agency · Medellín",

@@ -1,0 +1,31 @@
+{
+  "_ayuda": "Viajes del inicio. 'temporada' es el viaje destacado: sale primero en el inicio, en el pop-up y en Viajes grupales; para quitarlo pon \"activo\": false. 'colombia' son los cuadros, en este orden ('destino' es la carpeta en destinos/; 'aviso' es opcional). Las fotos son nombres de fotos/ sin extensión. Después de editar corre: node _herramientas/generar.mjs",
+  "temporada": {
+    "activo": true,
+    "enlace": "marruecos/",
+    "foto": "mujer-dunas",
+    "alt": { "es": "Viajera sentada en las dunas del Sahara al atardecer", "en": "Traveler sitting in the Sahara dunes at sunset" },
+    "titulo": { "es": "Marruecos", "en": "Morocco" },
+    "titulo_resalte": { "es": "entre mujeres", "en": "among women" },
+    "etiqueta": { "es": "Viaje grupal · Solo mujeres", "en": "Group trip · Women only" },
+    "aviso": { "es": "Cupos abiertos", "en": "Spots open" },
+    "resumen": { "es": "Medinas azules, palacios de mosaico y una noche bajo las estrellas del Sahara. Grupo pequeño, con anfitriona de Wanna Go de principio a fin.", "en": "Blue medinas, mosaic palaces and a night under the Sahara stars. A small group, with a Wanna Go host from start to finish." },
+    "datos": [
+      ["10", { "es": "días", "en": "days" }],
+      ["7", { "es": "destinos", "en": "destinations" }],
+      ["16", { "es": "viajeras máx.", "en": "travelers max." }]
+    ],
+    "salida": "2027",
+    "salida_por_definir": true,
+    "boton": { "es": "Ver el viaje", "en": "See the trip" }
+  },
+  "colombia": [
+    { "destino": "guatape" },
+    { "destino": "comuna-13" },
+    { "destino": "cartagena", "aviso": { "es": "Salida grupal próximamente", "en": "Group departure coming soon" } },
+    { "destino": "valle-de-cocora" },
+    { "destino": "tayrona" },
+    { "destino": "eje-cafetero", "aviso": { "es": "Salida grupal próximamente", "en": "Group departure coming soon" } },
+    { "destino": "plazas-de-mercado" }
+  ]
+}

@@ -51,6 +51,7 @@ Documento de traspaso para continuar el proyecto en otra conversación con Claud
   node _herramientas/generar.mjs
   ```
   El generador también reescribe el menú y el pie del inicio, el bloque SEO del inicio y de Marruecos (entre los marcadores `<!-- seo -->`, `<!-- nav -->`, `<!-- pie -->`), `sitemap.xml` y `robots.txt`.
+- **Viaje de temporada y cuadros de Colombia:** se editan en `_datos/viajes.json` (no en el HTML). `temporada` es el viaje destacado: sale arriba en la sección "01 · Nuestros viajes" del inicio, en el pop-up y como tarjeta grande en Viajes grupales. Para cambiarlo cuando Marruecos salga, reemplaza sus datos (enlace, foto, textos en `es`/`en`, salida); para quitarlo, pon `"activo": false`. `colombia` es la lista y el orden de los cuadros, cada uno con un `aviso` opcional. Después corre `node _herramientas/generar.mjs`.
 - **Textos de los destinos y servicios:** borrador escrito por nosotros. Falta la revisión de Luchy.
 - **Al salir en vivo o conectar el dominio:** en `generar.mjs`, cambia `BASE` (dominio) y pon `INDEXAR = true`, luego corre el generador.
 - **Fotos:** los originales están en `_originales/` (Jekyll no publica carpetas que empiezan con `_`). Para agregar o cambiar una foto, ponla ahí y corre `python3 _herramientas/fotos.py`: crea `fotos/NOMBRE.webp` (1600 px), `NOMBRE-800.webp` y `fotos/og/NOMBRE.jpg` (1200×630 para compartir).

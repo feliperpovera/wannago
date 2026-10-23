@@ -7,7 +7,7 @@ import { readFileSync, writeFileSync, mkdirSync } from 'node:fs';
 
 const BASE = 'https://feliperpovera.github.io/wannago/'; // cambiar al conectar el dominio propio
 const INDEXAR = false; // true al salir en vivo: quita el noindex de todas las páginas
-const V = '20261023b';  // sube este número cuando cambies un CSS o JS
+const V = '20261023c';  // sube este número cuando cambies un CSS o JS
 const WA = 'https://wa.me/573122899185';
 const medidas = JSON.parse(readFileSync('fotos/medidas.json', 'utf8'));
 
@@ -243,6 +243,11 @@ const DESTINOS = [
 ];
 const D = Object.fromEntries(DESTINOS.map(d => [d.slug, d]));
 
+// Viaje de temporada y cuadros de Colombia: se editan en _datos/viajes.json
+const VIAJES = JSON.parse(readFileSync('_datos/viajes.json', 'utf8'));
+const TEMP = VIAJES.temporada.activo ? VIAJES.temporada : null;
+const L = v => typeof v === 'string' ? v : t(v.es, v.en);
+
 // ---------- Datos estructurados ----------
 
 const ORG = {
@@ -364,6 +369,54 @@ const destinos = (ceja, titulo, slugs, fondo = '') => `<section class="sec${fond
     </div>
   </div>
 </section>`;
+
+const tituloTemp = () => `${L(TEMP.titulo)} <em>${L(TEMP.titulo_resalte)}</em>`;
+const datosTemp = () => TEMP.datos.map(([n, u]) => `<span><b>${n}</b> ${L(u)}</span>`).join('') +
+  `<span>Salida <span${TEMP.salida_por_definir ? ' class="tbd"' : ''}>${TEMP.salida}</span></span>`;
+
+// Inicio, después de la portada: viaje de temporada arriba y cuadros de Colombia debajo
+const seccionViajes = () => `<section class="sec bg-arena" id="viajes">
+  <div class="wrap">
+    ${encabezado(t('01 · Nuestros viajes', '01 · Our trips'), t('Elige tu próximo viaje', 'Choose your next trip'))}
+    ${TEMP ? `<a class="featured rv" href="${href(TEMP.enlace)}">
+      ${img(TEMP.foto, L(TEMP.alt), '(max-width:1200px) 100vw, 1200px')}
+      <div class="in">
+        <div class="tags"><span class="badge">${t('Viaje de temporada', 'Season trip')}</span><span class="badge soon">${L(TEMP.aviso)}</span></div>
+        <span class="label">${L(TEMP.etiqueta)}</span>
+        <h3>${tituloTemp()}</h3>
+        <p>${L(TEMP.resumen)}</p>
+        <div class="facts-row">${datosTemp()}</div>
+        <span class="btn btn-rojo">${L(TEMP.boton)} <span>→</span></span>
+      </div>
+    </a>` : ''}
+    <div class="squares">
+      ${VIAJES.colombia.map(({ destino, aviso }) => { const d = D[destino]; return `<a class="svc rv" href="${href('destinos/' + d.slug + '/')}">
+        ${img(d.foto, '', '(max-width:900px) 50vw, 300px')}${aviso ? `<span class="badge">${L(aviso)}</span>` : ''}
+        <div><span class="label">${d.region}</span><h3>${d.nombre}</h3></div>
+      </a>`; }).join('\n      ')}
+      <a class="svc sq-cta rv" href="${href('viajes-a-la-medida/')}">
+        <div><span class="label">A tu ritmo</span><h3>${t('Diseña tu propio viaje', 'Design your own trip')}</h3><span class="go">${t('Empezar', 'Get started')} <span>→</span></span></div>
+      </a>
+    </div>
+  </div>
+</section>`;
+
+const promo = () => TEMP ? `<dialog class="promo" id="promo" aria-labelledby="promo-title">
+  <button class="promo-close" type="button" aria-label="Cerrar" data-close><svg viewBox="0 0 24 24"><path d="M6 6l12 12M18 6 6 18"/></svg></button>
+  <div class="promo-in">
+    <figure>${img(TEMP.foto, L(TEMP.alt), '(max-width:720px) 100vw, 420px')}<span class="badge">${L(TEMP.aviso)}</span></figure>
+    <div class="promo-body">
+      <span class="label">${L(TEMP.etiqueta)}</span>
+      <h2 id="promo-title">${tituloTemp()}</h2>
+      <p>${L(TEMP.resumen)}</p>
+      <div class="promo-facts">${datosTemp()}</div>
+      <div class="promo-actions">
+        <a class="btn btn-rojo" href="${href(TEMP.enlace)}">${L(TEMP.boton)}</a>
+        <button class="btn btn-quiet" type="button" data-close>Ahora no</button>
+      </div>
+    </div>
+  </div>
+</dialog>` : '';
 
 const resenas = () => `<section class="sec bg-arena reviews">
   <div class="wrap rv-head">
@@ -538,15 +591,15 @@ servicio('viajes-grupales', {
   <div class="wrap">
     ${encabezado(t('02 · Próximas salidas', '02 · Upcoming departures'), t('Elige tu próximo viaje', 'Choose your next trip'), true)}
     <div class="trips">
-      <a class="trip big rv" href="${href('marruecos/')}">
-        ${img('mujer-dunas', 'Viajera en las dunas del Sahara al atardecer', '(max-width:900px) 100vw, 60vw')}
+      ${TEMP ? `<a class="trip big rv" href="${href(TEMP.enlace)}">
+        ${img(TEMP.foto, L(TEMP.alt), '(max-width:900px) 100vw, 60vw')}
         <div class="in">
-          <span class="badge">Solo mujeres · Cupos abiertos</span>
-          <span class="meta">10 días · 7 destinos · Salida <span class="tbd">2027</span></span>
-          <h3>Marruecos entre mujeres</h3>
-          <span class="go">Ver el viaje <span>→</span></span>
+          <span class="badge">${L(TEMP.aviso)}</span>
+          <span class="meta">${L(TEMP.etiqueta)}</span>
+          <h3>${tituloTemp()}</h3>
+          <span class="go">${L(TEMP.boton)} <span>→</span></span>
         </div>
-      </a>
+      </a>` : ''}
       <a class="trip rv" href="${href('destinos/cartagena/')}">
         ${img('cartagena', 'Calle colonial de Cartagena con faroles', '(max-width:900px) 100vw, 40vw')}
         <div class="in">
@@ -624,8 +677,8 @@ pagina('nosotros/', () => {
         <div class="stat"><b>Medellín</b><span>Colombia</span></div>
       </div>`),
       // fundadora y pilares: el mismo bloque del inicio
-      tomar('<section class="sec bg-petroleo">\n  <div class="wrap founder">').replace('07 · Fundadora', t('02 · Fundadora', '02 · Founder')),
-      tomar('<section class="sec">\n  <div class="wrap">\n    <div class="head rv">\n      <span class="eyebrow">03 · Nuestro sello'),
+      tomar('<section class="sec bg-petroleo">\n  <div class="wrap founder">').replace('06 · Fundadora', t('02 · Fundadora', '02 · Founder')),
+      tomar('<section class="sec">\n  <div class="wrap">\n    <div class="head rv">\n      <span class="eyebrow">04 · Nuestro sello').replace('04 · Nuestro sello', '03 · Nuestro sello'),
       resenas(),
       cierre('Colombia se vive mejor en buena compañía', 'Hola Wanna Go, quiero conocerlos.', 'grupo-atardecer'),
     ].join('\n\n'),
@@ -638,7 +691,7 @@ pagina('contacto/', () => {
   const casa = readFileSync('index.html', 'utf8');
   const ini = casa.indexOf('<section class="sec bg-arena" id="contacto">');
   const seccion = casa.slice(ini, casa.indexOf('</section>', ini) + 10)
-    .replace('<span class="eyebrow">08 · Contacto</span>\n      <h2 class="h2">Diseñemos tu próximo viaje</h2>', `<span class="eyebrow">${t('Canales', 'Channels')}</span>\n      <h2 class="h2">${t('Hablemos de tu viaje', "Let's talk about your trip")}</h2>`)
+    .replace('<span class="eyebrow">07 · Contacto</span>\n      <h2 class="h2">Diseñemos tu próximo viaje</h2>', `<span class="eyebrow">${t('Canales', 'Channels')}</span>\n      <h2 class="h2">${t('Hablemos de tu viaje', "Let's talk about your trip")}</h2>`)
     .replace('</b></span></a>\n      </div>', `</b></span></a>
         <a class="channel" href="https://www.google.com/maps/search/?api=1&amp;query=${encodeURIComponent('Cra. 30 #5F-185, El Poblado, Medellín')}" target="_blank" rel="noopener"><span class="ico rojo sm"><svg viewBox="0 0 24 24"><path d="M12 21s-7-7.6-7-12a7 7 0 0 1 14 0c0 4.4-7 12-7 12z"/><circle cx="12" cy="9" r="2.5"/></svg></span><span><small>${t('Oficina', 'Office')}</small><b>Cra. 30 #5F-185 Int 701, El Poblado, Medellín</b></span></a>
       </div>`);
@@ -666,15 +719,15 @@ function parche(archivo, ruta, bloques) {
 }
 
 pre = '';
-const navInicio = nav(), pieInicio = pie();
+const navInicio = nav(), pieInicio = pie(), viajesInicio = seccionViajes(), promoInicio = promo();
 parche('index.html', '', {
-  nav: navInicio, pie: pieInicio,
+  nav: navInicio, pie: pieInicio, viajes: viajesInicio, promo: promoInicio,
   seo: seo({
     ruta: '', foto: 'medellin',
     titulo: t('Wanna Go Colombia · Agencia de viajes con propósito en Medellín', 'Wanna Go Colombia · Purposeful travel agency in Medellín'),
     desc: 'Wanna Go: agencia de turismo receptivo en Medellín. Viajes a la medida, viajes grupales y eventos corporativos con propósito.',
     schema: [{ '@type': 'WebSite', '@id': BASE + '#sitio', name: 'Wanna Go Colombia', url: BASE, inLanguage: 'es', publisher: { '@id': ORG['@id'] } }],
-  }, 'Wanna Go Colombia · Agencia de viajes con propósito en Medellín' + navInicio + pieInicio),
+  }, 'Wanna Go Colombia · Agencia de viajes con propósito en Medellín' + navInicio + pieInicio + viajesInicio + promoInicio),
 });
 
 pre = '../';

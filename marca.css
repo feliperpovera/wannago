@@ -273,3 +273,30 @@ a.svc{text-decoration:none}
 .foot nav a{text-decoration:none}
 .foot nav a:hover{color:#fff}
 .foot-bottom{margin-top:40px;padding-top:24px;border-top:1px solid rgba(255,255,255,.12)}
+
+/* inicio: viaje de temporada + cuadros de Colombia (datos en _datos/viajes.json) */
+.featured{position:relative;display:flex;align-items:flex-end;min-height:min(72svh,580px);margin-bottom:20px;border-radius:var(--r);overflow:hidden;color:#fff;text-decoration:none;isolation:isolate}
+.featured img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:-2;transition:transform 1.4s cubic-bezier(.2,.8,.2,1)}
+.featured::before{content:"";position:absolute;inset:0;z-index:-1;background:linear-gradient(90deg,rgba(19,72,79,.94),rgba(19,72,79,.6) 50%,rgba(19,72,79,.05))}
+@media (max-width:760px){.featured{min-height:600px}.featured::before{background:linear-gradient(180deg,rgba(19,72,79,.05) 15%,rgba(19,72,79,.94) 62%)}}
+.featured:hover img{transform:scale(1.04)}
+.featured .in{padding:clamp(24px,5vw,56px);display:grid;gap:14px;max-width:600px}
+.featured .tags{display:flex;flex-wrap:wrap;gap:8px}
+.featured h3{font-size:clamp(36px,5.2vw,64px)}
+.featured h3 em,.trip h3 em{font-style:normal}
+.featured p{font-weight:300;font-size:17px;opacity:.92}
+.featured .facts-row{display:flex;flex-wrap:wrap;gap:6px 22px;font-size:14px}
+.featured .facts-row b{font-weight:600;font-size:22px}
+.featured .btn{justify-self:start;margin-top:6px}
+.featured .btn span{transition:transform .3s}
+.featured:hover .btn span{transform:translateX(6px)}
+.squares{display:grid;grid-template-columns:repeat(4,1fr);gap:20px}
+@media (max-width:900px){.squares{grid-template-columns:repeat(2,1fr);gap:12px}}
+.squares .svc{aspect-ratio:1}
+.squares .svc div{padding:22px;gap:6px}
+.squares .svc h3{font-size:clamp(18px,2vw,23px)}
+.squares .svc .badge{position:absolute;top:14px;left:14px;max-width:calc(100% - 28px);font-size:10px;letter-spacing:.12em}
+.squares .sq-cta{background:var(--rojo)}
+.squares .sq-cta::before{display:none}
+@media (max-width:560px){.squares .svc .label{display:none}.squares .svc div{padding:14px}.squares .svc .badge{top:10px;left:10px;font-size:9px;letter-spacing:.12em;padding:5px 9px}}
+.featured .badge.soon{background:rgba(19,72,79,.6)}

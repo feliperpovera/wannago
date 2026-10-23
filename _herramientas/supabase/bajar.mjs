@@ -19,13 +19,13 @@ const guardar = (ruta, datos) => writeFileSync(ruta, JSON.stringify(datos, null,
 const foto = f => `/_originales/${f}`;
 const sin = (o, ...claves) => Object.fromEntries(Object.entries(o).filter(([k]) => !claves.includes(k)));
 
-const [ajustes] = await leer('ajustes', 'select=popup');
+const paginas = await leer('paginas', 'select=id,contenido');
 const temporadas = await leer('temporadas', 'select=*&order=orden');
 const cuadros = await leer('cuadros', 'select=destino,aviso&order=orden');
 const destinos = await leer('destinos', 'select=*&publicado=is.true&order=orden');
 
+for (const p of paginas) guardar(`_datos/paginas/${p.id}.json`, p.contenido);
 guardar('_datos/viajes.json', {
-  popup: ajustes?.popup ?? true,
   temporadas: temporadas.map(t => ({ ...sin(t, 'id', 'orden', 'actualizado'), hasta: t.hasta || '', foto: foto(t.foto) })),
   colombia: cuadros.map(c => c.aviso ? c : { destino: c.destino }),
 });
@@ -34,8 +34,9 @@ const vivos = new Set(destinos.map(d => d.url + '.json'));
 for (const f of readdirSync('_datos/destinos')) if (!vivos.has(f)) rmSync('_datos/destinos/' + f);
 for (const d of destinos) guardar(`_datos/destinos/${d.url}.json`, { ...sin(d, 'publicado', 'actualizado'), foto: foto(d.foto), foto2: foto(d.foto2) });
 
-// Fotos usadas que aún no están en el repositorio
-const usadas = new Set([...temporadas.map(t => t.foto), ...destinos.flatMap(d => [d.foto, d.foto2])]);
+// fotos de las páginas: cualquier campo «foto» dentro del contenido
+const fotosDe = o => !o || typeof o !== 'object' ? [] : Object.entries(o).flatMap(([k, v]) => k === 'foto' && typeof v === 'string' ? [v] : fotosDe(v));
+const usadas = new Set([...temporadas.map(t => t.foto), ...destinos.flatMap(d => [d.foto, d.foto2]), ...paginas.flatMap(p => fotosDe(p.contenido))].filter(Boolean).map(f => f.split('/').pop()));
 let nuevas = 0;
 for (const f of usadas) {
   if (existsSync('_originales/' + f)) continue;
@@ -44,4 +45,4 @@ for (const f of usadas) {
   writeFileSync('_originales/' + f, Buffer.from(await r.arrayBuffer()));
   nuevas++;
 }
-console.log(`Supabase → _datos: ${destinos.length} destinos, ${temporadas.length} temporadas, ${cuadros.length} cuadros, ${nuevas} fotos nuevas`);
+console.log(`Supabase → _datos: ${paginas.length} páginas, ${destinos.length} destinos, ${temporadas.length} temporadas, ${cuadros.length} cuadros, ${nuevas} fotos nuevas`);

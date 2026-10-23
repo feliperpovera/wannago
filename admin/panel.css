@@ -109,3 +109,13 @@ textarea{resize:vertical}
 #toast{position:fixed;left:50%;bottom:24px;transform:translate(-50%,20px);opacity:0;pointer-events:none;background:var(--petroleo);color:#fff;padding:12px 20px;border-radius:999px;font-weight:500;max-width:calc(100% - 32px);transition:opacity .25s,transform .25s;z-index:20}
 #toast.on{opacity:1;transform:translate(-50%,0)}
 #toast.error{background:var(--rojo)}
+
+/* páginas: una tarjeta plegable por sección */
+.seccion{background:var(--blanco);border-radius:var(--r);margin-top:14px}
+.seccion summary{padding:18px 22px;font-weight:600;font-size:17px;color:var(--petroleo);cursor:pointer;list-style:none;display:flex;justify-content:space-between;align-items:center}
+.seccion summary::-webkit-details-marker{display:none}
+.seccion summary::after{content:"+";font-size:22px;font-weight:400;color:var(--rojo)}
+.seccion[open] summary::after{content:"−"}
+.seccion .form{margin:0;padding-top:4px;background:transparent}
+.sec-ayuda{margin:-6px 22px 0}
+.acc-cabeza{display:flex;gap:10px}

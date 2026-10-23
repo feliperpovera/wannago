@@ -1,0 +1,140 @@
+{
+  "seo": {
+    "titulo": {
+      "es": "Eventos corporativos en Medellín y Antioquia · Wanna Go",
+      "en": "Corporate events in Medellín and Antioquia · Wanna Go"
+    },
+    "descripcion": "Incentivos, convenciones y experiencias de equipo en Medellín y Antioquia, con logística completa y experiencias locales con propósito.",
+    "foto": "medellin-montanas.jpg"
+  },
+  "portada": {
+    "foto": "medellin-montanas.jpg",
+    "alt": {
+      "es": "Edificios de Medellín frente a las montañas",
+      "en": "Medellín buildings against the mountains"
+    },
+    "etiqueta": {
+      "es": "Empresas",
+      "en": "Companies"
+    },
+    "titulo": {
+      "es": "Eventos corporativos en Medellín y Antioquia",
+      "en": "Corporate events in Medellín and Antioquia"
+    },
+    "texto": {
+      "es": "Incentivos, convenciones y experiencias de equipo con logística completa en Medellín y Antioquia.",
+      "en": "Incentive trips, conventions and team experiences with full logistics in Medellín and Antioquia."
+    },
+    "whatsapp": "Hola Wanna Go, quiero cotizar un evento corporativo."
+  },
+  "intro": {
+    "ceja": {
+      "es": "01 · Para empresas",
+      "en": "01 · For companies"
+    },
+    "titulo": {
+      "es": "Experiencias que unen equipos",
+      "en": "Experiences that bring teams together"
+    },
+    "parrafos": [
+      {
+        "es": "Diseñamos viajes de incentivo, convenciones y salidas de equipo que muestran Medellín y Antioquia desde adentro, con la misma calidez con la que recibimos a nuestros viajeros.",
+        "en": "We design incentive trips, conventions and team outings that show Medellín and Antioquia from the inside, with the same warmth we offer every traveler."
+      },
+      {
+        "es": "Nos encargamos de la logística completa: transporte, alojamiento, espacios, alimentación y experiencias locales, con un solo contacto para todo.",
+        "en": "We handle the full logistics: transport, lodging, venues, catering and local experiences, with a single point of contact."
+      }
+    ],
+    "foto": "medellin.jpg",
+    "alt": {
+      "es": "Medellín iluminada al atardecer, rodeada de montañas",
+      "en": "Medellín lit up at dusk, surrounded by mountains"
+    }
+  },
+  "pasos": {
+    "ceja": {
+      "es": "02 · Qué organizamos",
+      "en": "02 · What we organize"
+    },
+    "titulo": {
+      "es": "Formatos para tu empresa",
+      "en": "Formats for your company"
+    },
+    "items": [
+      {
+        "titulo": {
+          "es": "Viajes de incentivo",
+          "en": "Incentive trips"
+        },
+        "texto": {
+          "es": "Premia a tu equipo con experiencias que no olvidará.",
+          "en": "Reward your team with experiences they won't forget."
+        }
+      },
+      {
+        "titulo": {
+          "es": "Convenciones y reuniones",
+          "en": "Conventions and meetings"
+        },
+        "texto": {
+          "es": "Espacios, transporte y agenda coordinados.",
+          "en": "Venues, transport and agenda, all coordinated."
+        }
+      },
+      {
+        "titulo": {
+          "es": "Integración de equipos",
+          "en": "Team building"
+        },
+        "texto": {
+          "es": "Actividades con propósito en la ciudad y la naturaleza.",
+          "en": "Purposeful activities in the city and in nature."
+        }
+      },
+      {
+        "titulo": {
+          "es": "Experiencias para visitantes",
+          "en": "Experiences for visitors"
+        },
+        "texto": {
+          "es": "Recibe a clientes y socios con lo mejor de Medellín.",
+          "en": "Welcome clients and partners with the best of Medellín."
+        }
+      }
+    ]
+  },
+  "destinos": {
+    "ceja": {
+      "es": "03 · Experiencias",
+      "en": "03 · Experiences"
+    },
+    "titulo": {
+      "es": "Ideas en Medellín y Antioquia",
+      "en": "Ideas in Medellín and Antioquia"
+    },
+    "lista": [
+      "comuna-13",
+      "guatape",
+      "plazas-de-mercado"
+    ]
+  },
+  "resenas": {
+    "ceja": {
+      "es": "Lo que dicen",
+      "en": "What people say"
+    },
+    "titulo": {
+      "es": "Historias de quienes viajaron con nosotros",
+      "en": "Stories from people who traveled with us"
+    }
+  },
+  "cierre": {
+    "foto": "medellin-montanas.jpg",
+    "titulo": {
+      "es": "Cuéntanos de tu evento",
+      "en": "Tell us about your event"
+    },
+    "whatsapp": "Hola Wanna Go, quiero cotizar un evento corporativo."
+  }
+}

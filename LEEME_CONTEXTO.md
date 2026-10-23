@@ -46,7 +46,7 @@ Documento de traspaso para continuar el proyecto en otra conversación con Claud
 
 ## 3b. Páginas individuales, SEO y velocidad (octubre 2026)
 
-- **Páginas generadas:** `nosotros/`, `viajes-a-la-medida/`, `viajes-grupales/`, `eventos-corporativos/`, `contacto/`, `destinos/` y 7 destinos (`destinos/guatape/`, `comuna-13/`, `cartagena/`, `valle-de-cocora/`, `tayrona/`, `eje-cafetero/`, `plazas-de-mercado/`). **No se editan a mano:** el contenido (español + inglés) está en `_herramientas/generar.mjs`. Después de cambiarlo:
+- **Todas las páginas se generan** (también el inicio), desde `_datos/`. Páginas internas: `nosotros/`, `viajes-a-la-medida/`, `viajes-grupales/`, `eventos-corporativos/`, `contacto/`, `destinos/` y 7 destinos (`destinos/guatape/`, `comuna-13/`, `cartagena/`, `valle-de-cocora/`, `tayrona/`, `eje-cafetero/`, `plazas-de-mercado/`). **No se editan a mano:** el contenido (español + inglés) está en `_herramientas/generar.mjs`. Después de cambiarlo:
   ```
   node _herramientas/generar.mjs
   ```
@@ -62,12 +62,17 @@ Documento de traspaso para continuar el proyecto en otra conversación con Claud
 
 **Cómo funciona:** el panel (`admin/`) guarda en Supabase. El botón «Publicar cambios» llama a la función `publicar` (`supabase/functions/publicar/`), que verifica que sea un editor y le pide a GitHub regenerar el sitio. La acción `.github/workflows/sitio.yml` baja el contenido con `_herramientas/supabase/bajar.mjs` a `_datos/` (queda como copia versionada), baja las fotos nuevas a `_originales/`, las optimiza y genera las páginas. El sitio sigue siendo estático: rápido y con el mismo SEO.
 
-- **Qué se edita:** viajes de temporada (con fecha «hasta» y orden de la fila), cuadros de Colombia, destinos (editar, crear y borrar, con fotos), el pop-up y la lista de solicitudes de los formularios.
+- **Qué se edita:**
+  - **Páginas:** Inicio, Nosotros, A la medida, Viajes grupales, Eventos corporativos, Destinos (índice), Contacto y el Pop-up. Cada página se abre con sus mismas secciones, en el mismo orden del sitio, con textos en español e inglés, fotos y textos para Google. La estructura está en `admin/esquema.js` y los textos en `_datos/paginas/<página>.json`.
+  - **Viajes de temporada** (con fecha «hasta» y orden de la fila), **cuadros de Colombia** y **destinos** (editar, crear y borrar, con fotos).
+  - **Pop-up:** activarlo, usar el viaje de temporada vigente o ponerle foto y textos propios.
+  - Lista de **solicitudes** de los formularios e historial de **publicaciones**.
+- **Diseño fijo (no editable a propósito):** menú, pie, colores, formulario, canales de contacto y orden de las secciones. Para agregar un campo editable: añadirlo en `admin/esquema.js`, en el `.json` de la página y en la plantilla de `generar.mjs`.
 - **Acceso:** con enlace al correo, sin contraseña. Solo entran los correos de la tabla `editores`.
 - **Seguridad:** todas las tablas tienen RLS. El público solo lee el contenido publicado y puede enviar formularios; solo los editores escriben, suben fotos y leen solicitudes. Probado en Postgres con las políticas reales.
 - **Probarlo sin Supabase:** con el servidor local, abre http://localhost:8765/admin/?demo. Lee `_datos/` y no guarda nada.
 - **Archivos:** esquema en `supabase/migrations/`, semilla en `supabase/seed.sql` (la escribe `_herramientas/supabase/semilla.mjs` desde `_datos/`), panel en `admin/`.
-- **Todavía en el código (siguiente fase):** textos del inicio, servicios, nosotros, reseñas, datos de contacto y la landing de Marruecos. Los formularios se conectan a `solicitudes` cuando esté la política de tratamiento de datos (Ley 1581).
+- **Todavía en el código:** las reseñas (`resenas.js`), los datos de contacto (WhatsApp, correo, dirección) y la landing de Marruecos. Los formularios se conectan a `solicitudes` cuando esté la política de tratamiento de datos (Ley 1581).
 
 **Conectar cuando exista el proyecto (en orden):**
 1. Crear el proyecto en Supabase (región São Paulo, la más cercana).

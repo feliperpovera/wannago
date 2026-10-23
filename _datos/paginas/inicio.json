@@ -1,0 +1,286 @@
+{
+  "seo": {
+    "titulo": {
+      "es": "Wanna Go Colombia · Agencia de viajes con propósito en Medellín",
+      "en": "Wanna Go Colombia · Purposeful travel agency in Medellín"
+    },
+    "descripcion": "Wanna Go: agencia de turismo receptivo en Medellín. Viajes a la medida, viajes grupales y eventos corporativos con propósito.",
+    "foto": "medellin.jpg"
+  },
+  "portada": {
+    "foto": "medellin.jpg",
+    "alt": {
+      "es": "Medellín iluminada al atardecer, rodeada de montañas",
+      "en": "Medellín lit up at dusk, surrounded by mountains"
+    },
+    "etiqueta": {
+      "es": "Agencia de turismo receptivo · Medellín",
+      "en": "Inbound travel agency · Medellín"
+    },
+    "titulo": {
+      "es": "Colombia se vive mejor en buena compañía",
+      "en": "Colombia is best experienced in good company"
+    },
+    "texto": {
+      "es": "Diseñamos viajes a la medida, viajes grupales y eventos corporativos con un sello claro: viajes con propósito, donde el destino transforma y la compañía hace que cada viaje sea memorable.",
+      "en": "We design tailor-made trips, group trips and corporate events with one clear signature: purposeful travel, where the destination transforms you and the company makes every trip memorable."
+    },
+    "boton1": {
+      "es": "Ver próximos viajes",
+      "en": "See upcoming trips"
+    },
+    "boton2": {
+      "es": "Diseñar mi viaje",
+      "en": "Plan my trip"
+    }
+  },
+  "viajes": {
+    "ceja": {
+      "es": "01 · Nuestros viajes",
+      "en": "01 · Our trips"
+    },
+    "titulo": {
+      "es": "Elige tu próximo viaje",
+      "en": "Choose your next trip"
+    },
+    "cta_etiqueta": {
+      "es": "A tu ritmo",
+      "en": "At your pace"
+    },
+    "cta_titulo": {
+      "es": "Diseña tu propio viaje",
+      "en": "Design your own trip"
+    },
+    "cta_boton": {
+      "es": "Empezar",
+      "en": "Get started"
+    }
+  },
+  "nosotros": {
+    "ceja": {
+      "es": "02 · Quiénes somos",
+      "en": "02 · Who we are"
+    },
+    "titulo": {
+      "es": "Viajes con propósito",
+      "en": "Purposeful travel"
+    },
+    "parrafos": [
+      {
+        "es": "Wanna Go es una agencia de turismo receptivo con sede en Medellín, fundada en 2019 por María Lucía Vásquez Cock, Luchy.",
+        "en": "Wanna Go is an inbound travel agency based in Medellín, founded in 2019 by María Lucía Vásquez Cock, Luchy."
+      },
+      {
+        "es": "Huimos del turismo masivo y de lo predecible. Te mostramos cada destino desde adentro, con su gente, su cocina y sus paisajes, para que vuelvas distinto de como te fuiste.",
+        "en": "We steer clear of mass tourism and the predictable. We show you each destination from the inside, through its people, its food and its landscapes, so you come home different from how you left."
+      }
+    ],
+    "enlace": {
+      "es": "Conocer más",
+      "en": "Learn more"
+    },
+    "cifras": [
+      {
+        "valor": "2019",
+        "texto": {
+          "es": "Año de fundación",
+          "en": "Year founded"
+        }
+      },
+      {
+        "valor": "RNT 65568",
+        "texto": {
+          "es": "Registro Nacional de Turismo",
+          "en": "National Tourism Registry"
+        }
+      },
+      {
+        "valor": "Medellín",
+        "texto": {
+          "es": "Colombia",
+          "en": "Colombia"
+        }
+      }
+    ],
+    "foto": "guatape-calle.jpg",
+    "alt": {
+      "es": "Calle con fachadas de colores y zócalos en Guatapé",
+      "en": "Street with colorful facades and zócalos in Guatapé"
+    }
+  },
+  "experiencias": {
+    "ceja": {
+      "es": "03 · Lo que hacemos",
+      "en": "03 · What we do"
+    },
+    "titulo": {
+      "es": "Tres formas de viajar con nosotros",
+      "en": "Three ways to travel with us"
+    },
+    "boton": {
+      "es": "Conocer más",
+      "en": "Learn more"
+    },
+    "tarjetas": [
+      {
+        "enlace": "viajes-a-la-medida/",
+        "foto": "salento.jpg",
+        "alt": {
+          "es": "Palmas de cera en el valle de Cocora",
+          "en": "Wax palms in the Cocora Valley"
+        },
+        "etiqueta": {
+          "es": "A tu ritmo",
+          "en": "At your pace"
+        },
+        "titulo": {
+          "es": "Viajes a la medida",
+          "en": "Tailor-made trips"
+        },
+        "texto": {
+          "es": "Itinerarios privados diseñados alrededor de lo que te mueve: café, naturaleza, cocina, arte o descanso.",
+          "en": "Private itineraries designed around what moves you: coffee, nature, food, art or rest."
+        }
+      },
+      {
+        "enlace": "viajes-grupales/",
+        "foto": "grupo-atardecer.jpg",
+        "alt": {
+          "es": "Grupo de viajeros contemplando el atardecer",
+          "en": "Group of travelers watching the sunset"
+        },
+        "etiqueta": {
+          "es": "Grupos pequeños",
+          "en": "Small groups"
+        },
+        "titulo": {
+          "es": "Viajes grupales",
+          "en": "Group trips"
+        },
+        "texto": {
+          "es": "Salidas acompañadas en Colombia y el mundo, con anfitriona Wanna Go de principio a fin.",
+          "en": "Hosted departures in Colombia and around the world, with a Wanna Go host from start to finish."
+        }
+      },
+      {
+        "enlace": "eventos-corporativos/",
+        "foto": "medellin-montanas.jpg",
+        "alt": {
+          "es": "Edificios de Medellín frente a las montañas",
+          "en": "Medellín buildings against the mountains"
+        },
+        "etiqueta": {
+          "es": "Empresas",
+          "en": "Companies"
+        },
+        "titulo": {
+          "es": "Eventos corporativos",
+          "en": "Corporate events"
+        },
+        "texto": {
+          "es": "Incentivos, convenciones y experiencias de equipo con logística completa en Medellín y Antioquia.",
+          "en": "Incentive trips, conventions and team experiences with full logistics in Medellín and Antioquia."
+        }
+      }
+    ]
+  },
+  "pilares": {
+    "ceja": {
+      "es": "04 · Nuestro sello",
+      "en": "04 · Our signature"
+    },
+    "titulo": {
+      "es": "Pilares de los viajes con propósito",
+      "en": "The pillars of purposeful travel"
+    },
+    "items": [
+      {
+        "titulo": {
+          "es": "Impacto local y sostenibilidad",
+          "en": "Local impact and sustainability"
+        },
+        "texto": {
+          "es": "Fomentamos el comercio local, respetamos la cultura y protegemos el entorno natural.",
+          "en": "We support local businesses, respect the culture and protect the natural environment."
+        }
+      },
+      {
+        "titulo": {
+          "es": "Transformación personal",
+          "en": "Personal transformation"
+        },
+        "texto": {
+          "es": "Creamos espacios para aprender, reconectar, hacer una pausa y crecer.",
+          "en": "We create space to learn, reconnect, pause and grow."
+        }
+      },
+      {
+        "titulo": {
+          "es": "Autenticidad y exclusividad",
+          "en": "Authenticity and exclusivity"
+        },
+        "texto": {
+          "es": "Experiencias genuinas, lejos del turismo masivo y acelerado.",
+          "en": "Genuine experiences, far from rushed mass tourism."
+        }
+      },
+      {
+        "titulo": {
+          "es": "Hospitalidad cálida",
+          "en": "Warm hospitality"
+        },
+        "texto": {
+          "es": "Un sello personal de cuidado y detalle en cada punto del viaje.",
+          "en": "A personal touch of care and detail at every point of the trip."
+        }
+      }
+    ]
+  },
+  "resenas": {
+    "ceja": {
+      "es": "05 · Lo que dicen",
+      "en": "05 · What people say"
+    },
+    "titulo": {
+      "es": "Historias de quienes viajaron con nosotros",
+      "en": "Stories from people who traveled with us"
+    }
+  },
+  "fundadora": {
+    "ceja": {
+      "es": "06 · Fundadora",
+      "en": "06 · Founder"
+    },
+    "cita": {
+      "es": "“Creo en los viajes que transforman: los que te sientan a la mesa de una familia local y te devuelven a casa con historias.”",
+      "en": "“I believe in trips that transform you: the ones that seat you at a local family's table and send you home with stories.”"
+    },
+    "nombre": "María Lucía Vásquez Cock · Luchy",
+    "cargo": {
+      "es": "Fundadora y diseñadora de experiencias",
+      "en": "Founder and experience designer"
+    }
+  },
+  "frase": {
+    "foto": "guatape.jpg",
+    "texto": {
+      "es": "“Viajar con propósito, volver con historias.”",
+      "en": "“Travel with purpose, come home with stories.”"
+    },
+    "firma": "Wanna Go Colombia"
+  },
+  "contacto": {
+    "ceja": {
+      "es": "07 · Contacto",
+      "en": "07 · Contact"
+    },
+    "titulo": {
+      "es": "Diseñemos tu próximo viaje",
+      "en": "Let's plan your next trip"
+    },
+    "texto": {
+      "es": "Cuéntanos qué te mueve y te proponemos un itinerario a tu medida. Respondemos por WhatsApp.",
+      "en": "Tell us what moves you and we'll propose an itinerary made for you. We reply on WhatsApp."
+    }
+  }
+}

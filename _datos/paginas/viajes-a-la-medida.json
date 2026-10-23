@@ -1,0 +1,140 @@
+{
+  "seo": {
+    "titulo": {
+      "es": "Viajes a la medida por Colombia · Wanna Go Medellín",
+      "en": "Tailor-made trips across Colombia · Wanna Go Medellín"
+    },
+    "descripcion": "Itinerarios privados por Colombia diseñados alrededor de lo que te mueve: café, naturaleza, cocina, arte o descanso. Agencia en Medellín, RNT 65568.",
+    "foto": "salento.jpg"
+  },
+  "portada": {
+    "foto": "salento.jpg",
+    "alt": {
+      "es": "Palmas de cera en el valle de Cocora",
+      "en": "Wax palms in the Cocora Valley"
+    },
+    "etiqueta": {
+      "es": "A tu ritmo",
+      "en": "At your pace"
+    },
+    "titulo": {
+      "es": "Viajes a la medida por Colombia",
+      "en": "Tailor-made trips across Colombia"
+    },
+    "texto": {
+      "es": "Itinerarios privados diseñados alrededor de lo que te mueve: café, naturaleza, cocina, arte o descanso.",
+      "en": "Private itineraries designed around what moves you: coffee, nature, food, art or rest."
+    },
+    "whatsapp": "Hola Wanna Go, quiero un viaje a la medida."
+  },
+  "intro": {
+    "ceja": {
+      "es": "01 · Cómo lo pensamos",
+      "en": "01 · How we think about it"
+    },
+    "titulo": {
+      "es": "Un viaje que se parece a ti",
+      "en": "A trip that feels like you"
+    },
+    "parrafos": [
+      {
+        "es": "No trabajamos con paquetes cerrados. Empezamos por una conversación: qué te emociona, con quién viajas, cuánto tiempo tienes y a qué ritmo quieres moverte.",
+        "en": "We don't sell fixed packages. We start with a conversation: what excites you, who you are traveling with, how much time you have and the pace you want."
+      },
+      {
+        "es": "Con eso diseñamos una ruta por Colombia con alojamientos, guías locales y experiencias que elegimos una por una. Durante el viaje, estamos pendientes de ti.",
+        "en": "From there we design a route through Colombia with lodging, local guides and experiences we choose one by one. During the trip, we are there for you."
+      }
+    ],
+    "foto": "cafe.jpg",
+    "alt": {
+      "es": "Granos de café maduros en la rama",
+      "en": "Ripe coffee cherries on the branch"
+    }
+  },
+  "pasos": {
+    "ceja": {
+      "es": "02 · Paso a paso",
+      "en": "02 · Step by step"
+    },
+    "titulo": {
+      "es": "Así diseñamos tu viaje",
+      "en": "How we design your trip"
+    },
+    "items": [
+      {
+        "titulo": {
+          "es": "Nos cuentas",
+          "en": "Tell us"
+        },
+        "texto": {
+          "es": "Qué quieres vivir, fechas, presupuesto y quién viaja.",
+          "en": "What you want to experience, dates, budget and who's traveling."
+        }
+      },
+      {
+        "titulo": {
+          "es": "Te proponemos",
+          "en": "We propose"
+        },
+        "texto": {
+          "es": "Un itinerario día a día con alojamientos y experiencias.",
+          "en": "A day-by-day itinerary with lodging and experiences."
+        }
+      },
+      {
+        "titulo": {
+          "es": "Lo ajustamos",
+          "en": "We fine-tune"
+        },
+        "texto": {
+          "es": "Cambiamos lo necesario hasta que sea tu viaje.",
+          "en": "We adjust whatever is needed until it's truly your trip."
+        }
+      },
+      {
+        "titulo": {
+          "es": "Viajas tranquilo",
+          "en": "You travel at ease"
+        },
+        "texto": {
+          "es": "Logística resuelta y contacto directo con nosotros.",
+          "en": "Logistics handled and a direct line to us."
+        }
+      }
+    ]
+  },
+  "destinos": {
+    "ceja": {
+      "es": "03 · Inspiración",
+      "en": "03 · Inspiration"
+    },
+    "titulo": {
+      "es": "Destinos para empezar",
+      "en": "Destinations to start with"
+    },
+    "lista": [
+      "guatape",
+      "eje-cafetero",
+      "cartagena"
+    ]
+  },
+  "resenas": {
+    "ceja": {
+      "es": "Lo que dicen",
+      "en": "What people say"
+    },
+    "titulo": {
+      "es": "Historias de quienes viajaron con nosotros",
+      "en": "Stories from people who traveled with us"
+    }
+  },
+  "cierre": {
+    "foto": "guatape.jpg",
+    "titulo": {
+      "es": "¿Empezamos a diseñarlo?",
+      "en": "Shall we start designing it?"
+    },
+    "whatsapp": "Hola Wanna Go, quiero un viaje a la medida."
+  }
+}

@@ -1,37 +1,46 @@
-// Wanna Go · genera las páginas internas (servicios y destinos), el menú, el pie y el bloque SEO
-// del inicio y de Marruecos, sitemap.xml y robots.txt.
+// Wanna Go · genera todas las páginas del sitio (menos la landing de Marruecos, que solo recibe su
+// bloque SEO), sitemap.xml y robots.txt, a partir de _datos/ (que el panel /admin edita en Supabase).
 // Uso, desde sitio/:  node _herramientas/generar.mjs
-// Textos: t('español', 'English'). El inglés de cada página llega a i18n.js como WG_EN_PAGE;
-// los textos sin t() ya están en el diccionario WG_EN de i18n.js.
+// Textos: los de _datos/ vienen en {es, en}; los fijos del diseño van con t('español', 'English').
+// El inglés de cada página llega a i18n.js como WG_EN_PAGE.
 import { readFileSync, writeFileSync, mkdirSync, readdirSync } from 'node:fs';
+import { PAGINAS } from '../admin/esquema.js';
 
 const BASE = 'https://feliperpovera.github.io/wannago/'; // cambiar al conectar el dominio propio
 const INDEXAR = false; // true al salir en vivo: quita el noindex de todas las páginas
-const V = '20261023c';  // sube este número cuando cambies un CSS o JS
+const V = '20261023d';  // sube este número cuando cambies un CSS o JS
 const WA = 'https://wa.me/573122899185';
 const medidas = JSON.parse(readFileSync('fotos/medidas.json', 'utf8'));
 
+// Traducciones: las del módulo valen para todo el sitio; las de cada página (ENP) mandan en esa página
 const EN = {};
-const t = (es, en) => {
-  if (es in EN && EN[es] !== en) throw new Error(`Traducción distinta para «${es}»`);
-  return EN[es] = en, es;
-};
+let ENP = null;
+const t = (es, en) => ((ENP || EN)[es] = en, es);
 const L = v => typeof v === 'string' ? v : t(v.es, v.en || v.es);
-// fotos: acepta 'guatape' o '/_originales/guatape.jpg' (como las guarda el panel)
+// fotos: acepta 'guatape', 'guatape.jpg' o '/_originales/guatape.jpg'
 const nf = f => f.split('/').pop().replace(/\.[a-z]+$/i, '');
 const esc = s => String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/"/g, '&quot;');
 const json = o => JSON.stringify(o).replace(/</g, '\\u003c');
 const wa = texto => `${WA}?text=${encodeURIComponent(texto)}`;
 let pre = ''; // prefijo relativo de la página en curso: '', '../' o '../../'
 const href = ruta => pre + ruta || './';
-const img = (foto, alt = '', sizes = '100vw', portada = false) => {
+const img = (foto, alt = '', sizes = '100vw', portada = false, extra = '') => {
   foto = nf(foto);
   if (!medidas[foto]) throw new Error(`Falta la foto «${foto}»: corre python3 _herramientas/fotos.py`);
   const w = medidas[foto][0];
-  return `<img src="${pre}fotos/${foto}.webp" srcset="${pre}fotos/${foto}-800.webp ${Math.round(w / 2)}w, ${pre}fotos/${foto}.webp ${w}w" sizes="${sizes}" alt="${esc(alt)}"${portada ? ' fetchpriority="high"' : ' loading="lazy" decoding="async"'}>`;
+  return `<img${extra} src="${pre}fotos/${foto}.webp" srcset="${pre}fotos/${foto}-800.webp ${Math.round(w / 2)}w, ${pre}fotos/${foto}.webp ${w}w" sizes="${sizes}" alt="${esc(alt)}"${portada ? ' fetchpriority="high"' : ' loading="lazy" decoding="async"'}>`;
 };
 
-// ---------- Contenido ----------
+// ---------- Datos ----------
+
+const leer = ruta => JSON.parse(readFileSync(ruta, 'utf8'));
+
+// Textos de cada página: _datos/paginas/<id>.json, con las secciones de admin/esquema.js
+const PG = Object.fromEntries(PAGINAS.map(({ id, secciones }) => {
+  const datos = leer(`_datos/paginas/${id}.json`);
+  for (const s of secciones) if (!datos[s.id]) throw new Error(`_datos/paginas/${id}.json: falta la sección «${s.id}»`);
+  return [id, datos];
+}));
 
 const SERVICIOS = [
   { slug: 'viajes-a-la-medida', nombre: 'Viajes a la medida' },
@@ -41,9 +50,9 @@ const SERVICIOS = [
 
 const DATOS = [t('Cómo llegar', 'Getting there'), t('Mejor época', 'Best time'), t('Tiempo sugerido', 'Suggested time'), t('Ideal para', 'Ideal for')];
 
-// Destinos: un archivo por destino en _datos/destinos/ (se editan desde /admin)
+// Destinos: un archivo por destino en _datos/destinos/
 const DESTINOS = readdirSync('_datos/destinos').filter(f => f.endsWith('.json'))
-  .map(f => JSON.parse(readFileSync('_datos/destinos/' + f, 'utf8')))
+  .map(f => leer('_datos/destinos/' + f))
   .sort((a, b) => (a.orden ?? 99) - (b.orden ?? 99))
   .map(d => ({
     slug: d.url, foto: d.foto, foto2: d.foto2, nombre: L(d.nombre), h1: L(d.h1), alt: L(d.alt), alt2: L(d.alt2),
@@ -53,8 +62,8 @@ const DESTINOS = readdirSync('_datos/destinos').filter(f => f.endsWith('.json'))
   }));
 const D = Object.fromEntries(DESTINOS.map(d => [d.slug, d]));
 
-// Viaje de temporada y cuadros de Colombia: se editan en _datos/viajes.json
-const VIAJES = JSON.parse(readFileSync('_datos/viajes.json', 'utf8'));
+// Viajes de temporada y cuadros de Colombia: _datos/viajes.json
+const VIAJES = leer('_datos/viajes.json');
 const hoy = new Date().toLocaleDateString('en-CA', { timeZone: 'America/Bogota' }); // AAAA-MM-DD en Colombia
 const TEMP = VIAJES.temporadas.find(v => v.activo && (!v.hasta || v.hasta >= hoy)) || null;
 
@@ -73,7 +82,7 @@ const migas = lista => ({
   itemListElement: lista.map(([nombre, ruta], i) => ({ '@type': 'ListItem', position: i + 1, name: nombre, item: BASE + ruta })),
 });
 
-// ---------- Piezas ----------
+// ---------- Piezas comunes ----------
 
 const ISO = `<span class="lt">Wanna G<i class="iso"></i></span><span class="ds">COLOMBIA</span>`;
 
@@ -119,47 +128,83 @@ const pie = () => `<footer class="foot">
   <div class="wrap foot-bottom"><span>Viajes con propósito · RNT 65568 · Medellín, Colombia</span><span>Fotos de referencia: Unsplash</span></div>
 </footer>`;
 
-const WA_FLOAT = readFileSync('index.html', 'utf8').match(/<a class="wa-float"[\s\S]*?<\/a>/)[0];
+const WA_FLOAT = `<a class="wa-float" href="${WA}" target="_blank" rel="noopener" aria-label="Escríbenos por WhatsApp"><span class="wa-btn"><svg viewBox="0 0 32 32"><path d="M16 3a13 13 0 0 0-11.2 19.6L3 29l6.6-1.7A13 13 0 1 0 16 3zm0 23.7c-2 0-4-.6-5.7-1.6l-.4-.2-3.9 1 1-3.8-.3-.4A10.7 10.7 0 1 1 16 26.7zm5.9-8c-.3-.2-1.9-1-2.2-1-.3-.1-.5-.2-.7.2l-1 1.2c-.2.2-.4.3-.7.1-.3-.2-1.4-.5-2.6-1.6-1-.9-1.6-1.9-1.8-2.2-.2-.3 0-.5.1-.7l.5-.6.3-.5v-.6l-1-2.4c-.3-.6-.5-.5-.7-.5h-.6c-.2 0-.6.1-.9.4-.3.3-1.2 1.1-1.2 2.8s1.2 3.2 1.4 3.5c.2.2 2.4 3.6 5.7 5 2.8 1.1 3.4.9 4 .8.6-.1 1.9-.8 2.2-1.5.3-.8.3-1.4.2-1.5l-.6-.4z"/></svg><span class="wa-badge" aria-hidden="true">1</span></span><span class="wa-label">¿Planeamos tu viaje? <b>Escríbenos</b></span></a>`;
 
-const portada = p => `<header class="hero sm">
-  ${img(p.foto, p.alt, '100vw', true)}
+// Portada de las páginas internas, con migas de pan
+const portada = (p, m, whatsapp) => `<header class="hero sm">
+  ${img(p.foto, L(p.alt), '100vw', true)}
   <div class="wrap">
-    <ol class="crumbs" aria-label="${t('Ruta de navegación', 'Breadcrumb')}">${p.migas.map(([n, r], i, a) => i < a.length - 1 ? `<li><a href="${href(r)}">${n}</a></li>` : `<li aria-current="page">${n}</li>`).join('')}</ol>
-    <span class="label">${p.label}</span>
-    <h1>${p.h1}</h1>
-    <p class="lead">${p.lead}</p>
-    ${p.boton ? `<div class="row"><a class="btn btn-rojo" href="${wa(p.boton)}" target="_blank" rel="noopener">${t('Cotizar por WhatsApp', 'Get a quote on WhatsApp')}</a></div>` : ''}
+    <ol class="crumbs" aria-label="${t('Ruta de navegación', 'Breadcrumb')}">${m.map(([n, r], i, a) => i < a.length - 1 ? `<li><a href="${href(r)}">${n}</a></li>` : `<li aria-current="page">${n}</li>`).join('')}</ol>
+    <span class="label">${L(p.etiqueta)}</span>
+    <h1>${L(p.titulo)}</h1>
+    <p class="lead">${L(p.texto)}</p>
+    ${whatsapp ? `<div class="row"><a class="btn btn-rojo" href="${wa(whatsapp)}" target="_blank" rel="noopener">${t('Cotizar por WhatsApp', 'Get a quote on WhatsApp')}</a></div>` : ''}
   </div>
 </header>`;
 
-const encabezado = (ceja, titulo, oscuro) => `<div class="head rv">
-      <span class="eyebrow${oscuro ? ' on-dark' : ''}">${ceja}</span>
-      <h2 class="h2">${titulo}</h2>
+const encabezado = (s, oscuro) => `<div class="head rv">
+      <span class="eyebrow${oscuro ? ' on-dark' : ''}">${L(s.ceja)}</span>
+      <h2 class="h2">${L(s.titulo)}</h2>
     </div>`;
 
-const intro = (ceja, titulo, ps, foto, alt, extra = '') => `<section class="sec">
+const cifras = lista => lista?.length ? `
+      <div class="stats">
+        ${lista.map(c => `<div class="stat"><b>${c.valor}</b><span>${L(c.texto)}</span></div>`).join('\n        ')}
+      </div>` : '';
+
+// Texto a la izquierda y foto a la derecha
+const intro = (s, extra = '', id = '') => `<section class="sec"${id && ` id="${id}"`}>
   <div class="wrap about">
     <div class="rv">
-      <span class="eyebrow">${ceja}</span>
-      <h2 class="h2">${titulo}</h2>
-      ${ps.map(p => `<p class="body-lg">${p}</p>`).join('\n      ')}${extra}
+      <span class="eyebrow">${L(s.ceja)}</span>
+      <h2 class="h2">${L(s.titulo)}</h2>
+      ${s.parrafos.map(p => `<p class="body-lg">${L(p)}</p>`).join('\n      ')}${extra}${cifras(s.cifras)}
     </div>
-    <figure class="rv">${img(foto, alt, '(max-width:900px) 100vw, 50vw')}</figure>
+    <figure class="rv">${img(s.foto, L(s.alt), '(max-width:900px) 100vw, 50vw')}</figure>
   </div>
 </section>`;
 
-const tarjetas = (ceja, titulo, items) => `<section class="sec bg-arena">
+const tarjetas = (s, items = s.items) => `<section class="sec bg-arena">
   <div class="wrap">
-    ${encabezado(ceja, titulo)}
+    ${encabezado(s)}
     <div class="pillars">
-      ${items.map(([h, p], i) => `<article class="pillar rv"><span class="num">0${i + 1}</span><h3>${h}</h3><p>${p}</p></article>`).join('\n      ')}
+      ${items.map((it, i) => `<article class="pillar rv"><span class="num">${String(i + 1).padStart(2, '0')}</span><h3>${L(it.titulo)}</h3><p>${L(it.texto)}</p></article>`).join('\n      ')}
+    </div>
+  </div>
+</section>`;
+
+const ICONOS = [
+  ['petroleo', 'M5 19c0-8 5-13 14-14-1 9-6 14-14 14zm0 0 7-7'],
+  ['rojo', 'M12 21v-8m0 0c0-4-3-6-7-6 0 4 3 6 7 6zm0 0c0-4 3-7 7-7 0 4-3 7-7 7z'],
+  ['petroleo', 'M6 4h12l3 5-9 11L3 9zM3 9h18M9 4l3 16 3-16'],
+  ['rojo', 'M12 10s-4-2.5-4-5a2 2 0 0 1 4-1 2 2 0 0 1 4 1c0 2.5-4 5-4 5zM3 15h4l4 2h5a2 2 0 0 1 0 3H9m-6 0h3l9-1 6-4'],
+];
+const pilares = s => `<section class="sec">
+  <div class="wrap">
+    ${encabezado(s)}
+    <div class="pillars">
+      ${s.items.map((it, i) => { const [color, d] = ICONOS[i % ICONOS.length]; return `<article class="pillar rv" style="background:var(--arena)">
+        <span class="ico ${color}"><svg viewBox="0 0 24 24"><path d="${d}"/></svg></span>
+        <h3>${L(it.titulo)}</h3><p>${L(it.texto)}</p>
+      </article>`; }).join('\n      ')}
+    </div>
+  </div>
+</section>`;
+
+const fundadora = s => `<section class="sec bg-petroleo">
+  <div class="wrap founder">
+    <div class="ph rv">Foto de Luchy<br>(pendiente)</div>
+    <div class="rv">
+      <span class="eyebrow on-dark">${L(s.ceja)}</span>
+      <blockquote style="margin-top:20px">${L(s.cita)}</blockquote>
+      <div class="who"><b>${s.nombre}</b><span>${L(s.cargo)}</span></div>
     </div>
   </div>
 </section>`;
 
 const datos = (ceja, valores) => `<section class="sec">
   <div class="wrap">
-    ${encabezado(ceja, t('Antes de ir', 'Before you go'))}
+    ${encabezado({ ceja, titulo: t('Antes de ir', 'Before you go') })}
     <div class="facts rv">
       ${valores.map((v, i) => `<div class="fact"><small>${DATOS[i]}</small><b>${v}</b></div>`).join('\n      ')}
     </div>
@@ -171,68 +216,20 @@ const tarjetaDestino = d => `<a class="svc rv" href="${href('destinos/' + d.slug
         <div><span class="label">${d.region}</span><h3>${d.nombre}</h3><p>${d.corto}</p><span class="go">${t('Ver destino', 'See destination')} <span>→</span></span></div>
       </a>`;
 
-const destinos = (ceja, titulo, slugs, fondo = '') => `<section class="sec${fondo}">
+const destinos = (s, slugs, fondo = '') => `<section class="sec${fondo}">
   <div class="wrap">
-    ${encabezado(ceja, titulo)}
+    ${encabezado(s)}
     <div class="services${slugs.length > 3 ? ' four' : ''}">
-      ${slugs.filter(s => D[s]).map(s => tarjetaDestino(D[s])).join('\n      ')}
+      ${slugs.filter(x => D[x]).map(x => tarjetaDestino(D[x])).join('\n      ')}
     </div>
   </div>
 </section>`;
 
-const tituloTemp = () => `${L(TEMP.titulo)} <em>${L(TEMP.titulo_resalte)}</em>`;
-const datosTemp = () => TEMP.datos.map(({ numero, texto }) => `<span><b>${numero}</b> ${L(texto)}</span>`).join('') +
-  `<span>Salida <span${TEMP.salida_por_definir ? ' class="tbd"' : ''}>${TEMP.salida}</span></span>`;
-
-// Inicio, después de la portada: viaje de temporada arriba y cuadros de Colombia debajo
-const seccionViajes = () => `<section class="sec bg-arena" id="viajes">
-  <div class="wrap">
-    ${encabezado(t('01 · Nuestros viajes', '01 · Our trips'), t('Elige tu próximo viaje', 'Choose your next trip'))}
-    ${TEMP ? `<a class="featured rv" href="${href(TEMP.enlace)}">
-      ${img(TEMP.foto, L(TEMP.alt), '(max-width:1200px) 100vw, 1200px')}
-      <div class="in">
-        <div class="tags"><span class="badge">${t('Viaje de temporada', 'Season trip')}</span><span class="badge soon">${L(TEMP.aviso)}</span></div>
-        <span class="label">${L(TEMP.etiqueta)}</span>
-        <h3>${tituloTemp()}</h3>
-        <p>${L(TEMP.resumen)}</p>
-        <div class="facts-row">${datosTemp()}</div>
-        <span class="btn btn-rojo">${L(TEMP.boton)} <span>→</span></span>
-      </div>
-    </a>` : ''}
-    <div class="squares">
-      ${VIAJES.colombia.filter(v => D[v.destino]).map(({ destino, aviso }) => { const d = D[destino]; return `<a class="svc rv" href="${href('destinos/' + d.slug + '/')}">
-        ${img(d.foto, '', '(max-width:900px) 50vw, 300px')}${aviso?.es ? `<span class="badge">${L(aviso)}</span>` : ''}
-        <div><span class="label">${d.region}</span><h3>${d.nombre}</h3></div>
-      </a>`; }).join('\n      ')}
-      <a class="svc sq-cta rv" href="${href('viajes-a-la-medida/')}">
-        <div><span class="label">A tu ritmo</span><h3>${t('Diseña tu propio viaje', 'Design your own trip')}</h3><span class="go">${t('Empezar', 'Get started')} <span>→</span></span></div>
-      </a>
-    </div>
-  </div>
-</section>`;
-
-const promo = () => VIAJES.popup && TEMP ? `<dialog class="promo" id="promo" aria-labelledby="promo-title">
-  <button class="promo-close" type="button" aria-label="Cerrar" data-close><svg viewBox="0 0 24 24"><path d="M6 6l12 12M18 6 6 18"/></svg></button>
-  <div class="promo-in">
-    <figure>${img(TEMP.foto, L(TEMP.alt), '(max-width:720px) 100vw, 420px')}<span class="badge">${L(TEMP.aviso)}</span></figure>
-    <div class="promo-body">
-      <span class="label">${L(TEMP.etiqueta)}</span>
-      <h2 id="promo-title">${tituloTemp()}</h2>
-      <p>${L(TEMP.resumen)}</p>
-      <div class="promo-facts">${datosTemp()}</div>
-      <div class="promo-actions">
-        <a class="btn btn-rojo" href="${href(TEMP.enlace)}">${L(TEMP.boton)}</a>
-        <button class="btn btn-quiet" type="button" data-close>Ahora no</button>
-      </div>
-    </div>
-  </div>
-</dialog>` : '';
-
-const resenas = () => `<section class="sec bg-arena reviews">
+const resenas = (s, id) => `<section class="sec bg-arena reviews"${id ? ` id="${id}"` : ''}>
   <div class="wrap rv-head">
     <div class="rv">
-      <span class="eyebrow">${t('Lo que dicen', 'What people say')}</span>
-      <h2 class="h2">Historias de quienes viajaron con nosotros</h2>
+      <span class="eyebrow">${L(s.ceja)}</span>
+      <h2 class="h2">${L(s.titulo)}</h2>
     </div>
     <a class="rv-score rv" href="https://share.google/e8BOJXLnY23zuiExs" target="_blank" rel="noopener">
       <b>5.0</b>
@@ -243,58 +240,61 @@ const resenas = () => `<section class="sec bg-arena reviews">
   <div class="rv-row rev" aria-hidden="true"></div>
 </section>`;
 
-const cierre = (titulo, mensaje, foto) => `<section class="quote">
-  ${img(foto, '', '100vw')}
+const cierre = s => `<section class="quote">
+  ${img(s.foto, '', '100vw')}
   <div class="wrap">
-    <h2>${titulo}</h2>
+    <h2>${L(s.titulo)}</h2>
     <div class="row">
-      <a class="btn btn-rojo" href="${wa(mensaje)}" target="_blank" rel="noopener">${t('Escribir por WhatsApp', 'Message us on WhatsApp')}</a>
+      <a class="btn btn-rojo" href="${wa(s.whatsapp)}" target="_blank" rel="noopener">${t('Escribir por WhatsApp', 'Message us on WhatsApp')}</a>
       <a class="btn btn-line" href="${href('contacto/')}">Diseñar mi viaje</a>
     </div>
   </div>
 </section>`;
 
+// Canales de contacto y formulario (inicio y página de contacto)
+const contacto = (s, oficina) => `<section class="sec bg-arena" id="contacto">
+  <div class="wrap contact">
+    <div class="rv">
+      <span class="eyebrow">${L(s.ceja)}</span>
+      <h2 class="h2">${L(s.titulo)}</h2>
+      ${s.texto?.es ? `<p class="body-lg">${L(s.texto)}</p>` : ''}
+      <div class="channels">
+        <a class="channel" href="${WA}" target="_blank" rel="noopener"><span class="ico rojo sm"><svg viewBox="0 0 24 24"><path d="M4 20l1.3-4A8 8 0 1 1 8 18.7z"/></svg></span><span><small>WhatsApp</small><b>+57 312 289 9185</b></span></a>
+        <a class="channel" href="mailto:wannagoco@gmail.com"><span class="ico petroleo sm"><svg viewBox="0 0 24 24"><path d="M3 6h18v12H3zm0 0 9 7 9-7"/></svg></span><span><small>Correo</small><b>wannagoco@gmail.com</b></span></a>
+        <a class="channel" href="https://www.instagram.com/wannagocol/" target="_blank" rel="noopener"><span class="ico agua sm"><svg viewBox="0 0 24 24"><rect x="4" y="4" width="16" height="16" rx="5"/><circle cx="12" cy="12" r="3.6"/></svg></span><span><small>Instagram</small><b>@wannagocol</b></span></a>${oficina ? `
+        <a class="channel" href="https://www.google.com/maps/search/?api=1&amp;query=${encodeURIComponent('Cra. 30 #5F-185, El Poblado, Medellín')}" target="_blank" rel="noopener"><span class="ico rojo sm"><svg viewBox="0 0 24 24"><path d="M12 21s-7-7.6-7-12a7 7 0 0 1 14 0c0 4.4-7 12-7 12z"/><circle cx="12" cy="9" r="2.5"/></svg></span><span><small>${t('Oficina', 'Office')}</small><b>Cra. 30 #5F-185 Int 701, El Poblado, Medellín</b></span></a>` : ''}
+      </div>
+    </div>
+    <form class="form rv" id="lead" novalidate>
+      <label for="f-name">Nombre<input id="f-name" name="name" autocomplete="name" placeholder="Tu nombre"></label>
+      <div class="two">
+        <label for="f-wa">WhatsApp<input id="f-wa" name="wa" type="tel" autocomplete="tel" placeholder="+57 300 000 0000"></label>
+        <label for="f-type">Tipo de viaje
+          <select id="f-type" name="type"><option>A la medida</option><option>Viaje grupal</option><option>Evento corporativo</option></select>
+        </label>
+      </div>
+      <label for="f-msg">¿Qué te gustaría vivir?<textarea id="f-msg" name="msg" rows="4" placeholder="Destino, fechas, número de personas…"></textarea></label>
+      <button class="btn btn-rojo" type="submit">Enviar por WhatsApp</button>
+      <p class="ok" id="msg" hidden></p>
+    </form>
+  </div>
+</section>`;
+
+const tituloTemp = v => `${L(v.titulo)} <em>${L(v.titulo_resalte)}</em>`;
+const datosTemp = () => TEMP.datos.map(({ numero, texto }) => `<span><b>${numero}</b> ${L(texto)}</span>`).join('') +
+  `<span>Salida <span${TEMP.salida_por_definir ? ' class="tbd"' : ''}>${TEMP.salida}</span></span>`;
+
 // ---------- Páginas ----------
 
 const INICIO = [t('Inicio', 'Home'), ''];
-const URLS = ['', 'marruecos/'];
-
-function pagina(ruta, armar) {
-  pre = '../'.repeat(ruta.split('/').length - 1);
-  const p = armar();
-  const cuerpo = [nav(), portada(p), p.cuerpo, pie(), WA_FLOAT].join('\n\n');
-  const scripts = ['marca.js', 'i18n.js', 'wa.js', ...(cuerpo.includes('rv-row') ? ['resenas.js'] : [])]
-    .map(s => `<script src="${pre}${s}?v=${V}"></script>`).join('\n');
-  const html = `<!doctype html>
-<html lang="es">
-<head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-${seo({ ...p, ruta }, p.titulo + cuerpo)}
-<link rel="icon" href="${ICONO}">
-<link rel="stylesheet" href="${pre}marca.css?v=${V}">
-<link rel="stylesheet" href="${pre}wa.css?v=${V}">
-<link rel="stylesheet" href="${pre}menu.css?v=${V}">
-</head>
-<body>
-
-${cuerpo}
-
-${scripts}
-</body>
-</html>
-`;
-  mkdirSync(ruta, { recursive: true });
-  writeFileSync(ruta + 'index.html', html);
-  URLS.push(ruta);
-}
-
+const URLS = ['marruecos/'];
 const ICONO = `data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 40 40'%3E%3Ccircle cx='20' cy='20' r='20' fill='%23ED3237'/%3E%3Cpath d='M20 7a10 10 0 0 1 10 10c0 7-10 23-10 23S10 24 10 17A10 10 0 0 1 20 7z' fill='%23fff'/%3E%3Ccircle cx='20' cy='17' r='4.4' fill='%23ED3237'/%3E%3C/svg%3E`;
 
 // Bloque <head> de SEO: robots, título, descripción, canonical, Open Graph, fuente, JSON-LD y textos en inglés
 function seo(p, texto) {
   const url = BASE + p.ruta;
-  const en = Object.fromEntries(Object.entries(EN).filter(([es]) => texto.includes(es)));
+  const filtrar = dic => Object.entries(dic || {}).filter(([es]) => texto.includes(es));
+  const en = Object.fromEntries([...filtrar(EN), ...filtrar(ENP)]);
   return [
     INDEXAR ? '' : '<meta name="robots" content="noindex">',
     `<title>${esc(p.titulo)}</title>`,
@@ -316,243 +316,247 @@ function seo(p, texto) {
   ].filter(Boolean).join('\n');
 }
 
+// armar() devuelve { seo: {titulo, descripcion, foto}, schema, portada, cuerpo, despues }
+function pagina(ruta, armar) {
+  pre = '../'.repeat(ruta.split('/').length - 1);
+  ENP = {};
+  const p = armar();
+  const titulo = L(p.seo.titulo);
+  const cuerpo = [nav(), p.portada, p.cuerpo, pie(), p.despues, WA_FLOAT].filter(Boolean).join('\n\n');
+  const scripts = ['marca.js', 'i18n.js', 'wa.js', ...(cuerpo.includes('rv-row') ? ['resenas.js'] : [])]
+    .map(s => `<script src="${pre}${s}?v=${V}"></script>`).join('\n');
+  const html = `<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+${seo({ ruta, titulo, desc: p.seo.descripcion, foto: p.seo.foto, schema: p.schema }, titulo + cuerpo)}
+<link rel="icon" href="${ICONO}">
+<link rel="stylesheet" href="${pre}marca.css?v=${V}">
+<link rel="stylesheet" href="${pre}wa.css?v=${V}">
+<link rel="stylesheet" href="${pre}menu.css?v=${V}">
+</head>
+<body>
+
+${cuerpo}
+
+${scripts}
+</body>
+</html>
+`;
+  if (ruta) mkdirSync(ruta, { recursive: true });
+  writeFileSync(ruta + 'index.html', html);
+  URLS.push(ruta);
+  ENP = null;
+}
+
+// Inicio
+pagina('', () => {
+  const P = PG.inicio, POP = PG.popup.popup;
+  const pop = POP.activo && (POP.usar_temporada ? TEMP && { ...TEMP, texto: TEMP.resumen, datos: true } : POP.foto && POP);
+  return {
+    seo: P.seo,
+    schema: [{ '@type': 'WebSite', '@id': BASE + '#sitio', name: 'Wanna Go Colombia', url: BASE, inLanguage: 'es', publisher: { '@id': ORG['@id'] } }],
+    portada: `<header class="hero">
+  ${img(P.portada.foto, L(P.portada.alt), '100vw', true)}
+  <div class="wrap">
+    <span class="label">${L(P.portada.etiqueta)}</span>
+    <h1>${L(P.portada.titulo)}</h1>
+    <p class="lead">${L(P.portada.texto)}</p>
+    <div class="row">
+      <a class="btn btn-rojo" href="#viajes">${L(P.portada.boton1)}</a>
+      <a class="btn btn-line" href="#contacto">${L(P.portada.boton2)}</a>
+    </div>
+  </div>
+</header>`,
+    cuerpo: [
+      `<section class="sec bg-arena" id="viajes">
+  <div class="wrap">
+    ${encabezado(P.viajes)}
+    ${TEMP ? `<a class="featured rv" href="${href(TEMP.enlace)}">
+      ${img(TEMP.foto, L(TEMP.alt), '(max-width:1200px) 100vw, 1200px')}
+      <div class="in">
+        <div class="tags"><span class="badge">${t('Viaje de temporada', 'Season trip')}</span><span class="badge soon">${L(TEMP.aviso)}</span></div>
+        <span class="label">${L(TEMP.etiqueta)}</span>
+        <h3>${tituloTemp(TEMP)}</h3>
+        <p>${L(TEMP.resumen)}</p>
+        <div class="facts-row">${datosTemp()}</div>
+        <span class="btn btn-rojo">${L(TEMP.boton)} <span>→</span></span>
+      </div>
+    </a>` : ''}
+    <div class="squares">
+      ${VIAJES.colombia.filter(v => D[v.destino]).map(({ destino, aviso }) => { const d = D[destino]; return `<a class="svc rv" href="${href('destinos/' + d.slug + '/')}">
+        ${img(d.foto, '', '(max-width:900px) 50vw, 300px')}${aviso?.es ? `<span class="badge">${L(aviso)}</span>` : ''}
+        <div><span class="label">${d.region}</span><h3>${d.nombre}</h3></div>
+      </a>`; }).join('\n      ')}
+      <a class="svc sq-cta rv" href="${href('viajes-a-la-medida/')}">
+        <div><span class="label">${L(P.viajes.cta_etiqueta)}</span><h3>${L(P.viajes.cta_titulo)}</h3><span class="go">${L(P.viajes.cta_boton)} <span>→</span></span></div>
+      </a>
+    </div>
+  </div>
+</section>`,
+      intro(P.nosotros, `\n      <a class="more" href="${href('nosotros/')}">${L(P.nosotros.enlace)} <span>→</span></a>`, 'nosotros'),
+      `<section class="sec bg-arena" id="experiencias">
+  <div class="wrap">
+    ${encabezado(P.experiencias)}
+    <div class="services">
+      ${P.experiencias.tarjetas.map(c => `<a class="svc rv" href="${href(c.enlace)}">
+        ${img(c.foto, L(c.alt), '(max-width:900px) 100vw, 33vw')}
+        <div><span class="label">${L(c.etiqueta)}</span><h3>${L(c.titulo)}</h3><p>${L(c.texto)}</p><span class="go">${L(P.experiencias.boton)} <span>→</span></span></div>
+      </a>`).join('\n      ')}
+    </div>
+  </div>
+</section>`,
+      pilares(P.pilares),
+      resenas(P.resenas, 'resenas'),
+      fundadora(P.fundadora),
+      `<section class="quote">
+  ${img(P.frase.foto, '', '100vw', false, ' id="par"')}
+  <div class="wrap">
+    <h2>${L(P.frase.texto)}</h2>
+    <span class="label">${P.frase.firma}</span>
+  </div>
+</section>`,
+      contacto(P.contacto),
+    ].join('\n\n'),
+    despues: pop ? `<dialog class="promo" id="promo" aria-labelledby="promo-title">
+  <button class="promo-close" type="button" aria-label="Cerrar" data-close><svg viewBox="0 0 24 24"><path d="M6 6l12 12M18 6 6 18"/></svg></button>
+  <div class="promo-in">
+    <figure>${img(pop.foto, L(pop.alt), '(max-width:720px) 100vw, 420px')}${pop.aviso?.es ? `<span class="badge">${L(pop.aviso)}</span>` : ''}</figure>
+    <div class="promo-body">
+      <span class="label">${L(pop.etiqueta)}</span>
+      <h2 id="promo-title">${tituloTemp(pop)}</h2>
+      <p>${L(pop.texto)}</p>
+      ${pop.datos === true ? `<div class="promo-facts">${datosTemp()}</div>` : ''}
+      <div class="promo-actions">
+        <a class="btn btn-rojo" href="${href(pop.enlace)}">${L(pop.boton)}</a>
+        <button class="btn btn-quiet" type="button" data-close>${L(POP.cerrar)}</button>
+      </div>
+    </div>
+  </div>
+</dialog>` : '',
+  };
+});
+
 // Destinos
 for (const d of DESTINOS) pagina(`destinos/${d.slug}/`, () => {
   const ruta = `destinos/${d.slug}/`;
   const m = [INICIO, [t('Destinos', 'Destinations'), 'destinos/'], [d.nombre, ruta]];
+  const enIngles = (es, plantilla) => plantilla(EN[es] || es);
   return {
-    titulo: d.titulo, desc: d.desc, foto: d.foto, alt: d.alt, migas: m,
-    label: d.region, h1: d.h1, lead: d.lead, boton: `Hola Wanna Go, quiero viajar a ${d.nombre}.`,
+    seo: { titulo: d.titulo, descripcion: d.desc, foto: d.foto },
     schema: [migas(m), { '@type': 'TouristDestination', name: d.h1, description: d.desc, url: BASE + ruta, image: BASE + `fotos/og/${nf(d.foto)}.jpg` }],
+    portada: portada({ foto: d.foto, alt: d.alt, etiqueta: d.region, titulo: d.h1, texto: d.lead }, m, `Hola Wanna Go, quiero viajar a ${d.nombre}.`),
     cuerpo: [
-      intro(t('01 · Por qué ir', '01 · Why go'), d.h2, d.ps, d.foto2, d.alt2),
-      tarjetas(t('02 · Qué vivir', '02 · What to experience'), t(`Qué hacer en ${d.nombre}`, `Things to do in ${EN[d.nombre] || d.nombre}`), d.vivir),
+      intro({ ceja: t('01 · Por qué ir', '01 · Why go'), titulo: d.h2, parrafos: d.ps, foto: d.foto2, alt: d.alt2 }),
+      tarjetas({ ceja: t('02 · Qué vivir', '02 · What to experience'), titulo: t(`Qué hacer en ${d.nombre}`, enIngles(d.nombre, n => `Things to do in ${n}`)) },
+        d.vivir.map(([titulo, texto]) => ({ titulo, texto }))),
       datos(t('03 · Datos prácticos', '03 · Practical info'), d.datos),
-      destinos(t('04 · Sigue explorando', '04 · Keep exploring'), t('Combínalo con', 'Pair it with'), d.otros, ' bg-arena'),
-      cierre(t(`Diseñemos tu viaje a ${d.nombre}`, `Let's design your trip to ${EN[d.nombre] || d.nombre}`), `Hola Wanna Go, quiero viajar a ${d.nombre}.`, d.foto2),
+      destinos({ ceja: t('04 · Sigue explorando', '04 · Keep exploring'), titulo: t('Combínalo con', 'Pair it with') }, d.otros, ' bg-arena'),
+      cierre({ titulo: t(`Diseñemos tu viaje a ${d.nombre}`, enIngles(d.nombre, n => `Let's design your trip to ${n}`)), whatsapp: `Hola Wanna Go, quiero viajar a ${d.nombre}.`, foto: d.foto2 }),
     ].join('\n\n'),
   };
 });
 
 // Destinos (índice)
 pagina('destinos/', () => {
+  const P = PG.destinos;
   const m = [INICIO, [t('Destinos', 'Destinations'), 'destinos/']];
   return {
-    titulo: t('Destinos en Colombia para viajar con propósito · Wanna Go', 'Destinations in Colombia for purposeful travel · Wanna Go'),
-    desc: 'Guatapé, Comuna 13, Cartagena, Valle de Cocora, Tayrona y el Eje Cafetero: viajes por Colombia diseñados desde Medellín por Wanna Go.',
-    foto: 'guatape', alt: D.guatape.alt, migas: m,
-    label: t('Destinos en Colombia', 'Destinations in Colombia'), h1: 'Conoce Colombia desde adentro',
-    lead: t('Lugares que diseñamos con cariño, desde Medellín hasta el Caribe. Cada uno se puede combinar en un viaje a tu medida.', 'Places we design with care, from Medellín to the Caribbean. Each one can be combined into a tailor-made trip.'),
+    seo: P.seo,
     schema: [migas(m), { '@type': 'ItemList', itemListElement: DESTINOS.map((d, i) => ({ '@type': 'ListItem', position: i + 1, url: BASE + `destinos/${d.slug}/`, name: d.h1 })) }],
-    cuerpo: [
-      destinos(t('Destinos', 'Destinations'), t('Elige por dónde empezar', 'Choose where to start'), DESTINOS.map(d => d.slug)),
-      cierre(t('¿No sabes cuál elegir? Te ayudamos', "Can't decide? We'll help"), 'Hola Wanna Go, quiero ideas para viajar por Colombia.', 'medellin'),
-    ].join('\n\n'),
+    portada: portada(P.portada, m),
+    cuerpo: [destinos(P.listado, DESTINOS.map(d => d.slug)), cierre(P.cierre)].join('\n\n'),
   };
 });
 
-// Servicios
-const servicio = (slug, s) => pagina(`${slug}/`, () => {
-  const m = [INICIO, [s.nombre, `${slug}/`]];
-  return {
-    ...s, migas: m, h1: s.h1,
-    schema: [migas(m), { '@type': 'Service', name: s.nombre, serviceType: s.nombre, description: s.desc, url: BASE + slug + '/', provider: { '@id': ORG['@id'] }, areaServed: { '@type': 'Country', name: 'Colombia' } }],
-    cuerpo: s.cuerpo(),
-  };
-});
-
-servicio('viajes-a-la-medida', {
-  nombre: 'Viajes a la medida', foto: 'salento', alt: 'Palmas de cera en el valle de Cocora',
-  titulo: t('Viajes a la medida por Colombia · Wanna Go Medellín', 'Tailor-made trips across Colombia · Wanna Go Medellín'),
-  desc: 'Itinerarios privados por Colombia diseñados alrededor de lo que te mueve: café, naturaleza, cocina, arte o descanso. Agencia en Medellín, RNT 65568.',
-  label: 'A tu ritmo', h1: t('Viajes a la medida por Colombia', 'Tailor-made trips across Colombia'),
-  lead: 'Itinerarios privados diseñados alrededor de lo que te mueve: café, naturaleza, cocina, arte o descanso.',
-  boton: 'Hola Wanna Go, quiero un viaje a la medida.',
-  cuerpo: () => [
-    intro(t('01 · Cómo lo pensamos', '01 · How we think about it'), t('Un viaje que se parece a ti', 'A trip that feels like you'), [
-      t('No trabajamos con paquetes cerrados. Empezamos por una conversación: qué te emociona, con quién viajas, cuánto tiempo tienes y a qué ritmo quieres moverte.', "We don't sell fixed packages. We start with a conversation: what excites you, who you are traveling with, how much time you have and the pace you want."),
-      t('Con eso diseñamos una ruta por Colombia con alojamientos, guías locales y experiencias que elegimos una por una. Durante el viaje, estamos pendientes de ti.', 'From there we design a route through Colombia with lodging, local guides and experiences we choose one by one. During the trip, we are there for you.'),
-    ], 'cafe', 'Granos de café maduros en la rama'),
-    tarjetas(t('02 · Paso a paso', '02 · Step by step'), t('Así diseñamos tu viaje', 'How we design your trip'), [
-      [t('Nos cuentas', 'Tell us'), t('Qué quieres vivir, fechas, presupuesto y quién viaja.', "What you want to experience, dates, budget and who's traveling.")],
-      [t('Te proponemos', 'We propose'), t('Un itinerario día a día con alojamientos y experiencias.', 'A day-by-day itinerary with lodging and experiences.')],
-      [t('Lo ajustamos', 'We fine-tune'), t('Cambiamos lo necesario hasta que sea tu viaje.', "We adjust whatever is needed until it's truly your trip.")],
-      [t('Viajas tranquilo', 'You travel at ease'), t('Logística resuelta y contacto directo con nosotros.', 'Logistics handled and a direct line to us.')],
-    ]),
-    destinos(t('03 · Inspiración', '03 · Inspiration'), t('Destinos para empezar', 'Destinations to start with'), ['guatape', 'eje-cafetero', 'cartagena']),
-    resenas(),
-    cierre(t('¿Empezamos a diseñarlo?', 'Shall we start designing it?'), 'Hola Wanna Go, quiero un viaje a la medida.', 'guatape'),
-  ].join('\n\n'),
-});
-
-servicio('viajes-grupales', {
-  nombre: 'Viajes grupales', foto: 'grupo-atardecer', alt: 'Grupo de viajeros contemplando el atardecer',
-  titulo: t('Viajes grupales con anfitriona · Wanna Go Colombia', 'Group trips with a host · Wanna Go Colombia'),
-  desc: 'Salidas con fecha fija y grupos pequeños, con anfitriona de Wanna Go de principio a fin. Marruecos entre mujeres, Cartagena y el Eje Cafetero.',
-  label: 'Grupos pequeños', h1: t('Viajes grupales con anfitriona', 'Group trips with a host'),
-  lead: 'Salidas con fecha fija, grupos pequeños y una anfitriona de Wanna Go acompañándote todo el camino.',
-  boton: 'Hola Wanna Go, quiero información de los viajes grupales.',
-  cuerpo: () => [
-    intro(t('01 · Cómo viajamos', '01 · How we travel'), t('Viajar en grupo, sin sentirte en un tour', "Group travel that doesn't feel like a tour"), [
-      t('Nuestras salidas grupales son para pocas personas, con un itinerario pensado al detalle y tiempo libre para explorar a tu manera.', 'Our group departures are for just a few people, with a carefully planned itinerary and free time to explore your own way.'),
-      t('Una anfitriona de Wanna Go viaja contigo de principio a fin. Se encarga de la logística para que tú solo te ocupes de vivir el viaje.', 'A Wanna Go host travels with you from start to finish and takes care of the logistics, so all you have to do is enjoy the trip.'),
-    ], 'mujer-dunas', 'Viajera en las dunas del Sahara al atardecer'),
-    `<section class="sec bg-petroleo">
+// Servicios: A la medida, Viajes grupales y Eventos corporativos
+for (const { slug, nombre } of SERVICIOS) pagina(`${slug}/`, () => {
+  const P = PG[slug];
+  const m = [INICIO, [nombre, `${slug}/`]];
+  const salidas = () => `<section class="sec bg-petroleo">
   <div class="wrap">
-    ${encabezado(t('02 · Próximas salidas', '02 · Upcoming departures'), t('Elige tu próximo viaje', 'Choose your next trip'), true)}
+    ${encabezado(P.salidas, true)}
     <div class="trips">
       ${TEMP ? `<a class="trip big rv" href="${href(TEMP.enlace)}">
         ${img(TEMP.foto, L(TEMP.alt), '(max-width:900px) 100vw, 60vw')}
         <div class="in">
           <span class="badge">${L(TEMP.aviso)}</span>
           <span class="meta">${L(TEMP.etiqueta)}</span>
-          <h3>${tituloTemp()}</h3>
+          <h3>${tituloTemp(TEMP)}</h3>
           <span class="go">${L(TEMP.boton)} <span>→</span></span>
         </div>
       </a>` : ''}
-      <a class="trip rv" href="${href('destinos/cartagena/')}">
-        ${img('cartagena', 'Calle colonial de Cartagena con faroles', '(max-width:900px) 100vw, 40vw')}
+      ${P.salidas.proximas.map(s => `<a class="trip rv" href="${href(s.enlace)}">
+        ${img(s.foto, L(s.alt), '(max-width:900px) 100vw, 40vw')}
         <div class="in">
-          <span class="badge soon">Próximamente</span>
-          <span class="meta"><span class="tbd">Fecha por definir</span></span>
-          <h3>Cartagena y el Caribe</h3>
+          <span class="badge soon">${L(s.aviso)}</span>
+          <span class="meta"><span${s.fecha_por_definir ? ' class="tbd"' : ''}>${L(s.fecha)}</span></span>
+          <h3>${L(s.titulo)}</h3>
         </div>
-      </a>
-      <a class="trip rv" href="${href('destinos/eje-cafetero/')}">
-        ${img('cafe', 'Granos de café maduros en la rama', '(max-width:900px) 100vw, 40vw')}
-        <div class="in">
-          <span class="badge soon">Próximamente</span>
-          <span class="meta"><span class="tbd">Fecha por definir</span></span>
-          <h3>Paisaje Cultural Cafetero</h3>
-        </div>
-      </a>
+      </a>`).join('\n      ')}
     </div>
   </div>
-</section>`,
-    tarjetas(t('03 · En cada salida', '03 · On every departure'), t('Lo que siempre tienes', 'What you always get'), [
-      [t('Grupos pequeños', 'Small groups'), t('Pocas personas, para viajar con calma y conocerse.', 'Few people, so you travel calmly and get to know each other.')],
-      [t('Anfitriona Wanna Go', 'A Wanna Go host'), t('Te acompaña desde la salida hasta el regreso.', 'With you from departure to return.')],
-      [t('Experiencias locales', 'Local experiences'), t('Cocina, cultura y gente de cada destino.', 'Food, culture and people at every destination.')],
-      [t('Todo organizado', 'Everything organized'), t('Alojamiento, traslados y reservas resueltos.', 'Lodging, transfers and bookings taken care of.')],
-    ]),
-    resenas(),
-    cierre(t('¿Quieres saber de las próximas salidas?', 'Want to hear about upcoming departures?'), 'Hola Wanna Go, quiero información de los viajes grupales.', 'camellos'),
-  ].join('\n\n'),
-});
-
-servicio('eventos-corporativos', {
-  nombre: 'Eventos corporativos', foto: 'medellin-montanas', alt: 'Edificios de Medellín frente a las montañas',
-  titulo: t('Eventos corporativos en Medellín y Antioquia · Wanna Go', 'Corporate events in Medellín and Antioquia · Wanna Go'),
-  desc: 'Incentivos, convenciones y experiencias de equipo en Medellín y Antioquia, con logística completa y experiencias locales con propósito.',
-  label: 'Empresas', h1: t('Eventos corporativos en Medellín y Antioquia', 'Corporate events in Medellín and Antioquia'),
-  lead: 'Incentivos, convenciones y experiencias de equipo con logística completa en Medellín y Antioquia.',
-  boton: 'Hola Wanna Go, quiero cotizar un evento corporativo.',
-  cuerpo: () => [
-    intro(t('01 · Para empresas', '01 · For companies'), t('Experiencias que unen equipos', 'Experiences that bring teams together'), [
-      t('Diseñamos viajes de incentivo, convenciones y salidas de equipo que muestran Medellín y Antioquia desde adentro, con la misma calidez con la que recibimos a nuestros viajeros.', 'We design incentive trips, conventions and team outings that show Medellín and Antioquia from the inside, with the same warmth we offer every traveler.'),
-      t('Nos encargamos de la logística completa: transporte, alojamiento, espacios, alimentación y experiencias locales, con un solo contacto para todo.', 'We handle the full logistics: transport, lodging, venues, catering and local experiences, with a single point of contact.'),
-    ], 'medellin', 'Medellín iluminada al atardecer, rodeada de montañas'),
-    tarjetas(t('02 · Qué organizamos', '02 · What we organize'), t('Formatos para tu empresa', 'Formats for your company'), [
-      [t('Viajes de incentivo', 'Incentive trips'), t('Premia a tu equipo con experiencias que no olvidará.', "Reward your team with experiences they won't forget.")],
-      [t('Convenciones y reuniones', 'Conventions and meetings'), t('Espacios, transporte y agenda coordinados.', 'Venues, transport and agenda, all coordinated.')],
-      [t('Integración de equipos', 'Team building'), t('Actividades con propósito en la ciudad y la naturaleza.', 'Purposeful activities in the city and in nature.')],
-      [t('Experiencias para visitantes', 'Experiences for visitors'), t('Recibe a clientes y socios con lo mejor de Medellín.', 'Welcome clients and partners with the best of Medellín.')],
-    ]),
-    destinos(t('03 · Experiencias', '03 · Experiences'), t('Ideas en Medellín y Antioquia', 'Ideas in Medellín and Antioquia'), ['comuna-13', 'guatape', 'plazas-de-mercado']),
-    resenas(),
-    cierre(t('Cuéntanos de tu evento', 'Tell us about your event'), 'Hola Wanna Go, quiero cotizar un evento corporativo.', 'medellin-montanas'),
-  ].join('\n\n'),
+</section>`;
+  return {
+    seo: P.seo,
+    schema: [migas(m), { '@type': 'Service', name: nombre, serviceType: nombre, description: P.seo.descripcion, url: BASE + slug + '/', provider: { '@id': ORG['@id'] }, areaServed: { '@type': 'Country', name: 'Colombia' } }],
+    portada: portada(P.portada, m, P.portada.whatsapp),
+    cuerpo: [
+      intro(P.intro),
+      P.salidas ? salidas() : tarjetas(P.pasos),
+      P.salidas ? tarjetas(P.siempre) : destinos(P.destinos, P.destinos.lista),
+      resenas(P.resenas),
+      cierre(P.cierre),
+    ].join('\n\n'),
+  };
 });
 
 // Nosotros
 pagina('nosotros/', () => {
+  const P = PG.nosotros;
   const m = [INICIO, ['Nosotros', 'nosotros/']];
-  const casa = readFileSync('index.html', 'utf8');
-  const tomar = ini => casa.slice(casa.indexOf(ini), casa.indexOf('</section>', casa.indexOf(ini)) + 10);
   return {
-    titulo: t('Quiénes somos · Wanna Go, agencia de viajes en Medellín', 'About us · Wanna Go, travel agency in Medellín'),
-    desc: 'Wanna Go es una agencia de turismo receptivo en Medellín fundada en 2019 por Luchy Vásquez. Viajes con propósito, auténticos y con hospitalidad cálida.',
-    foto: 'guatape-calle', alt: 'Calle con fachadas de colores y zócalos en Guatapé', migas: m,
-    label: t('Quiénes somos', 'About us'), h1: t('Viajes con propósito desde Medellín', 'Purposeful travel from Medellín'),
-    lead: t('Somos una agencia de turismo receptivo fundada en 2019. Te mostramos Colombia desde adentro: con su gente, su cocina y sus paisajes.', 'We are an inbound travel agency founded in 2019. We show you Colombia from the inside: its people, its food and its landscapes.'),
+    seo: P.seo,
     schema: [migas(m), { '@type': 'AboutPage', url: BASE + 'nosotros/', mainEntity: { '@id': ORG['@id'] } }],
-    cuerpo: [
-      intro(t('01 · Nuestra historia', '01 · Our story'), 'Viajes con propósito', [
-        'Wanna Go es una agencia de turismo receptivo con sede en Medellín, fundada en 2019 por María Lucía Vásquez Cock, Luchy.',
-        'Huimos del turismo masivo y de lo predecible. Te mostramos cada destino desde adentro, con su gente, su cocina y sus paisajes, para que vuelvas distinto de como te fuiste.',
-      ], 'comuna13', 'Casas de colores y murales en las laderas de la Comuna 13', `
-      <div class="stats">
-        <div class="stat"><b>2019</b><span>Año de fundación</span></div>
-        <div class="stat"><b>RNT 65568</b><span>Registro Nacional de Turismo</span></div>
-        <div class="stat"><b>Medellín</b><span>Colombia</span></div>
-      </div>`),
-      // fundadora y pilares: el mismo bloque del inicio
-      tomar('<section class="sec bg-petroleo">\n  <div class="wrap founder">').replace('06 · Fundadora', t('02 · Fundadora', '02 · Founder')),
-      tomar('<section class="sec">\n  <div class="wrap">\n    <div class="head rv">\n      <span class="eyebrow">04 · Nuestro sello').replace('04 · Nuestro sello', '03 · Nuestro sello'),
-      resenas(),
-      cierre('Colombia se vive mejor en buena compañía', 'Hola Wanna Go, quiero conocerlos.', 'grupo-atardecer'),
-    ].join('\n\n'),
+    portada: portada(P.portada, m),
+    cuerpo: [intro(P.historia), fundadora(P.fundadora), pilares(P.pilares), resenas(P.resenas), cierre(P.cierre)].join('\n\n'),
   };
 });
 
 // Contacto
 pagina('contacto/', () => {
+  const P = PG.contacto;
   const m = [INICIO, ['Contacto', 'contacto/']];
-  const casa = readFileSync('index.html', 'utf8');
-  const ini = casa.indexOf('<section class="sec bg-arena" id="contacto">');
-  const seccion = casa.slice(ini, casa.indexOf('</section>', ini) + 10)
-    .replace('<span class="eyebrow">07 · Contacto</span>\n      <h2 class="h2">Diseñemos tu próximo viaje</h2>', `<span class="eyebrow">${t('Canales', 'Channels')}</span>\n      <h2 class="h2">${t('Hablemos de tu viaje', "Let's talk about your trip")}</h2>`)
-    .replace('</b></span></a>\n      </div>', `</b></span></a>
-        <a class="channel" href="https://www.google.com/maps/search/?api=1&amp;query=${encodeURIComponent('Cra. 30 #5F-185, El Poblado, Medellín')}" target="_blank" rel="noopener"><span class="ico rojo sm"><svg viewBox="0 0 24 24"><path d="M12 21s-7-7.6-7-12a7 7 0 0 1 14 0c0 4.4-7 12-7 12z"/><circle cx="12" cy="9" r="2.5"/></svg></span><span><small>${t('Oficina', 'Office')}</small><b>Cra. 30 #5F-185 Int 701, El Poblado, Medellín</b></span></a>
-      </div>`);
   return {
-    titulo: t('Contacto · Wanna Go Colombia, Medellín', 'Contact · Wanna Go Colombia, Medellín'),
-    desc: 'Escríbenos por WhatsApp al +57 312 289 9185 o a wannagoco@gmail.com. Oficina en El Poblado, Medellín. Diseñamos tu viaje por Colombia.',
-    foto: 'medellin', alt: 'Medellín iluminada al atardecer, rodeada de montañas', migas: m,
-    label: 'Contacto', h1: 'Diseñemos tu próximo viaje',
-    lead: 'Cuéntanos qué te mueve y te proponemos un itinerario a tu medida. Respondemos por WhatsApp.',
+    seo: P.seo,
     schema: [migas(m), { '@type': 'ContactPage', url: BASE + 'contacto/', mainEntity: { '@id': ORG['@id'] } }],
-    cuerpo: seccion,
+    portada: portada(P.portada, m),
+    cuerpo: contacto(P.canales, true),
   };
 });
 
-// ---------- Inicio y Marruecos: bloques entre marcadores <!-- x --> … <!-- /x --> ----------
+// ---------- Marruecos: solo el bloque SEO entre <!-- seo --> … <!-- /seo --> ----------
 
-function parche(archivo, ruta, bloques) {
-  let h = readFileSync(archivo, 'utf8');
-  for (const [k, v] of Object.entries(bloques)) {
-    const a = `<!-- ${k} -->`, b = `<!-- /${k} -->`;
-    if (!h.includes(a) || !h.includes(b)) throw new Error(`Falta el marcador ${a} en ${archivo}`);
-    h = h.slice(0, h.indexOf(a) + a.length) + '\n' + v + '\n' + h.slice(h.indexOf(b));
-  }
-  writeFileSync(archivo, h);
-}
-
-pre = '';
-const navInicio = nav(), pieInicio = pie(), viajesInicio = seccionViajes(), promoInicio = promo();
-parche('index.html', '', {
-  nav: navInicio, pie: pieInicio, viajes: viajesInicio, promo: promoInicio,
-  seo: seo({
-    ruta: '', foto: 'medellin',
-    titulo: t('Wanna Go Colombia · Agencia de viajes con propósito en Medellín', 'Wanna Go Colombia · Purposeful travel agency in Medellín'),
-    desc: 'Wanna Go: agencia de turismo receptivo en Medellín. Viajes a la medida, viajes grupales y eventos corporativos con propósito.',
-    schema: [{ '@type': 'WebSite', '@id': BASE + '#sitio', name: 'Wanna Go Colombia', url: BASE, inLanguage: 'es', publisher: { '@id': ORG['@id'] } }],
-  }, 'Wanna Go Colombia · Agencia de viajes con propósito en Medellín' + navInicio + pieInicio + viajesInicio + promoInicio),
-});
-
-pre = '../';
-const m = [INICIO, ['Viajes grupales', 'viajes-grupales/'], ['Marruecos entre mujeres', 'marruecos/']];
-parche('marruecos/index.html', 'marruecos/', {
-  seo: seo({
+{
+  pre = '../';
+  const archivo = 'marruecos/index.html';
+  const m = [INICIO, ['Viajes grupales', 'viajes-grupales/'], ['Marruecos entre mujeres', 'marruecos/']];
+  const bloque = seo({
     ruta: 'marruecos/', foto: 'mujer-dunas',
     titulo: 'Marruecos entre mujeres · Wanna Go',
     desc: 'Viaje grupal solo para mujeres a Marruecos: 10 días, 7 destinos y máximo 16 viajeras, con anfitriona de Wanna Go. Medinas, palacios y una noche en el Sahara.',
     schema: [migas(m), { '@type': 'TouristTrip', name: 'Marruecos entre mujeres', description: 'Viaje grupal solo para mujeres a Marruecos: 10 días, 7 destinos y máximo 16 viajeras.', url: BASE + 'marruecos/', image: BASE + 'fotos/og/mujer-dunas.jpg', touristType: 'Mujeres', provider: { '@id': ORG['@id'] } }],
-  }, ''),
-});
+  }, '');
+  const h = readFileSync(archivo, 'utf8');
+  const a = h.indexOf('<!-- seo -->') + '<!-- seo -->'.length, b = h.indexOf('<!-- /seo -->');
+  if (a < 12 || b < 0) throw new Error(`Falta el marcador <!-- seo --> en ${archivo}`);
+  writeFileSync(archivo, h.slice(0, a) + '\n' + bloque + '\n' + h.slice(b));
+}
 
 // ---------- sitemap.xml y robots.txt ----------
 
+URLS.sort((a, b) => a.length - b.length);
 writeFileSync('sitemap.xml', `<?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 ${URLS.map(u => `  <url><loc>${BASE}${u}</loc><lastmod>${hoy}</lastmod></url>`).join('\n')}

@@ -11,13 +11,15 @@ const arr = v => `array[${v.map(lit).join(', ')}]::text[]`;
 const archivo = f => f.split('/').pop(); // en la base solo va el nombre del archivo
 
 const viajes = JSON.parse(readFileSync('_datos/viajes.json', 'utf8'));
+const paginas = readdirSync('_datos/paginas').filter(f => f.endsWith('.json'))
+  .map(f => [f.replace('.json', ''), JSON.parse(readFileSync('_datos/paginas/' + f, 'utf8'))]);
 const destinos = readdirSync('_datos/destinos').filter(f => f.endsWith('.json'))
   .map(f => JSON.parse(readFileSync('_datos/destinos/' + f, 'utf8')))
   .sort((a, b) => a.orden - b.orden);
 
 const sql = [
   '-- Generado por _herramientas/supabase/semilla.mjs con el contenido de _datos/',
-  `insert into public.ajustes (id, popup) values (1, ${!!viajes.popup}) on conflict (id) do update set popup = excluded.popup;`,
+  ...paginas.map(([id, contenido]) => `insert into public.paginas (id, contenido) values (${lit(id)}, ${js(contenido)}) on conflict (id) do update set contenido = excluded.contenido;`),
   '',
   ...destinos.map(d => `insert into public.destinos (url, orden, nombre, h1, region, corto, foto, alt, foto2, alt2, titulo_seo, descripcion_seo, lead, h2, parrafos, vivir, datos, otros) values (${[
     lit(d.url), d.orden, js(d.nombre), js(d.h1), js(d.region), js(d.corto), lit(archivo(d.foto)), js(d.alt), lit(archivo(d.foto2)), js(d.alt2),
@@ -36,7 +38,7 @@ const sql = [
   '',
 ].join('\n');
 writeFileSync('supabase/seed.sql', sql);
-console.log(`supabase/seed.sql · ${destinos.length} destinos, ${viajes.temporadas.length} temporadas, ${viajes.colombia.length} cuadros`);
+console.log(`supabase/seed.sql · ${paginas.length} páginas, ${destinos.length} destinos, ${viajes.temporadas.length} temporadas, ${viajes.colombia.length} cuadros`);
 
 if (process.argv.includes('--fotos')) {
   const { SUPABASE_URL: url, SUPABASE_SERVICE_ROLE_KEY: clave } = process.env;

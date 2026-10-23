@@ -2,6 +2,7 @@
 // Guardar cambia la base de datos; «Publicar cambios» regenera el sitio en GitHub (2 a 3 minutos).
 // Sin Supabase conectado (config.js vacío) se prueba en local con ?demo, leyendo _datos/.
 import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.117.2/+esm';
+import { PAGINAS } from './esquema.js?v=2';
 
 const CFG = window.WG_SUPABASE || {};
 const DEMO = new URLSearchParams(location.search).has('demo');
@@ -99,7 +100,7 @@ function demoApi() {
     const urls = [...indice.matchAll(/href="([a-z0-9-]+)\.json"/g)].map(m => m[1]);
     const archivo = f => f.split('/').pop();
     db = {
-      ajustes: [{ id: 1, popup: v.popup }],
+      paginas: await Promise.all(PAGINAS.map(async p => ({ id: p.id, contenido: await json(`_datos/paginas/${p.id}.json`) }))),
       temporadas: v.temporadas.map((t, i) => ({ ...t, id: crypto.randomUUID(), orden: i + 1, hasta: t.hasta || null, foto: archivo(t.foto) })),
       cuadros: v.colombia.map((c, i) => ({ id: crypto.randomUUID(), orden: i + 1, destino: c.destino, aviso: c.aviso || null })),
       destinos: (await Promise.all(urls.map(u => json(`_datos/destinos/${u}.json`))))
@@ -408,21 +409,60 @@ async function vistaDestinos(main) {
   );
 }
 
-async function vistaAjustes(main) {
-  const [[ajustes = { id: 1, popup: true }], publicaciones] = await Promise.all([api.listar('ajustes', 'id'), api.listar('publicaciones', 'pedido', true)]);
-  const popup = campo({ tipo: 'bool', label: 'Mostrar el pop-up del viaje de temporada en el inicio' }, ajustes.popup);
-  const guardar = async e => {
-    e.currentTarget.disabled = true;
-    try { await api.guardar('ajustes', { id: 1, popup: popup.leer() }); listo('Guardado. Pulsa «Publicar cambios» para aplicarlo.'); } catch (er) { fallo(er); }
-    e.target.disabled = false;
+// Textos de cada página, con las mismas secciones y en el mismo orden que en el sitio (admin/esquema.js)
+async function vistaPaginas(main) {
+  const [filas, destinos] = await Promise.all([api.listar('paginas', 'id'), api.listar('destinos')]);
+  const contenido = Object.fromEntries(filas.map(f => [f.id, f.contenido]));
+  const volver = () => vistaPaginas(main);
+  const abrir = pag => {
+    const datos = copia(contenido[pag.id] || {});
+    const partes = pag.secciones.map((sec, i) => {
+      const f = formulario(sec.campos, datos[sec.id] || {}, { destinos });
+      return [sec.id, f, h('details', { class: 'seccion', open: i < 2 },
+        h('summary', {}, sec.nombre),
+        sec.ayuda && h('p', { class: 'ayuda sec-ayuda' }, sec.ayuda),
+        f.el)];
+    });
+    const guardar = async e => {
+      const b = e.currentTarget;
+      b.disabled = true;
+      try {
+        for (const [id, f] of partes) datos[id] = f.leer();
+        await api.guardar('paginas', { id: pag.id, contenido: datos });
+        listo('Guardado. Pulsa «Publicar cambios» cuando quieras verlo en el sitio.');
+        volver();
+      } catch (er) { fallo(er); b.disabled = false; }
+    };
+    main.replaceChildren(
+      h('div', { class: 'cabeza' }, h('h1', {}, pag.nombre),
+        h('div', { class: 'acc-cabeza' },
+          pag.id !== 'popup' && h('a', { class: 'btn sec', href: SITIO + pag.ruta, target: '_blank', rel: 'noopener' }, 'Ver página'),
+          boton('← Volver', volver, { cls: 'btn sec' }))),
+      h('p', { class: 'intro' }, 'Las secciones están en el mismo orden en que se ven en la página. Ábrelas para editar.'),
+      ...partes.map(p => p[2]),
+      h('div', { class: 'barra' }, boton('Guardar', guardar, { cls: 'btn rojo' }), boton('Cancelar', volver, { cls: 'btn sec' })),
+    );
+    scrollTo(0, 0);
   };
   main.replaceChildren(
-    h('div', { class: 'cabeza' }, h('h1', {}, 'Pop-up y publicación')),
-    h('div', { class: 'form' }, popup.el, h('small', { class: 'ayuda' }, 'El pop-up muestra el viaje de temporada vigente, una vez por visita.'), h('div', {}, boton('Guardar', guardar, { cls: 'btn rojo' }))),
-    h('h2', { style: 'margin:36px 0 12px;font-size:20px' }, 'Últimas publicaciones'),
+    h('div', { class: 'cabeza' }, h('h1', {}, 'Páginas')),
+    h('p', { class: 'intro' }, 'Los textos y fotos de cada página del sitio, en español e inglés. Los destinos, el viaje de temporada y los cuadros tienen su propia sección.'),
+    h('div', { class: 'lista-filas' }, PAGINAS.map(pag => h('div', { class: 'fila' },
+      miniatura(contenido[pag.id]?.seo?.foto || contenido[pag.id]?.portada?.foto || (contenido.popup?.popup?.foto) || ''),
+      h('div', {}, h('b', {}, pag.nombre), h('small', {}, pag.id === 'popup' ? 'Ventana que aparece al entrar al inicio' : `${pag.secciones.length} secciones · /${pag.ruta}`)),
+      h('div', { class: 'acc' }, boton('Editar', () => abrir(pag)),
+        pag.id !== 'popup' && h('a', { class: 'mini', href: SITIO + pag.ruta, target: '_blank', rel: 'noopener' }, 'Ver página'))))),
+  );
+}
+
+async function vistaPublicaciones(main) {
+  const publicaciones = await api.listar('publicaciones', 'pedido', true);
+  main.replaceChildren(
+    h('div', { class: 'cabeza' }, h('h1', {}, 'Publicaciones')),
+    h('p', { class: 'intro' }, 'Cada vez que alguien pulsa «Publicar cambios». El sitio tarda 2 a 3 minutos en actualizarse.'),
     publicaciones.length
       ? h('div', { class: 'envoltura' }, h('table', { class: 'tabla' }, h('tr', {}, h('th', {}, 'Fecha'), h('th', {}, 'Quién'), h('th', {}, 'Estado')),
-          publicaciones.slice(0, 10).map(p => h('tr', {}, h('td', {}, new Date(p.pedido).toLocaleString('es-CO')), h('td', {}, p.por), h('td', {}, p.estado)))))
+          publicaciones.slice(0, 20).map(p => h('tr', {}, h('td', {}, new Date(p.pedido).toLocaleString('es-CO')), h('td', {}, p.por), h('td', {}, p.estado)))))
       : h('p', { class: 'vacio' }, 'Todavía no se ha publicado desde el panel.'),
   );
 }
@@ -442,11 +482,12 @@ async function vistaSolicitudes(main) {
 }
 
 const VISTAS = [
+  ['paginas', 'Páginas', vistaPaginas],
   ['temporadas', 'Viajes de temporada', vistaTemporadas],
   ['cuadros', 'Cuadros de Colombia', vistaCuadros],
   ['destinos', 'Destinos', vistaDestinos],
-  ['ajustes', 'Pop-up y publicación', vistaAjustes],
   ['solicitudes', 'Solicitudes', vistaSolicitudes],
+  ['publicaciones', 'Publicaciones', vistaPublicaciones],
 ];
 
 async function ir() {

@@ -1,0 +1,47 @@
+{
+  "seo": {
+    "titulo": {
+      "es": "Destinos en Colombia para viajar con propósito · Wanna Go",
+      "en": "Destinations in Colombia for purposeful travel · Wanna Go"
+    },
+    "descripcion": "Guatapé, Comuna 13, Cartagena, Valle de Cocora, Tayrona y el Eje Cafetero: viajes por Colombia diseñados desde Medellín por Wanna Go.",
+    "foto": "guatape.jpg"
+  },
+  "portada": {
+    "foto": "guatape.jpg",
+    "alt": {
+      "es": "Embalse de Guatapé con sus islas verdes visto desde lo alto",
+      "en": "Guatapé reservoir and its green islands seen from above"
+    },
+    "etiqueta": {
+      "es": "Destinos en Colombia",
+      "en": "Destinations in Colombia"
+    },
+    "titulo": {
+      "es": "Conoce Colombia desde adentro",
+      "en": "Discover Colombia from the inside"
+    },
+    "texto": {
+      "es": "Lugares que diseñamos con cariño, desde Medellín hasta el Caribe. Cada uno se puede combinar en un viaje a tu medida.",
+      "en": "Places we design with care, from Medellín to the Caribbean. Each one can be combined into a tailor-made trip."
+    }
+  },
+  "listado": {
+    "ceja": {
+      "es": "Destinos",
+      "en": "Destinations"
+    },
+    "titulo": {
+      "es": "Elige por dónde empezar",
+      "en": "Choose where to start"
+    }
+  },
+  "cierre": {
+    "foto": "medellin.jpg",
+    "titulo": {
+      "es": "¿No sabes cuál elegir? Te ayudamos",
+      "en": "Can't decide? We'll help"
+    },
+    "whatsapp": "Hola Wanna Go, quiero ideas para viajar por Colombia."
+  }
+}

@@ -32,12 +32,12 @@ $$;
 
 -- ---------- Contenido ----------
 
-create table public.ajustes (
-  id smallint primary key default 1 check (id = 1),
-  popup boolean not null default true,
+create table public.paginas (
+  id text primary key check (id in ('inicio', 'nosotros', 'viajes-a-la-medida', 'viajes-grupales', 'eventos-corporativos', 'destinos', 'contacto', 'popup')),
+  contenido jsonb not null check (jsonb_typeof(contenido) = 'object'),
   actualizado timestamptz not null default now()
 );
-comment on table public.ajustes is 'Ajustes generales (una sola fila).';
+comment on table public.paginas is 'Textos y fotos de cada página, por secciones (estructura en admin/esquema.js). Incluye el pop-up del inicio.';
 
 create table public.destinos (
   url text primary key check (url ~ '^[a-z0-9-]+$'),
@@ -127,7 +127,7 @@ begin
 end;
 $$;
 
-create trigger ajustes_actualizado before update on public.ajustes for each row execute function public.marcar_actualizado();
+create trigger paginas_actualizado before update on public.paginas for each row execute function public.marcar_actualizado();
 create trigger destinos_actualizado before update on public.destinos for each row execute function public.marcar_actualizado();
 create trigger temporadas_actualizado before update on public.temporadas for each row execute function public.marcar_actualizado();
 
@@ -151,7 +151,7 @@ $$;
 -- ---------- Seguridad (RLS) ----------
 
 alter table public.editores enable row level security;
-alter table public.ajustes enable row level security;
+alter table public.paginas enable row level security;
 alter table public.destinos enable row level security;
 alter table public.temporadas enable row level security;
 alter table public.cuadros enable row level security;
@@ -163,8 +163,9 @@ create policy "ver mi fila de editor" on public.editores for select to authentic
   using (email = lower((select auth.jwt() ->> 'email')));
 
 -- contenido: lectura pública; escritura de editores
-create policy "leer ajustes" on public.ajustes for select to anon, authenticated using (true);
-create policy "editar ajustes" on public.ajustes for update to authenticated
+create policy "leer paginas" on public.paginas for select to anon, authenticated using (true);
+create policy "crear paginas" on public.paginas for insert to authenticated with check ((select public.es_editor()));
+create policy "editar paginas" on public.paginas for update to authenticated
   using ((select public.es_editor())) with check ((select public.es_editor()));
 
 create policy "leer destinos publicados" on public.destinos for select to anon, authenticated

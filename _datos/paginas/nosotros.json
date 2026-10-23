@@ -1,0 +1,162 @@
+{
+  "seo": {
+    "titulo": {
+      "es": "Quiénes somos · Wanna Go, agencia de viajes en Medellín",
+      "en": "About us · Wanna Go, travel agency in Medellín"
+    },
+    "descripcion": "Wanna Go es una agencia de turismo receptivo en Medellín fundada en 2019 por Luchy Vásquez. Viajes con propósito, auténticos y con hospitalidad cálida.",
+    "foto": "guatape-calle.jpg"
+  },
+  "portada": {
+    "foto": "guatape-calle.jpg",
+    "alt": {
+      "es": "Calle con fachadas de colores y zócalos en Guatapé",
+      "en": "Street with colorful facades and zócalos in Guatapé"
+    },
+    "etiqueta": {
+      "es": "Quiénes somos",
+      "en": "About us"
+    },
+    "titulo": {
+      "es": "Viajes con propósito desde Medellín",
+      "en": "Purposeful travel from Medellín"
+    },
+    "texto": {
+      "es": "Somos una agencia de turismo receptivo fundada en 2019. Te mostramos Colombia desde adentro: con su gente, su cocina y sus paisajes.",
+      "en": "We are an inbound travel agency founded in 2019. We show you Colombia from the inside: its people, its food and its landscapes."
+    }
+  },
+  "historia": {
+    "ceja": {
+      "es": "01 · Nuestra historia",
+      "en": "01 · Our story"
+    },
+    "titulo": {
+      "es": "Viajes con propósito",
+      "en": "Purposeful travel"
+    },
+    "parrafos": [
+      {
+        "es": "Wanna Go es una agencia de turismo receptivo con sede en Medellín, fundada en 2019 por María Lucía Vásquez Cock, Luchy.",
+        "en": "Wanna Go is an inbound travel agency based in Medellín, founded in 2019 by María Lucía Vásquez Cock, Luchy."
+      },
+      {
+        "es": "Huimos del turismo masivo y de lo predecible. Te mostramos cada destino desde adentro, con su gente, su cocina y sus paisajes, para que vuelvas distinto de como te fuiste.",
+        "en": "We steer clear of mass tourism and the predictable. We show you each destination from the inside, through its people, its food and its landscapes, so you come home different from how you left."
+      }
+    ],
+    "cifras": [
+      {
+        "valor": "2019",
+        "texto": {
+          "es": "Año de fundación",
+          "en": "Year founded"
+        }
+      },
+      {
+        "valor": "RNT 65568",
+        "texto": {
+          "es": "Registro Nacional de Turismo",
+          "en": "National Tourism Registry"
+        }
+      },
+      {
+        "valor": "Medellín",
+        "texto": {
+          "es": "Colombia",
+          "en": "Colombia"
+        }
+      }
+    ],
+    "foto": "comuna13.jpg",
+    "alt": {
+      "es": "Casas de colores y murales en las laderas de la Comuna 13",
+      "en": "Colorful houses and murals on the hillsides of Comuna 13"
+    }
+  },
+  "fundadora": {
+    "ceja": {
+      "es": "02 · Fundadora",
+      "en": "02 · Founder"
+    },
+    "cita": {
+      "es": "“Creo en los viajes que transforman: los que te sientan a la mesa de una familia local y te devuelven a casa con historias.”",
+      "en": "“I believe in trips that transform you: the ones that seat you at a local family's table and send you home with stories.”"
+    },
+    "nombre": "María Lucía Vásquez Cock · Luchy",
+    "cargo": {
+      "es": "Fundadora y diseñadora de experiencias",
+      "en": "Founder and experience designer"
+    }
+  },
+  "pilares": {
+    "ceja": {
+      "es": "03 · Nuestro sello",
+      "en": "03 · Our signature"
+    },
+    "titulo": {
+      "es": "Pilares de los viajes con propósito",
+      "en": "The pillars of purposeful travel"
+    },
+    "items": [
+      {
+        "titulo": {
+          "es": "Impacto local y sostenibilidad",
+          "en": "Local impact and sustainability"
+        },
+        "texto": {
+          "es": "Fomentamos el comercio local, respetamos la cultura y protegemos el entorno natural.",
+          "en": "We support local businesses, respect the culture and protect the natural environment."
+        }
+      },
+      {
+        "titulo": {
+          "es": "Transformación personal",
+          "en": "Personal transformation"
+        },
+        "texto": {
+          "es": "Creamos espacios para aprender, reconectar, hacer una pausa y crecer.",
+          "en": "We create space to learn, reconnect, pause and grow."
+        }
+      },
+      {
+        "titulo": {
+          "es": "Autenticidad y exclusividad",
+          "en": "Authenticity and exclusivity"
+        },
+        "texto": {
+          "es": "Experiencias genuinas, lejos del turismo masivo y acelerado.",
+          "en": "Genuine experiences, far from rushed mass tourism."
+        }
+      },
+      {
+        "titulo": {
+          "es": "Hospitalidad cálida",
+          "en": "Warm hospitality"
+        },
+        "texto": {
+          "es": "Un sello personal de cuidado y detalle en cada punto del viaje.",
+          "en": "A personal touch of care and detail at every point of the trip."
+        }
+      }
+    ]
+  },
+  "resenas": {
+    "ceja": {
+      "es": "Lo que dicen",
+      "en": "What people say"
+    },
+    "titulo": {
+      "es": "Historias de quienes viajaron con nosotros",
+      "en": "Stories from people who traveled with us"
+    }
+  },
+  "cierre": {
+    "foto": "grupo-atardecer.jpg",
+    "titulo": {
+      "es": "Colombia se vive mejor en buena compañía",
+      "en": "Colombia is best experienced in good company"
+    },
+    "whatsapp": "Hola Wanna Go, quiero conocerlos."
+  }
+}

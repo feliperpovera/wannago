@@ -35,3 +35,17 @@ document.getElementById('lead')?.addEventListener('submit', e => {
 
 // Menú de celular: se cierra al tocar un enlace
 document.querySelectorAll('.menu a').forEach(a => a.addEventListener('click', () => a.closest('.menu').hidePopover?.()));
+
+// Pop-up del inicio: una vez por visita, tras un momento
+(() => {
+  const d = document.getElementById('promo');
+  if (!d || !d.showModal) return;
+  const visto = () => { try { sessionStorage.setItem('wg-promo', '1'); } catch (e) {} };
+  let seen = false;
+  try { seen = sessionStorage.getItem('wg-promo') === '1'; } catch (e) {}
+  const close = () => { d.close(); visto(); };
+  d.querySelectorAll('[data-close]').forEach(b => b.addEventListener('click', close));
+  d.addEventListener('click', e => { if (e.target === d) close(); });
+  d.addEventListener('cancel', visto);
+  if (!seen) setTimeout(() => d.showModal(), 1400);
+})();

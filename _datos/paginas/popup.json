@@ -1,0 +1,40 @@
+{
+  "popup": {
+    "activo": true,
+    "usar_temporada": true,
+    "cerrar": {
+      "es": "Ahora no",
+      "en": "Not now"
+    },
+    "foto": "",
+    "alt": {
+      "es": "",
+      "en": ""
+    },
+    "aviso": {
+      "es": "",
+      "en": ""
+    },
+    "etiqueta": {
+      "es": "",
+      "en": ""
+    },
+    "titulo": {
+      "es": "",
+      "en": ""
+    },
+    "titulo_resalte": {
+      "es": "",
+      "en": ""
+    },
+    "texto": {
+      "es": "",
+      "en": ""
+    },
+    "boton": {
+      "es": "",
+      "en": ""
+    },
+    "enlace": ""
+  }
+}

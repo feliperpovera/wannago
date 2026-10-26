@@ -1,7 +1,7 @@
 -- Wanna Go · esquema del contenido editable desde /admin
 -- Lectura pública del contenido publicado (la usa el generador del sitio).
 -- Escritura solo para correos que estén en la tabla «editores».
--- Los textos bilingües son jsonb {"es": "...", "en": "..."}, igual que en _datos/.
+-- Los textos bilingües son jsonb {"es": "...", "en": "..."}, igual que en contenido/.
 
 -- ---------- Tipos ----------
 

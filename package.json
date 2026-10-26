@@ -1,0 +1,12 @@
+{
+  "name": "wannago",
+  "private": true,
+  "description": "Sitio de Wanna Go Colombia con panel de edición sobre Supabase",
+  "type": "module",
+  "scripts": {
+    "construir": "python3 herramientas/fotos.py && node herramientas/generar.mjs",
+    "ver": "python3 -m http.server 8765 --directory dist",
+    "semilla": "node herramientas/supabase/semilla.mjs",
+    "bajar": "node herramientas/supabase/bajar.mjs"
+  }
+}

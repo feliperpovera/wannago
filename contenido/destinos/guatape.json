@@ -1,0 +1,118 @@
+{
+  "url": "guatape",
+  "orden": 1,
+  "nombre": {
+    "es": "Guatapé",
+    "en": "Guatapé"
+  },
+  "h1": {
+    "es": "Guatapé y la Piedra del Peñol",
+    "en": "Guatapé and the Piedra del Peñol"
+  },
+  "region": {
+    "es": "Antioquia · a 2 horas de Medellín",
+    "en": "Antioquia · 2 hours from Medellín"
+  },
+  "corto": {
+    "es": "Zócalos de colores y la Piedra del Peñol.",
+    "en": "Colorful zócalos and the Piedra del Peñol."
+  },
+  "foto": "guatape.jpg",
+  "alt": {
+    "es": "Embalse de Guatapé con sus islas verdes visto desde lo alto",
+    "en": "Guatapé reservoir and its green islands seen from above"
+  },
+  "foto2": "guatape-calle.jpg",
+  "alt2": {
+    "es": "Calle con fachadas de colores y zócalos en Guatapé",
+    "en": "Street with colorful facades and zócalos in Guatapé"
+  },
+  "titulo_seo": {
+    "es": "Guatapé y la Piedra del Peñol desde Medellín · Wanna Go",
+    "en": "Guatapé and the Piedra del Peñol from Medellín · Wanna Go"
+  },
+  "descripcion_seo": "Viaje a Guatapé desde Medellín: sube la Piedra del Peñol, recorre las calles de zócalos y navega el embalse. Diseñado a tu medida por Wanna Go.",
+  "lead": {
+    "es": "El pueblo de los zócalos y la piedra que mira sobre un mar de islas. A dos horas de Medellín, uno de los paisajes más fotografiados de Colombia.",
+    "en": "The town of painted zócalos and the rock that looks out over a sea of islands. Two hours from Medellín, one of the most photographed landscapes in Colombia."
+  },
+  "h2": {
+    "es": "Color, agua y montaña",
+    "en": "Color, water and mountains"
+  },
+  "parrafos": [
+    {
+      "es": "Guatapé es un pueblo de calles empedradas donde cada casa cuenta su historia en los zócalos: relieves de colores en la base de las fachadas que muestran oficios, animales y escenas de la vida local.",
+      "en": "Guatapé is a town of cobbled streets where every house tells its story through its zócalos: colorful reliefs along the base of the façades depicting trades, animals and scenes of local life."
+    },
+    {
+      "es": "Muy cerca está la Piedra del Peñol. Quien sube sus más de 700 escalones encuentra arriba una vista completa del embalse, con sus islas y penínsulas verdes. Con nosotros lo recorres sin afán, con tiempo para el agua, la cocina local y la conversación.",
+      "en": "Nearby stands the Piedra del Peñol. Those who climb its more than 700 steps are rewarded with a full view of the reservoir, its islands and green peninsulas. With us you explore it unhurried, with time for the water, local food and conversation."
+    }
+  ],
+  "vivir": [
+    {
+      "titulo": {
+        "es": "Subir la Piedra del Peñol",
+        "en": "Climb the Piedra del Peñol"
+      },
+      "texto": {
+        "es": "Más de 700 escalones y una de las vistas más amplias de Antioquia.",
+        "en": "More than 700 steps up to one of the widest views in Antioquia."
+      }
+    },
+    {
+      "titulo": {
+        "es": "Calles de zócalos",
+        "en": "Streets of zócalos"
+      },
+      "texto": {
+        "es": "Un recorrido a pie por las fachadas pintadas y sus historias.",
+        "en": "A walk past the painted façades and the stories they tell."
+      }
+    },
+    {
+      "titulo": {
+        "es": "Paseo por el embalse",
+        "en": "Out on the reservoir"
+      },
+      "texto": {
+        "es": "Lancha o velero entre islas, bahías y fincas a la orilla del agua.",
+        "en": "Boat or sailboat among islands, bays and lakeside farms."
+      }
+    },
+    {
+      "titulo": {
+        "es": "Cocina de pueblo",
+        "en": "Small-town cooking"
+      },
+      "texto": {
+        "es": "Trucha, bandeja paisa y postres de la región en lugares que conocemos.",
+        "en": "Trout, bandeja paisa and regional desserts at places we know well."
+      }
+    }
+  ],
+  "datos": {
+    "llegar": {
+      "es": "2 horas por carretera desde Medellín",
+      "en": "2 hours by road from Medellín"
+    },
+    "epoca": {
+      "es": "Todo el año",
+      "en": "Year-round"
+    },
+    "tiempo": {
+      "es": "1 o 2 días",
+      "en": "1 or 2 days"
+    },
+    "ideal": {
+      "es": "Familias, parejas y grupos",
+      "en": "Families, couples and groups"
+    }
+  },
+  "otros": [
+    "comuna-13",
+    "plazas-de-mercado",
+    "eje-cafetero"
+  ]
+}

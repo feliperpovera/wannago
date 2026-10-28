@@ -1,7 +1,7 @@
 // Botón «Publicar cambios» del panel: verifica que quien lo pide sea editor
 // y le pide a GitHub que regenere el sitio (evento repository_dispatch «publicar»).
 // Secretos de la función: GITHUB_TOKEN (token con permiso Contents: write sobre el repositorio)
-// y GITHUB_REPO (ej. feliperpovera/wannago). SUPABASE_URL y SUPABASE_ANON_KEY los pone Supabase.
+// y GITHUB_REPO (ej. feliperpovera/wannago). SUPABASE_URL lo pone Supabase.
 import { createClient } from 'npm:@supabase/supabase-js@2.117.2';
 
 const cors = {
@@ -14,7 +14,9 @@ const respuesta = (cuerpo: unknown, status = 200) =>
 Deno.serve(async (req) => {
   if (req.method === 'OPTIONS') return new Response('ok', { headers: cors });
 
-  const sb = createClient(Deno.env.get('SUPABASE_URL')!, Deno.env.get('SUPABASE_ANON_KEY')!, {
+  // la clave pública llega en la cabecera «apikey» que manda el panel (sirve con claves nuevas y antiguas)
+  const clave = req.headers.get('apikey') ?? Deno.env.get('SUPABASE_ANON_KEY') ?? '';
+  const sb = createClient(Deno.env.get('SUPABASE_URL')!, clave, {
     global: { headers: { Authorization: req.headers.get('Authorization') ?? '' } },
   });
   const { data: { user } } = await sb.auth.getUser();

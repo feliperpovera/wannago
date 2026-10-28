@@ -1,179 +1,179 @@
 {
   "seo": {
-    "titulo": {
-      "es": "Viajes grupales con anfitriona · Wanna Go Colombia",
-      "en": "Group trips with a host · Wanna Go Colombia"
-    },
-    "descripcion": "Salidas con fecha fija y grupos pequeños, con anfitriona de Wanna Go de principio a fin. Marruecos entre mujeres, Cartagena y el Eje Cafetero.",
-    "foto": "grupo-atardecer.jpg"
-  },
-  "portada": {
     "foto": "grupo-atardecer.jpg",
-    "alt": {
-      "es": "Grupo de viajeros contemplando el atardecer",
-      "en": "Group of travelers watching the sunset"
-    },
-    "etiqueta": {
-      "es": "Grupos pequeños",
-      "en": "Small groups"
-    },
     "titulo": {
-      "es": "Viajes grupales con anfitriona",
-      "en": "Group trips with a host"
+      "en": "Group trips with a host · Wanna Go Colombia",
+      "es": "Viajes grupales con anfitriona · Wanna Go Colombia"
     },
-    "texto": {
-      "es": "Salidas con fecha fija, grupos pequeños y una anfitriona de Wanna Go acompañándote todo el camino.",
-      "en": "Fixed-date departures, small groups and a Wanna Go host with you every step of the way."
-    },
-    "whatsapp": "Hola Wanna Go, quiero información de los viajes grupales."
+    "descripcion": "Salidas con fecha fija y grupos pequeños, con anfitriona de Wanna Go de principio a fin. Marruecos entre mujeres, Cartagena y el Eje Cafetero."
   },
   "intro": {
-    "ceja": {
-      "es": "01 · Cómo viajamos",
-      "en": "01 · How we travel"
+    "alt": {
+      "en": "Traveler in the Sahara dunes at sunset",
+      "es": "Viajera en las dunas del Sahara al atardecer"
     },
+    "ceja": {
+      "en": "01 · How we travel",
+      "es": "01 · Cómo viajamos"
+    },
+    "foto": "mujer-dunas.jpg",
     "titulo": {
-      "es": "Viajar en grupo, sin sentirte en un tour",
-      "en": "Group travel that doesn't feel like a tour"
+      "en": "Group travel that doesn't feel like a tour",
+      "es": "Viajar en grupo, sin sentirte en un tour"
     },
     "parrafos": [
       {
-        "es": "Nuestras salidas grupales son para pocas personas, con un itinerario pensado al detalle y tiempo libre para explorar a tu manera.",
-        "en": "Our group departures are for just a few people, with a carefully planned itinerary and free time to explore your own way."
+        "en": "Our group departures are for just a few people, with a carefully planned itinerary and free time to explore your own way.",
+        "es": "Nuestras salidas grupales son para pocas personas, con un itinerario pensado al detalle y tiempo libre para explorar a tu manera."
       },
       {
-        "es": "Una anfitriona de Wanna Go viaja contigo de principio a fin. Se encarga de la logística para que tú solo te ocupes de vivir el viaje.",
-        "en": "A Wanna Go host travels with you from start to finish and takes care of the logistics, so all you have to do is enjoy the trip."
+        "en": "A Wanna Go host travels with you from start to finish and takes care of the logistics, so all you have to do is enjoy the trip.",
+        "es": "Una anfitriona de Wanna Go viaja contigo de principio a fin. Se encarga de la logística para que tú solo te ocupes de vivir el viaje."
       }
-    ],
-    "foto": "mujer-dunas.jpg",
+    ]
+  },
+  "cierre": {
+    "foto": "camellos.jpg",
+    "titulo": {
+      "en": "Want to hear about upcoming departures?",
+      "es": "¿Quieres saber de las próximas salidas?"
+    },
+    "whatsapp": "Hola Wanna Go, quiero información de los viajes grupales."
+  },
+  "portada": {
     "alt": {
-      "es": "Viajera en las dunas del Sahara al atardecer",
-      "en": "Traveler in the Sahara dunes at sunset"
+      "en": "Group of travelers watching the sunset",
+      "es": "Grupo de viajeros contemplando el atardecer"
+    },
+    "foto": "grupo-atardecer.jpg",
+    "texto": {
+      "en": "Fixed-date departures, small groups and a Wanna Go host with you every step of the way.",
+      "es": "Salidas con fecha fija, grupos pequeños y una anfitriona de Wanna Go acompañándote todo el camino."
+    },
+    "titulo": {
+      "en": "Group trips with a host",
+      "es": "Viajes grupales con anfitriona"
+    },
+    "etiqueta": {
+      "en": "Small groups",
+      "es": "Grupos pequeños"
+    },
+    "whatsapp": "Hola Wanna Go, quiero información de los viajes grupales."
+  },
+  "resenas": {
+    "ceja": {
+      "en": "What people say",
+      "es": "Lo que dicen"
+    },
+    "titulo": {
+      "en": "Stories from people who traveled with us",
+      "es": "Historias de quienes viajaron con nosotros"
     }
   },
   "salidas": {
     "ceja": {
-      "es": "02 · Próximas salidas",
-      "en": "02 · Upcoming departures"
+      "en": "02 · Upcoming departures",
+      "es": "02 · Próximas salidas"
     },
     "titulo": {
-      "es": "Elige tu próximo viaje",
-      "en": "Choose your next trip"
+      "en": "Choose your next trip",
+      "es": "Elige tu próximo viaje"
     },
     "proximas": [
       {
-        "enlace": "destinos/cartagena/",
-        "foto": "cartagena.jpg",
         "alt": {
-          "es": "Calle colonial de Cartagena con faroles",
-          "en": "Colonial street in Cartagena with lanterns"
+          "en": "Colonial street in Cartagena with lanterns",
+          "es": "Calle colonial de Cartagena con faroles"
         },
+        "foto": "cartagena.jpg",
         "aviso": {
-          "es": "Próximamente",
-          "en": "Coming soon"
+          "en": "Coming soon",
+          "es": "Próximamente"
         },
         "fecha": {
-          "es": "Fecha por definir",
-          "en": "Date to be confirmed"
+          "en": "Date to be confirmed",
+          "es": "Fecha por definir"
         },
-        "fecha_por_definir": true,
+        "enlace": "destinos/cartagena/",
         "titulo": {
-          "es": "Cartagena y el Caribe",
-          "en": "Cartagena and the Caribbean"
-        }
+          "en": "Cartagena and the Caribbean",
+          "es": "Cartagena y el Caribe"
+        },
+        "fecha_por_definir": true
       },
       {
-        "enlace": "destinos/eje-cafetero/",
-        "foto": "cafe.jpg",
         "alt": {
-          "es": "Granos de café maduros en la rama",
-          "en": "Ripe coffee cherries on the branch"
+          "en": "Ripe coffee cherries on the branch",
+          "es": "Granos de café maduros en la rama"
         },
+        "foto": "cafe.jpg",
         "aviso": {
-          "es": "Próximamente",
-          "en": "Coming soon"
+          "en": "Coming soon",
+          "es": "Próximamente"
         },
         "fecha": {
-          "es": "Fecha por definir",
-          "en": "Date to be confirmed"
+          "en": "Date to be confirmed",
+          "es": "Fecha por definir"
         },
-        "fecha_por_definir": true,
+        "enlace": "destinos/eje-cafetero/",
         "titulo": {
-          "es": "Paisaje Cultural Cafetero",
-          "en": "Coffee Cultural Landscape"
-        }
+          "en": "Coffee Cultural Landscape",
+          "es": "Paisaje Cultural Cafetero"
+        },
+        "fecha_por_definir": true
       }
     ]
   },
   "siempre": {
     "ceja": {
-      "es": "03 · En cada salida",
-      "en": "03 · On every departure"
-    },
-    "titulo": {
-      "es": "Lo que siempre tienes",
-      "en": "What you always get"
+      "en": "03 · On every departure",
+      "es": "03 · En cada salida"
     },
     "items": [
       {
-        "titulo": {
-          "es": "Grupos pequeños",
-          "en": "Small groups"
-        },
         "texto": {
-          "es": "Pocas personas, para viajar con calma y conocerse.",
-          "en": "Few people, so you travel calmly and get to know each other."
+          "en": "Few people, so you travel calmly and get to know each other.",
+          "es": "Pocas personas, para viajar con calma y conocerse."
+        },
+        "titulo": {
+          "en": "Small groups",
+          "es": "Grupos pequeños"
         }
       },
       {
-        "titulo": {
-          "es": "Anfitriona Wanna Go",
-          "en": "A Wanna Go host"
-        },
         "texto": {
-          "es": "Te acompaña desde la salida hasta el regreso.",
-          "en": "With you from departure to return."
+          "en": "With you from departure to return.",
+          "es": "Te acompaña desde la salida hasta el regreso."
+        },
+        "titulo": {
+          "en": "A Wanna Go host",
+          "es": "Anfitriona Wanna Go"
         }
       },
       {
-        "titulo": {
-          "es": "Experiencias locales",
-          "en": "Local experiences"
-        },
         "texto": {
-          "es": "Cocina, cultura y gente de cada destino.",
-          "en": "Food, culture and people at every destination."
+          "en": "Food, culture and people at every destination.",
+          "es": "Cocina, cultura y gente de cada destino."
+        },
+        "titulo": {
+          "en": "Local experiences",
+          "es": "Experiencias locales"
         }
       },
       {
-        "titulo": {
-          "es": "Todo organizado",
-          "en": "Everything organized"
-        },
         "texto": {
-          "es": "Alojamiento, traslados y reservas resueltos.",
-          "en": "Lodging, transfers and bookings taken care of."
+          "en": "Lodging, transfers and bookings taken care of.",
+          "es": "Alojamiento, traslados y reservas resueltos."
+        },
+        "titulo": {
+          "en": "Everything organized",
+          "es": "Todo organizado"
         }
       }
-    ]
-  },
-  "resenas": {
-    "ceja": {
-      "es": "Lo que dicen",
-      "en": "What people say"
-    },
+    ],
     "titulo": {
-      "es": "Historias de quienes viajaron con nosotros",
-      "en": "Stories from people who traveled with us"
+      "en": "What you always get",
+      "es": "Lo que siempre tienes"
     }
-  },
-  "cierre": {
-    "foto": "camellos.jpg",
-    "titulo": {
-      "es": "¿Quieres saber de las próximas salidas?",
-      "en": "Want to hear about upcoming departures?"
-    },
-    "whatsapp": "Hola Wanna Go, quiero información de los viajes grupales."
   }
 }

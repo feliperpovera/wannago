@@ -33,8 +33,8 @@ const sql = [
   '',
   ...viajes.colombia.map((c, i) => `insert into public.cuadros (orden, destino, aviso) values (${i + 1}, ${lit(c.destino)}, ${c.aviso?.es ? js(c.aviso) : 'null'});`),
   '',
-  '-- Editores: cambia por los correos reales antes de correr esta semilla',
-  "-- insert into public.editores (email, nombre) values ('correo@ejemplo.com', 'Nombre');",
+  '-- Editores del panel',
+  "insert into public.editores (email, nombre) values ('wannagoco@gmail.com', 'Wanna Go') on conflict (email) do nothing;",
   '',
 ].join('\n');
 writeFileSync('supabase/seed.sql', sql);

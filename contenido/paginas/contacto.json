@@ -1,43 +1,43 @@
 {
   "seo": {
-    "titulo": {
-      "es": "Contacto · Wanna Go Colombia, Medellín",
-      "en": "Contact · Wanna Go Colombia, Medellín"
-    },
-    "descripcion": "Escríbenos por WhatsApp al +57 312 289 9185 o a wannagoco@gmail.com. Oficina en El Poblado, Medellín. Diseñamos tu viaje por Colombia.",
-    "foto": "medellin.jpg"
-  },
-  "portada": {
     "foto": "medellin.jpg",
-    "alt": {
-      "es": "Medellín iluminada al atardecer, rodeada de montañas",
-      "en": "Medellín lit up at dusk, surrounded by mountains"
-    },
-    "etiqueta": {
-      "es": "Contacto",
-      "en": "Contact"
-    },
     "titulo": {
-      "es": "Diseñemos tu próximo viaje",
-      "en": "Let's plan your next trip"
+      "en": "Contact · Wanna Go Colombia, Medellín",
+      "es": "Contacto · Wanna Go Colombia, Medellín"
     },
-    "texto": {
-      "es": "Cuéntanos qué te mueve y te proponemos un itinerario a tu medida. Respondemos por WhatsApp.",
-      "en": "Tell us what moves you and we'll propose an itinerary made for you. We reply on WhatsApp."
-    }
+    "descripcion": "Escríbenos por WhatsApp al +57 312 289 9185 o a wannagoco@gmail.com. Oficina en El Poblado, Medellín. Diseñamos tu viaje por Colombia."
   },
   "canales": {
     "ceja": {
-      "es": "Canales",
-      "en": "Channels"
-    },
-    "titulo": {
-      "es": "Hablemos de tu viaje",
-      "en": "Let's talk about your trip"
+      "en": "Channels",
+      "es": "Canales"
     },
     "texto": {
-      "es": "Cuéntanos qué te mueve y te proponemos un itinerario a tu medida. Respondemos por WhatsApp.",
-      "en": "Tell us what moves you and we'll propose an itinerary made for you. We reply on WhatsApp."
+      "en": "Tell us what moves you and we'll propose an itinerary made for you. We reply on WhatsApp.",
+      "es": "Cuéntanos qué te mueve y te proponemos un itinerario a tu medida. Respondemos por WhatsApp."
+    },
+    "titulo": {
+      "en": "Let's talk about your trip",
+      "es": "Hablemos de tu viaje"
+    }
+  },
+  "portada": {
+    "alt": {
+      "en": "Medellín lit up at dusk, surrounded by mountains",
+      "es": "Medellín iluminada al atardecer, rodeada de montañas"
+    },
+    "foto": "medellin.jpg",
+    "texto": {
+      "en": "Tell us what moves you and we'll propose an itinerary made for you. We reply on WhatsApp.",
+      "es": "Cuéntanos qué te mueve y te proponemos un itinerario a tu medida. Respondemos por WhatsApp."
+    },
+    "titulo": {
+      "en": "Let's plan your next trip",
+      "es": "Diseñemos tu próximo viaje"
+    },
+    "etiqueta": {
+      "en": "Contact",
+      "es": "Contacto"
     }
   }
 }

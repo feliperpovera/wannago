@@ -1,40 +1,40 @@
 {
   "popup": {
-    "activo": true,
-    "usar_temporada": true,
-    "cerrar": {
-      "es": "Ahora no",
-      "en": "Not now"
+    "alt": {
+      "en": "",
+      "es": ""
     },
     "foto": "",
-    "alt": {
-      "es": "",
-      "en": ""
-    },
     "aviso": {
-      "es": "",
-      "en": ""
-    },
-    "etiqueta": {
-      "es": "",
-      "en": ""
-    },
-    "titulo": {
-      "es": "",
-      "en": ""
-    },
-    "titulo_resalte": {
-      "es": "",
-      "en": ""
-    },
-    "texto": {
-      "es": "",
-      "en": ""
+      "en": "",
+      "es": ""
     },
     "boton": {
-      "es": "",
-      "en": ""
+      "en": "",
+      "es": ""
     },
-    "enlace": ""
+    "texto": {
+      "en": "",
+      "es": ""
+    },
+    "activo": true,
+    "cerrar": {
+      "en": "Not now",
+      "es": "Ahora no"
+    },
+    "enlace": "",
+    "titulo": {
+      "en": "",
+      "es": ""
+    },
+    "etiqueta": {
+      "en": "",
+      "es": ""
+    },
+    "titulo_resalte": {
+      "en": "",
+      "es": ""
+    },
+    "usar_temporada": true
   }
 }

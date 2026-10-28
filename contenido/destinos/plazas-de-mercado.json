@@ -2,112 +2,112 @@
   "url": "plazas-de-mercado",
   "orden": 7,
   "nombre": {
-    "es": "Plazas de mercado",
-    "en": "Local markets"
+    "en": "Local markets",
+    "es": "Plazas de mercado"
   },
   "h1": {
-    "es": "Plazas de mercado de Medellín",
-    "en": "Medellín's market halls"
+    "en": "Medellín's market halls",
+    "es": "Plazas de mercado de Medellín"
   },
   "region": {
-    "es": "Medellín",
-    "en": "Medellín"
+    "en": "Medellín",
+    "es": "Medellín"
   },
   "corto": {
-    "es": "Frutas exóticas y cocina popular.",
-    "en": "Exotic fruit and home-style cooking."
+    "en": "Exotic fruit and home-style cooking.",
+    "es": "Frutas exóticas y cocina popular."
   },
   "foto": "frutas.jpg",
   "alt": {
-    "es": "Puesto de frutas tropicales en una plaza de mercado",
-    "en": "Tropical fruit stall at a market hall"
+    "en": "Tropical fruit stall at a market hall",
+    "es": "Puesto de frutas tropicales en una plaza de mercado"
   },
   "foto2": "medellin.jpg",
   "alt2": {
-    "es": "Medellín iluminada al atardecer, rodeada de montañas",
-    "en": "Medellín lit up at dusk, surrounded by mountains"
+    "en": "Medellín lit up at dusk, surrounded by mountains",
+    "es": "Medellín iluminada al atardecer, rodeada de montañas"
   },
   "titulo_seo": {
-    "es": "Tour de frutas en plazas de mercado de Medellín · Wanna Go",
-    "en": "Fruit tour in Medellín market halls · Wanna Go"
+    "en": "Fruit tour in Medellín market halls · Wanna Go",
+    "es": "Tour de frutas en plazas de mercado de Medellín · Wanna Go"
   },
   "descripcion_seo": "Tour de frutas exóticas por las plazas de mercado de Medellín: cata en el puesto, yerbateros y almuerzo típico, con guías locales de Wanna Go.",
   "lead": {
-    "es": "Lulo, granadilla, maracuyá, guanábana. Colombia se prueba en sus plazas de mercado, entre puestos de frutas, hierbas y cocina popular.",
-    "en": "Lulo, granadilla, passion fruit, soursop. Colombia is tasted in its market halls, among stalls of fruit, herbs and home-style cooking."
+    "en": "Lulo, granadilla, passion fruit, soursop. Colombia is tasted in its market halls, among stalls of fruit, herbs and home-style cooking.",
+    "es": "Lulo, granadilla, maracuyá, guanábana. Colombia se prueba en sus plazas de mercado, entre puestos de frutas, hierbas y cocina popular."
   },
   "h2": {
-    "es": "La despensa de Medellín",
-    "en": "Medellín's pantry"
+    "en": "Medellín's pantry",
+    "es": "La despensa de Medellín"
   },
   "parrafos": [
     {
-      "es": "Las plazas de mercado son el lugar donde se cruza todo Antioquia: campesinos, cocineras, yerbateros y vendedores que llevan toda la vida en el mismo puesto. Colombia tiene una enorme variedad de frutas y aquí se ve, se huele y se prueba.",
-      "en": "Market halls are where all of Antioquia meets: farmers, cooks, herbalists and vendors who have spent a lifetime at the same stall. Colombia has an enormous variety of fruit, and here you see it, smell it and taste it."
+      "en": "Market halls are where all of Antioquia meets: farmers, cooks, herbalists and vendors who have spent a lifetime at the same stall. Colombia has an enormous variety of fruit, and here you see it, smell it and taste it.",
+      "es": "Las plazas de mercado son el lugar donde se cruza todo Antioquia: campesinos, cocineras, yerbateros y vendedores que llevan toda la vida en el mismo puesto. Colombia tiene una enorme variedad de frutas y aquí se ve, se huele y se prueba."
     },
     {
-      "es": "Recorremos plazas como la Minorista con guías locales, probamos frutas que no encontrarás en otro país y terminamos en la mesa, con un almuerzo típico.",
-      "en": "We walk through market halls like La Minorista with local guides, taste fruit you won't find anywhere else and finish at the table with a traditional lunch."
+      "en": "We walk through market halls like La Minorista with local guides, taste fruit you won't find anywhere else and finish at the table with a traditional lunch.",
+      "es": "Recorremos plazas como la Minorista con guías locales, probamos frutas que no encontrarás en otro país y terminamos en la mesa, con un almuerzo típico."
     }
   ],
   "vivir": [
     {
-      "titulo": {
-        "es": "Cata de frutas",
-        "en": "Fruit tasting"
-      },
       "texto": {
-        "es": "Frutas exóticas explicadas y probadas en el puesto.",
-        "en": "Exotic fruits explained and tasted right at the stall."
+        "en": "Exotic fruits explained and tasted right at the stall.",
+        "es": "Frutas exóticas explicadas y probadas en el puesto."
+      },
+      "titulo": {
+        "en": "Fruit tasting",
+        "es": "Cata de frutas"
       }
     },
     {
-      "titulo": {
-        "es": "Hierbas y saberes",
-        "en": "Herbs and folk wisdom"
-      },
       "texto": {
-        "es": "Los yerbateros y sus remedios tradicionales.",
-        "en": "Herbalists and their traditional remedies."
+        "en": "Herbalists and their traditional remedies.",
+        "es": "Los yerbateros y sus remedios tradicionales."
+      },
+      "titulo": {
+        "en": "Herbs and folk wisdom",
+        "es": "Hierbas y saberes"
       }
     },
     {
-      "titulo": {
-        "es": "Almuerzo de plaza",
-        "en": "Market lunch"
-      },
       "texto": {
-        "es": "Sopa, frijoles o sancocho donde comen los que trabajan ahí.",
-        "en": "Soup, beans or sancocho where the market workers eat."
+        "en": "Soup, beans or sancocho where the market workers eat.",
+        "es": "Sopa, frijoles o sancocho donde comen los que trabajan ahí."
+      },
+      "titulo": {
+        "en": "Market lunch",
+        "es": "Almuerzo de plaza"
       }
     },
     {
-      "titulo": {
-        "es": "Café y arepa",
-        "en": "Coffee and arepa"
-      },
       "texto": {
-        "es": "Desayuno paisa para empezar con energía.",
-        "en": "A paisa breakfast to start the day."
+        "en": "A paisa breakfast to start the day.",
+        "es": "Desayuno paisa para empezar con energía."
+      },
+      "titulo": {
+        "en": "Coffee and arepa",
+        "es": "Café y arepa"
       }
     }
   ],
   "datos": {
-    "llegar": {
-      "es": "En Medellín, cerca del centro",
-      "en": "In Medellín, near downtown"
-    },
     "epoca": {
-      "es": "Todo el año, mejor en la mañana",
-      "en": "Year-round, best in the morning"
-    },
-    "tiempo": {
-      "es": "Medio día",
-      "en": "Half a day"
+      "en": "Year-round, best in the morning",
+      "es": "Todo el año, mejor en la mañana"
     },
     "ideal": {
-      "es": "Viajeros curiosos y amantes de la cocina",
-      "en": "Curious travelers and food lovers"
+      "en": "Curious travelers and food lovers",
+      "es": "Viajeros curiosos y amantes de la cocina"
+    },
+    "llegar": {
+      "en": "In Medellín, near downtown",
+      "es": "En Medellín, cerca del centro"
+    },
+    "tiempo": {
+      "en": "Half a day",
+      "es": "Medio día"
     }
   },
   "otros": [

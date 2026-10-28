@@ -37,7 +37,7 @@ create table public.paginas (
   contenido jsonb not null check (jsonb_typeof(contenido) = 'object'),
   actualizado timestamptz not null default now()
 );
-comment on table public.paginas is 'Textos y fotos de cada página, por secciones (estructura en admin/esquema.js). Incluye el pop-up del inicio.';
+comment on table public.paginas is 'Textos y fotos de cada página, por secciones (estructura en panel/esquema.js). Incluye el pop-up del inicio.';
 
 create table public.destinos (
   url text primary key check (url ~ '^[a-z0-9-]+$'),

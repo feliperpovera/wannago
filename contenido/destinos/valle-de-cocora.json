@@ -2,112 +2,112 @@
   "url": "valle-de-cocora",
   "orden": 4,
   "nombre": {
-    "es": "Valle de Cocora",
-    "en": "Cocora Valley"
+    "en": "Cocora Valley",
+    "es": "Valle de Cocora"
   },
   "h1": {
-    "es": "Valle de Cocora y Salento",
-    "en": "Cocora Valley and Salento"
+    "en": "Cocora Valley and Salento",
+    "es": "Valle de Cocora y Salento"
   },
   "region": {
-    "es": "Quindío · Eje Cafetero",
-    "en": "Quindío · Coffee Region"
+    "en": "Quindío · Coffee Region",
+    "es": "Quindío · Eje Cafetero"
   },
   "corto": {
-    "es": "Caminatas entre las palmas de cera.",
-    "en": "Hikes among the wax palms."
+    "en": "Hikes among the wax palms.",
+    "es": "Caminatas entre las palmas de cera."
   },
   "foto": "salento.jpg",
   "alt": {
-    "es": "Palmas de cera en el valle de Cocora",
-    "en": "Wax palms in the Cocora Valley"
+    "en": "Wax palms in the Cocora Valley",
+    "es": "Palmas de cera en el valle de Cocora"
   },
   "foto2": "cafe.jpg",
   "alt2": {
-    "es": "Granos de café maduros en la rama",
-    "en": "Ripe coffee cherries on the branch"
+    "en": "Ripe coffee cherries on the branch",
+    "es": "Granos de café maduros en la rama"
   },
   "titulo_seo": {
-    "es": "Valle de Cocora y Salento: palmas de cera · Wanna Go",
-    "en": "Cocora Valley and Salento: wax palms · Wanna Go"
+    "en": "Cocora Valley and Salento: wax palms · Wanna Go",
+    "es": "Valle de Cocora y Salento: palmas de cera · Wanna Go"
   },
   "descripcion_seo": "Camina entre las palmas de cera del Valle de Cocora, conoce Salento y visita una finca cafetera. Viaje al Quindío diseñado por Wanna Go.",
   "lead": {
-    "es": "Caminar entre palmas de cera, el árbol nacional de Colombia, en un valle de niebla y montaña a las afueras de Salento.",
-    "en": "Walk among wax palms, Colombia's national tree, in a misty mountain valley just outside Salento."
+    "en": "Walk among wax palms, Colombia's national tree, in a misty mountain valley just outside Salento.",
+    "es": "Caminar entre palmas de cera, el árbol nacional de Colombia, en un valle de niebla y montaña a las afueras de Salento."
   },
   "h2": {
-    "es": "El valle de las palmas más altas",
-    "en": "The valley of the tallest palms"
+    "en": "The valley of the tallest palms",
+    "es": "El valle de las palmas más altas"
   },
   "parrafos": [
     {
-      "es": "La palma de cera del Quindío es el árbol nacional de Colombia y una de las palmas más altas del mundo: puede llegar a los 60 metros. En el Valle de Cocora crecen cientos de ellas sobre potreros verdes y laderas cubiertas de niebla.",
-      "en": "The Quindío wax palm is Colombia's national tree and one of the tallest palms in the world: it can reach 60 meters. Hundreds of them rise over green pastures and mist-covered slopes in the Cocora Valley."
+      "en": "The Quindío wax palm is Colombia's national tree and one of the tallest palms in the world: it can reach 60 meters. Hundreds of them rise over green pastures and mist-covered slopes in the Cocora Valley.",
+      "es": "La palma de cera del Quindío es el árbol nacional de Colombia y una de las palmas más altas del mundo: puede llegar a los 60 metros. En el Valle de Cocora crecen cientos de ellas sobre potreros verdes y laderas cubiertas de niebla."
     },
     {
-      "es": "Combinamos la caminata con Salento, uno de los pueblos más tradicionales del Eje Cafetero, y con una finca cafetera para entender el café desde la semilla hasta la taza.",
-      "en": "We pair the hike with Salento, one of the most traditional towns in the Coffee Region, and with a coffee farm to understand coffee from seed to cup."
+      "en": "We pair the hike with Salento, one of the most traditional towns in the Coffee Region, and with a coffee farm to understand coffee from seed to cup.",
+      "es": "Combinamos la caminata con Salento, uno de los pueblos más tradicionales del Eje Cafetero, y con una finca cafetera para entender el café desde la semilla hasta la taza."
     }
   ],
   "vivir": [
     {
-      "titulo": {
-        "es": "Caminata entre palmas",
-        "en": "Hike among the palms"
-      },
       "texto": {
-        "es": "Senderos de distintos niveles, a tu ritmo.",
-        "en": "Trails for different levels, at your own pace."
+        "en": "Trails for different levels, at your own pace.",
+        "es": "Senderos de distintos niveles, a tu ritmo."
+      },
+      "titulo": {
+        "en": "Hike among the palms",
+        "es": "Caminata entre palmas"
       }
     },
     {
-      "titulo": {
-        "es": "Salento",
-        "en": "Salento"
-      },
       "texto": {
-        "es": "Calle Real, balcones de colores y artesanías.",
-        "en": "Calle Real, colorful balconies and local crafts."
+        "en": "Calle Real, colorful balconies and local crafts.",
+        "es": "Calle Real, balcones de colores y artesanías."
+      },
+      "titulo": {
+        "en": "Salento",
+        "es": "Salento"
       }
     },
     {
-      "titulo": {
-        "es": "Finca cafetera",
-        "en": "Coffee farm"
-      },
       "texto": {
-        "es": "Recolección, tostión y cata con productores.",
-        "en": "Picking, roasting and tasting with growers."
+        "en": "Picking, roasting and tasting with growers.",
+        "es": "Recolección, tostión y cata con productores."
+      },
+      "titulo": {
+        "en": "Coffee farm",
+        "es": "Finca cafetera"
       }
     },
     {
-      "titulo": {
-        "es": "Trucha y patacón",
-        "en": "Trout and patacón"
-      },
       "texto": {
-        "es": "El plato típico del valle, frente a las montañas.",
-        "en": "The valley's classic dish, with mountain views."
+        "en": "The valley's classic dish, with mountain views.",
+        "es": "El plato típico del valle, frente a las montañas."
+      },
+      "titulo": {
+        "en": "Trout and patacón",
+        "es": "Trucha y patacón"
       }
     }
   ],
   "datos": {
-    "llegar": {
-      "es": "Vuelo a Pereira o Armenia y 1 hora por carretera",
-      "en": "Flight to Pereira or Armenia, then 1 hour by road"
-    },
     "epoca": {
-      "es": "Todo el año; las mañanas suelen ser más despejadas",
-      "en": "Year-round; mornings tend to be clearer"
-    },
-    "tiempo": {
-      "es": "2 o 3 días con Salento",
-      "en": "2 or 3 days including Salento"
+      "en": "Year-round; mornings tend to be clearer",
+      "es": "Todo el año; las mañanas suelen ser más despejadas"
     },
     "ideal": {
-      "es": "Amantes de la naturaleza y la caminata",
-      "en": "Nature and hiking lovers"
+      "en": "Nature and hiking lovers",
+      "es": "Amantes de la naturaleza y la caminata"
+    },
+    "llegar": {
+      "en": "Flight to Pereira or Armenia, then 1 hour by road",
+      "es": "Vuelo a Pereira o Armenia y 1 hora por carretera"
+    },
+    "tiempo": {
+      "en": "2 or 3 days including Salento",
+      "es": "2 o 3 días con Salento"
     }
   },
   "otros": [

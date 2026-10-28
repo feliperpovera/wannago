@@ -6,57 +6,57 @@
       "enlace": "marruecos/",
       "foto": "mujer-dunas.jpg",
       "alt": {
-        "es": "Viajera sentada en las dunas del Sahara al atardecer",
-        "en": "Traveler sitting in the Sahara dunes at sunset"
+        "en": "Traveler sitting in the Sahara dunes at sunset",
+        "es": "Viajera sentada en las dunas del Sahara al atardecer"
       },
       "titulo": {
-        "es": "Marruecos",
-        "en": "Morocco"
+        "en": "Morocco",
+        "es": "Marruecos"
       },
       "titulo_resalte": {
-        "es": "entre mujeres",
-        "en": "among women"
+        "en": "among women",
+        "es": "entre mujeres"
       },
       "etiqueta": {
-        "es": "Viaje grupal · Solo mujeres",
-        "en": "Group trip · Women only"
+        "en": "Group trip · Women only",
+        "es": "Viaje grupal · Solo mujeres"
       },
       "aviso": {
-        "es": "Cupos abiertos",
-        "en": "Spots open"
+        "en": "Spots open",
+        "es": "Cupos abiertos"
       },
       "resumen": {
-        "es": "Medinas azules, palacios de mosaico y una noche bajo las estrellas del Sahara. Grupo pequeño, con anfitriona de Wanna Go de principio a fin.",
-        "en": "Blue medinas, mosaic palaces and a night under the Sahara stars. A small group, with a Wanna Go host from start to finish."
+        "en": "Blue medinas, mosaic palaces and a night under the Sahara stars. A small group, with a Wanna Go host from start to finish.",
+        "es": "Medinas azules, palacios de mosaico y una noche bajo las estrellas del Sahara. Grupo pequeño, con anfitriona de Wanna Go de principio a fin."
       },
       "datos": [
         {
-          "numero": "10",
           "texto": {
-            "es": "días",
-            "en": "days"
-          }
+            "en": "days",
+            "es": "días"
+          },
+          "numero": "10"
         },
         {
-          "numero": "7",
           "texto": {
-            "es": "destinos",
-            "en": "destinations"
-          }
+            "en": "destinations",
+            "es": "destinos"
+          },
+          "numero": "7"
         },
         {
-          "numero": "16",
           "texto": {
-            "es": "viajeras máx.",
-            "en": "travelers max."
-          }
+            "en": "travelers max.",
+            "es": "viajeras máx."
+          },
+          "numero": "16"
         }
       ],
       "salida": "2027",
       "salida_por_definir": true,
       "boton": {
-        "es": "Ver el viaje",
-        "en": "See the trip"
+        "en": "See the trip",
+        "es": "Ver el viaje"
       }
     }
   ],
@@ -70,8 +70,8 @@
     {
       "destino": "cartagena",
       "aviso": {
-        "es": "Salida grupal próximamente",
-        "en": "Group departure coming soon"
+        "en": "Group departure coming soon",
+        "es": "Salida grupal próximamente"
       }
     },
     {
@@ -83,8 +83,8 @@
     {
       "destino": "eje-cafetero",
       "aviso": {
-        "es": "Salida grupal próximamente",
-        "en": "Group departure coming soon"
+        "en": "Group departure coming soon",
+        "es": "Salida grupal próximamente"
       }
     },
     {

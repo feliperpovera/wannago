@@ -62,6 +62,17 @@ jobs:
           key: fotos-${{ hashFiles('fotos/**', 'herramientas/fotos.py') }}
           restore-keys: fotos-
       - run: npm run -s construir
+      # Hostinger: se activa al crear la variable FTP_SERVIDOR y los secretos FTP_USUARIO y FTP_CLAVE
+      - name: Subir a Hostinger
+        if: vars.FTP_SERVIDOR != ''
+        uses: SamKirkland/FTP-Deploy-Action@v4.3.5
+        with:
+          server: ${{ vars.FTP_SERVIDOR }}
+          username: ${{ secrets.FTP_USUARIO }}
+          password: ${{ secrets.FTP_CLAVE }}
+          protocol: ftps
+          local-dir: dist/
+          server-dir: public_html/
       - uses: actions/upload-pages-artifact@v3
         with:
           path: dist

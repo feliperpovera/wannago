@@ -78,10 +78,9 @@ El PDF completo está en `manual/Manual_de_marca_Wanna_Go.pdf`.
 
 **Nuestros, antes de salir en vivo**
 - Quitar la franja BORRADOR y todos los `.tbd`.
-- Quitar el `noindex`: poner `INDEXAR = true` en `herramientas/generar.mjs` (también quitarlo a mano de la landing de Marruecos).
+- Landing de Marruecos: cuando tenga datos reales, quitar la franja BORRADOR y sacarla de `BORRADORES` en `herramientas/generar.mjs` para que Google la indexe.
 - **El formulario de lista de espera de la landing no envía datos.** Hay que conectarlo a WhatsApp, como el del inicio.
 - Redactar una política de tratamiento de datos (Ley 1581 de Colombia), porque los formularios piden nombre y teléfono.
-- Conectar Supabase (pasos en el README).
 - Opcional: renombrar el repositorio o la URL, y agregar analítica.
 
 ## 7. Preferencias de Martín (cómo trabaja)

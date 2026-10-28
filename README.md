@@ -4,7 +4,7 @@ Sitio de la agencia de turismo receptivo **Wanna Go Colombia** (Medellín) con s
 
 | | Dirección |
 |---|---|
-| Sitio (borrador, en Hostinger) | https://wannago.com.co/ |
+| Sitio (en Hostinger) | https://wannago.com.co/ |
 | Landing de Marruecos | https://wannago.com.co/marruecos/ |
 | Panel de edición | https://wannago.com.co/admin/ |
 | Panel en modo demo (no guarda) | https://wannago.com.co/admin/?demo |
@@ -123,6 +123,6 @@ Luego abre http://localhost:8765 para el sitio y http://localhost:8765/admin/?de
 
 ## Antes de salir en vivo
 
-- Poner `INDEXAR = true` en `herramientas/generar.mjs` (quita el `noindex`) y quitarlo también de `publico/marruecos/index.html`.
+- Google: el sitio ya está abierto (`INDEXAR = true`). La landing de Marruecos sigue fuera (lista `BORRADORES` en `herramientas/generar.mjs`): quitarla de ahí cuando tenga precios y fechas reales.
 - Quitar la franja de BORRADOR y los datos marcados «por definir» de la landing de Marruecos.
 - Ver la lista completa en [docs/CONTEXTO.md](docs/CONTEXTO.md#6-pendientes).

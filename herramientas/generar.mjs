@@ -7,7 +7,8 @@ import { readFileSync, writeFileSync, mkdirSync, readdirSync, cpSync, rmSync } f
 import { PAGINAS } from '../panel/esquema.js';
 
 const BASE = 'https://wannago.com.co/'; // dominio propio (Hostinger)
-const INDEXAR = false; // true al salir en vivo: quita el noindex de todas las páginas
+const INDEXAR = true; // false = todo el sitio con noindex (fuera de Google)
+const BORRADORES = ['marruecos/']; // páginas que siguen fuera de Google y del sitemap hasta tener datos reales
 const V = '20261028a';  // sube este número cuando cambies un CSS o JS
 const WA = 'https://wa.me/573122899185';
 const medidas = JSON.parse(readFileSync('dist/fotos/medidas.json', 'utf8'));
@@ -327,7 +328,7 @@ function seo(p, texto) {
   const filtrar = dic => Object.entries(dic || {}).filter(([es]) => texto.includes(es));
   const en = Object.fromEntries([...filtrar(EN), ...filtrar(ENP)]);
   return [
-    INDEXAR ? '' : '<meta name="robots" content="noindex">',
+    INDEXAR && !BORRADORES.includes(p.ruta) ? '' : '<meta name="robots" content="noindex">',
     `<title>${esc(p.titulo)}</title>`,
     `<meta name="description" content="${esc(p.desc)}">`,
     `<link rel="canonical" href="${url}">`,
@@ -646,10 +647,10 @@ ${md(e.cuerpo.en)}
 URLS.sort((a, b) => a.length - b.length);
 writeFileSync('dist/sitemap.xml', `<?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-${URLS.map(u => `  <url><loc>${BASE}${u}</loc><lastmod>${hoy}</lastmod></url>`).join('\n')}
+${URLS.filter(u => INDEXAR && !BORRADORES.includes(u)).map(u => `  <url><loc>${BASE}${u}</loc><lastmod>${hoy}</lastmod></url>`).join('\n')}
 </urlset>
 `);
-writeFileSync('dist/robots.txt', `User-agent: *\nAllow: /\n\nSitemap: ${BASE}sitemap.xml\n`);
+writeFileSync('dist/robots.txt', `User-agent: *\nAllow: /\nDisallow: /admin/\n\nSitemap: ${BASE}sitemap.xml\n`);
 
 // Datos para ver el panel en modo demo (/admin/?demo) sin Supabase
 writeFileSync('dist/admin/demo.json', JSON.stringify({
@@ -659,4 +660,4 @@ writeFileSync('dist/admin/demo.json', JSON.stringify({
   blog: readdirSync('contenido/blog').filter(f => f.endsWith('.json')).map(f => leer('contenido/blog/' + f)),
 }));
 
-console.log(`Temporada: ${TEMP ? L(TEMP.titulo) + ' ' + L(TEMP.titulo_resalte) : 'ninguna'} · ${URLS.length} URLs · ${INDEXAR ? 'indexables' : 'con noindex (borrador)'}`);
+console.log(`Temporada: ${TEMP ? L(TEMP.titulo) + ' ' + L(TEMP.titulo_resalte) : 'ninguna'} · ${URLS.length} URLs · ${INDEXAR ? `abiertas a Google (menos ${BORRADORES.join(', ')})` : 'con noindex (borrador)'}`);

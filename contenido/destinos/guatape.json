@@ -3,7 +3,7 @@
   "orden": 1,
   "nombre": {
     "en": "Guatapé",
-    "es": "Guatapé"
+    "es": "Guatapé 1"
   },
   "h1": {
     "en": "Guatapé and the Piedra del Peñol",
@@ -112,7 +112,7 @@
   },
   "otros": [
     "comuna-13",
-    "plazas-de-mercado",
-    "eje-cafetero"
+    "eje-cafetero",
+    "plazas-de-mercado"
   ]
 }

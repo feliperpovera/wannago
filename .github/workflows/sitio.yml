@@ -11,6 +11,11 @@ on:
   schedule:
     - cron: '0 11 * * *' # 6:00 a. m. en Colombia
   workflow_dispatch:
+    inputs:
+      limpiar_hostinger:
+        description: 'Borrar todo en public_html de Hostinger antes de subir (deja solo el sitio)'
+        type: boolean
+        default: false
   repository_dispatch:
     types: [publicar]
 
@@ -72,7 +77,8 @@ jobs:
           password: ${{ secrets.FTP_CLAVE }}
           protocol: ftps
           local-dir: dist/
-          server-dir: public_html/
+          server-dir: ./ # el usuario FTP del sitio ya entra en public_html
+          dangerous-clean-slate: ${{ inputs.limpiar_hostinger == true }}
       - uses: actions/upload-pages-artifact@v3
         with:
           path: dist

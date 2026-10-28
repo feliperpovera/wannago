@@ -22,6 +22,7 @@ const paginas = await leer('paginas', 'select=id,contenido');
 const temporadas = await leer('temporadas', 'select=*&order=orden');
 const cuadros = await leer('cuadros', 'select=destino,aviso&order=orden');
 const destinos = await leer('destinos', 'select=*&publicado=is.true&order=orden');
+const blog = await leer('blog', 'select=*&publicado=is.true&order=fecha.desc');
 
 for (const p of paginas) guardar(`contenido/paginas/${p.id}.json`, p.contenido);
 guardar('contenido/viajes.json', {
@@ -33,9 +34,13 @@ const vivos = new Set(destinos.map(d => d.url + '.json'));
 for (const f of readdirSync('contenido/destinos')) if (!vivos.has(f)) rmSync('contenido/destinos/' + f);
 for (const d of destinos) guardar(`contenido/destinos/${d.url}.json`, sin(d, 'publicado', 'actualizado'));
 
+const entradas = new Set(blog.map(e => e.url + '.json'));
+for (const f of readdirSync('contenido/blog')) if (f.endsWith('.json') && !entradas.has(f)) rmSync('contenido/blog/' + f);
+for (const e of blog) guardar(`contenido/blog/${e.url}.json`, sin(e, 'publicado'));
+
 // fotos de las páginas: cualquier campo «foto» dentro del contenido
 const fotosDe = o => !o || typeof o !== 'object' ? [] : Object.entries(o).flatMap(([k, v]) => k === 'foto' && typeof v === 'string' ? [v] : fotosDe(v));
-const usadas = new Set([...temporadas.map(t => t.foto), ...destinos.flatMap(d => [d.foto, d.foto2]), ...paginas.flatMap(p => fotosDe(p.contenido))].filter(Boolean).map(f => f.split('/').pop()));
+const usadas = new Set([...temporadas.map(t => t.foto), ...destinos.flatMap(d => [d.foto, d.foto2]), ...blog.map(e => e.foto), ...paginas.flatMap(p => fotosDe(p.contenido))].filter(Boolean).map(f => f.split('/').pop()));
 let nuevas = 0;
 for (const f of usadas) {
   if (existsSync('fotos/' + f)) continue;
@@ -44,4 +49,4 @@ for (const f of usadas) {
   writeFileSync('fotos/' + f, Buffer.from(await r.arrayBuffer()));
   nuevas++;
 }
-console.log(`Supabase → contenido: ${paginas.length} páginas, ${destinos.length} destinos, ${temporadas.length} temporadas, ${cuadros.length} cuadros, ${nuevas} fotos nuevas`);
+console.log(`Supabase → contenido: ${paginas.length} páginas, ${destinos.length} destinos, ${blog.length} entradas de blog, ${temporadas.length} temporadas, ${cuadros.length} cuadros, ${nuevas} fotos nuevas`);

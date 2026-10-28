@@ -2,11 +2,13 @@
 // Guardar cambia la base de datos; «Publicar cambios» regenera el sitio en GitHub (2 a 3 minutos).
 // Con ?demo se prueba sin Supabase: lee demo.json (el contenido actual) y no guarda nada.
 import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.117.2/+esm';
-import { PAGINAS } from './esquema.js?v=2';
+import { PAGINAS } from './esquema.js?v=3';
 
 const CFG = window.WG_SUPABASE || {};
 const DEMO = new URLSearchParams(location.search).has('demo');
 const SITIO = new URL('../', location.href).href;
+// Si se llega desde el correo de invitación o de «olvidé mi contraseña», hay que crear una contraseña nueva
+const CREAR_CLAVE = /type=(invite|recovery)/.test(location.hash);
 const sb = CFG.url && CFG.clave && !DEMO ? createClient(CFG.url, CFG.clave) : null;
 const hoy = new Date().toLocaleDateString('en-CA', { timeZone: 'America/Bogota' });
 
@@ -92,7 +94,7 @@ function demoApi() {
     if (db) return db;
     const r = await fetch('demo.json');
     if (!r.ok) throw new Error('No se encontró demo.json: corre npm run construir');
-    const { paginas, destinos, viajes: v } = await r.json();
+    const { paginas, destinos, viajes: v, blog } = await r.json();
     const archivo = f => f.split('/').pop();
     db = {
       paginas: PAGINAS.map(p => ({ id: p.id, contenido: paginas[p.id] })),
@@ -100,11 +102,12 @@ function demoApi() {
       cuadros: v.colombia.map((c, i) => ({ id: crypto.randomUUID(), orden: i + 1, destino: c.destino, aviso: c.aviso || null })),
       destinos: destinos
         .map(d => ({ ...d, publicado: true, foto: archivo(d.foto), foto2: archivo(d.foto2) })),
+      blog: (blog || []).map(e => ({ publicado: true, ...e, foto: archivo(e.foto) })),
       solicitudes: [], publicaciones: [],
     };
     return db;
   };
-  const clave = t => (t === 'destinos' ? 'url' : 'id');
+  const clave = t => (t === 'destinos' || t === 'blog' ? 'url' : 'id');
   return {
     async listar(t, orden = 'orden', desc = false) {
       const d = await cargar();
@@ -178,6 +181,20 @@ const CAMPOS = {
   ],
 };
 
+const FORMATO = 'Formato: deja una línea en blanco entre párrafos. ## Subtítulo · ### Subtítulo menor · **negrita** · *cursiva* · - lista · > cita · [texto del enlace](https://…)';
+CAMPOS.blog = [
+  { tipo: 'texto', name: 'url', label: 'Dirección (url)', fija: true, patron: '[a-z0-9-]+',
+    ayuda: 'La entrada queda en blog/<url>/. Solo minúsculas, números y guiones, ej.: que-hacer-en-guatape. No se puede cambiar después de crear.' },
+  { tipo: 'bool', name: 'publicado', label: 'Publicada en el sitio (si está apagado, queda como borrador)' },
+  { tipo: 'fecha', name: 'fecha', label: 'Fecha' },
+  { tipo: 'texto', name: 'autor', label: 'Autor' },
+  B('Título', 'titulo', { max: 70 }),
+  { tipo: 'foto', name: 'foto', label: 'Foto principal' },
+  B('Descripción de la foto', 'alt'),
+  B('Resumen (sale en la lista del blog y en Google)', 'resumen', { largo: true, max: 160 }),
+  B('Texto de la entrada', 'cuerpo', { largo: true, filas: 18, ayuda: FORMATO }),
+];
+
 const contador = (el, max) => {
   const c = h('span', { class: 'contador' });
   const act = () => { c.textContent = `${el.value.length} / ${max}`; c.classList.toggle('pasado', el.value.length > max); };
@@ -206,7 +223,7 @@ function campo(def, valor, ctx = {}) {
     case 'bi': {
       const v = valor || bi();
       const caja = (lang, nombre) => {
-        const e = h(def.largo ? 'textarea' : 'input', { value: v[lang] ?? '', rows: def.largo ? 4 : null, 'aria-label': `${def.label || 'Texto'} · ${nombre}` });
+        const e = h(def.largo ? 'textarea' : 'input', { value: v[lang] ?? '', rows: def.largo ? def.filas || 4 : null, 'aria-label': `${def.label || 'Texto'} · ${nombre}` });
         return [e, h('label', {}, h('span', { class: 'idioma' }, nombre), e, def.max && contador(e, def.max))];
       };
       const [es, cajaEs] = caja('es', 'Español'), [en, cajaEn] = caja('en', 'English');
@@ -301,7 +318,7 @@ function editor(main, { titulo, tabla, campos, fila, existente, ctx, volver }) {
     b.disabled = true;
     try {
       const datos = f.leer();
-      if (tabla === 'destinos' && !/^[a-z0-9-]+$/.test(datos.url)) throw new Error('La dirección (url) solo admite minúsculas, números y guiones.');
+      if ((tabla === 'destinos' || tabla === 'blog') && !/^[a-z0-9-]+$/.test(datos.url)) throw new Error('La dirección (url) solo admite minúsculas, números y guiones.');
       await api.guardar(tabla, datos, !existente);
       listo('Guardado. Pulsa «Publicar cambios» cuando quieras verlo en el sitio.');
       volver();
@@ -379,6 +396,29 @@ async function vistaCuadros(main) {
     h('div', { class: 'barra' },
       boton('Guardar cuadros', guardar, { cls: 'btn rojo' }),
       boton('+ Agregar cuadro', () => { filas.push(fila({ destino: destinos[0]?.url })); pintar(); }, { cls: 'btn sec', off: !destinos.length })),
+  );
+}
+
+async function vistaBlog(main) {
+  const entradas = await api.listar('blog', 'fecha', true);
+  const volver = () => vistaBlog(main);
+  const abrir = (fila, existente) => editor(main, { titulo: existente ? 'Editar entrada' : 'Nueva entrada', tabla: 'blog', campos: CAMPOS.blog, fila, existente, volver });
+  const borrar = async e => {
+    if (!confirm(`¿Borrar la entrada «${e.titulo.es}»? Su página desaparece al publicar. No se puede deshacer.`)) return;
+    try { await api.borrar('blog', 'url', e.url); listo('Entrada borrada.'); volver(); } catch (er) { fallo(er); }
+  };
+  const vacia = { url: '', publicado: false, fecha: hoy, autor: 'Wanna Go', titulo: bi(), foto: '', alt: bi(), resumen: bi(), cuerpo: bi() };
+  main.replaceChildren(
+    h('div', { class: 'cabeza' }, h('h1', {}, 'Blog'), boton('+ Nueva entrada', () => abrir(copia(vacia), false), { cls: 'btn rojo' })),
+    h('p', { class: 'intro' }, 'Cada entrada tiene su propia página en blog/<url>/ y sale en el índice del blog, de la más nueva a la más vieja. Escríbela como borrador y actívala cuando esté lista; luego pulsa «Publicar cambios».'),
+    entradas.length
+      ? h('div', { class: 'lista-filas' }, entradas.map(e => h('div', { class: 'fila' }, miniatura(e.foto),
+          h('div', {}, h('b', {}, e.titulo.es || '(sin título)'), h('small', {}, `${e.fecha} · blog/${e.url}/`), ' ', h('span', { class: `chip ${e.publicado ? 'vivo' : 'apagado'}` }, e.publicado ? 'Publicada' : 'Borrador')),
+          h('div', { class: 'acc' },
+            boton('Editar', () => abrir(copia(e), true)),
+            e.publicado && h('a', { class: 'mini', href: `${SITIO}blog/${e.url}/`, target: '_blank', rel: 'noopener' }, 'Ver página'),
+            boton('Borrar', () => borrar(e), { cls: 'mini peligro' })))))
+      : h('p', { class: 'vacio' }, 'Todavía no hay entradas. Crea la primera con «+ Nueva entrada».'),
   );
 }
 
@@ -481,6 +521,7 @@ const VISTAS = [
   ['temporadas', 'Viajes de temporada', vistaTemporadas],
   ['cuadros', 'Cuadros de Colombia', vistaCuadros],
   ['destinos', 'Destinos', vistaDestinos],
+  ['blog', 'Blog', vistaBlog],
   ['solicitudes', 'Solicitudes', vistaSolicitudes],
   ['publicaciones', 'Publicaciones', vistaPublicaciones],
 ];
@@ -525,20 +566,50 @@ addEventListener('hashchange', () => document.getElementById('vista') && ir());
 const tarjeta = (...hijos) => app.replaceChildren(h('div', { class: 'acceso' }, h('div', { class: 'tarjeta' }, h('img', { src: 'logo.svg', alt: '' }), ...hijos)));
 
 function acceso(mensaje = '') {
-  const email = h('input', { id: 'email', type: 'email', required: true, autocomplete: 'email', placeholder: 'tu@correo.com' });
+  const email = h('input', { id: 'email', type: 'email', required: true, autocomplete: 'username', placeholder: 'tu@correo.com' });
+  const clave = h('input', { id: 'clave', type: 'password', required: true, autocomplete: 'current-password' });
   const nota = h('p', { class: 'nota', role: 'status' }, mensaje);
-  const enviar = h('button', { class: 'btn rojo', type: 'submit' }, 'Enviarme el enlace');
+  const entrar = h('button', { class: 'btn rojo', type: 'submit' }, 'Entrar');
+  const olvide = boton('Olvidé mi contraseña', async () => {
+    if (!email.value.trim()) { nota.textContent = 'Escribe tu correo arriba y vuelve a pulsar «Olvidé mi contraseña».'; return; }
+    const { error } = await sb.auth.resetPasswordForEmail(email.value.trim().toLowerCase(), { redirectTo: location.origin + location.pathname });
+    nota.textContent = error ? 'No pudimos enviar el correo. Intenta en unos minutos.' : 'Te enviamos un correo para crear una contraseña nueva.';
+  }, { cls: 'enlace' });
   tarjeta(h('form', {
     style: 'display:grid;gap:14px',
     onsubmit: async e => {
       e.preventDefault();
-      enviar.disabled = true;
-      const { error } = await sb.auth.signInWithOtp({ email: email.value.trim().toLowerCase(), options: { shouldCreateUser: false, emailRedirectTo: location.origin + location.pathname } });
-      enviar.disabled = false;
-      nota.textContent = error ? 'No pudimos enviar el enlace. Revisa que tu correo esté autorizado.' : 'Listo. Abre el enlace que te enviamos al correo para entrar.';
+      entrar.disabled = true;
+      const { error } = await sb.auth.signInWithPassword({ email: email.value.trim().toLowerCase(), password: clave.value });
+      entrar.disabled = false;
+      if (error) nota.textContent = 'Correo o contraseña incorrectos.';
     },
-  }, h('h1', {}, 'Panel Wanna Go'), h('p', {}, 'Escribe tu correo y te enviamos un enlace para entrar, sin contraseña.'),
-    h('label', { class: 'lbl', for: 'email' }, 'Correo'), email, enviar, nota));
+  }, h('h1', {}, 'Panel Wanna Go'), h('p', {}, 'Entra con tu correo y tu contraseña.'),
+    h('label', { class: 'lbl', for: 'email' }, 'Correo'), email,
+    h('label', { class: 'lbl', for: 'clave' }, 'Contraseña'), clave,
+    entrar, olvide, nota));
+}
+
+// Primera vez (invitación) u olvido: la persona crea su propia contraseña; nadie más la conoce
+function crearClave(sesion, alTerminar) {
+  const c1 = h('input', { id: 'c1', type: 'password', required: true, minLength: 8, autocomplete: 'new-password' });
+  const c2 = h('input', { id: 'c2', type: 'password', required: true, minLength: 8, autocomplete: 'new-password' });
+  const nota = h('p', { class: 'nota', role: 'status' });
+  const guardar = h('button', { class: 'btn rojo', type: 'submit' }, 'Guardar contraseña');
+  tarjeta(h('form', {
+    style: 'display:grid;gap:14px',
+    onsubmit: async e => {
+      e.preventDefault();
+      if (c1.value !== c2.value) { nota.textContent = 'Las dos contraseñas no coinciden.'; return; }
+      guardar.disabled = true;
+      const { error } = await sb.auth.updateUser({ password: c1.value });
+      guardar.disabled = false;
+      if (error) { nota.textContent = 'No se pudo guardar: ' + (error.message.includes('weak') || error.message.includes('least') ? 'usa al menos 8 caracteres, con letras y números.' : error.message); return; }
+      alTerminar();
+    },
+  }, h('h1', {}, 'Crea tu contraseña'), h('p', {}, `Para ${sesion.user.email}. Usa al menos 8 caracteres, con letras y números. Con ella entrarás al panel de ahora en adelante.`),
+    h('label', { class: 'lbl', for: 'c1' }, 'Contraseña nueva'), c1,
+    h('label', { class: 'lbl', for: 'c2' }, 'Repítela'), c2, guardar, nota));
 }
 
 if (DEMO) panel('demo');
@@ -547,9 +618,13 @@ else if (!sb) {
     h('p', {}, 'El panel está listo, pero falta conectar el proyecto de Supabase (admin/config.js).'),
     h('a', { class: 'btn rojo', href: '?demo' }, 'Ver el panel en modo demo'));
 } else {
-  let dentro = false;
-  const entrar = async sesion => {
+  let dentro = false, porCrear = CREAR_CLAVE;
+  const entrar = async (sesion, evento) => {
     if (!sesion) { dentro = false; return acceso(); }
+    if (porCrear || evento === 'PASSWORD_RECOVERY') {
+      porCrear = false;
+      return crearClave(sesion, () => entrar(sesion));
+    }
     const { data: esEditor, error } = await sb.rpc('es_editor');
     if (error || !esEditor) {
       dentro = false;
@@ -558,5 +633,5 @@ else if (!sb) {
     if (!dentro) { dentro = true; panel(sesion.user.email); }
   };
   // fuera del callback para no bloquear el cliente de Supabase
-  sb.auth.onAuthStateChange((_evento, sesion) => setTimeout(() => entrar(sesion)));
+  sb.auth.onAuthStateChange((evento, sesion) => setTimeout(() => entrar(sesion, evento)));
 }

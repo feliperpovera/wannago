@@ -13,6 +13,7 @@ const archivo = f => f.split('/').pop(); // en la base solo va el nombre del arc
 const viajes = JSON.parse(readFileSync('contenido/viajes.json', 'utf8'));
 const paginas = readdirSync('contenido/paginas').filter(f => f.endsWith('.json'))
   .map(f => [f.replace('.json', ''), JSON.parse(readFileSync('contenido/paginas/' + f, 'utf8'))]);
+const blog = readdirSync('contenido/blog').filter(f => f.endsWith('.json')).map(f => JSON.parse(readFileSync('contenido/blog/' + f, 'utf8')));
 const destinos = readdirSync('contenido/destinos').filter(f => f.endsWith('.json'))
   .map(f => JSON.parse(readFileSync('contenido/destinos/' + f, 'utf8')))
   .sort((a, b) => a.orden - b.orden);
@@ -32,6 +33,10 @@ const sql = [
   ].join(', ')});`),
   '',
   ...viajes.colombia.map((c, i) => `insert into public.cuadros (orden, destino, aviso) values (${i + 1}, ${lit(c.destino)}, ${c.aviso?.es ? js(c.aviso) : 'null'});`),
+  '',
+  ...blog.map(e => `insert into public.blog (url, publicado, fecha, autor, titulo, resumen, foto, alt, cuerpo) values (${[
+    lit(e.url), e.publicado !== false, lit(e.fecha), lit(e.autor || 'Wanna Go'), js(e.titulo), js(e.resumen), lit(archivo(e.foto)), js(e.alt), js(e.cuerpo),
+  ].join(', ')}) on conflict (url) do nothing;`),
   '',
   '-- Editores del panel',
   "insert into public.editores (email, nombre) values ('wannagoco@gmail.com', 'Wanna Go') on conflict (email) do nothing;",

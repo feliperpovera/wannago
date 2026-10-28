@@ -300,3 +300,18 @@ a.svc{text-decoration:none}
 .squares .sq-cta::before{display:none}
 @media (max-width:560px){.squares .svc .label{display:none}.squares .svc div{padding:14px}.squares .svc .badge{top:10px;left:10px;font-size:9px;letter-spacing:.12em;padding:5px 9px}}
 .featured .badge.soon{background:rgba(19,72,79,.6)}
+
+/* blog: texto de cada entrada (formato sencillo del panel) */
+.post{max-width:720px;margin:0 auto;font-size:18px;line-height:1.75}
+.post h2{font-size:clamp(26px,3vw,34px);color:var(--petroleo);margin:48px 0 16px}
+.post h3{font-size:22px;color:var(--petroleo);margin:36px 0 12px}
+.post p,.post ul,.post blockquote{margin:0 0 20px}
+.post ul{padding-left:22px}
+.post li{margin-bottom:8px}
+.post a{color:var(--rojo)}
+.post blockquote{border-left:3px solid var(--rojo);padding:4px 0 4px 20px;font-weight:500;font-size:20px;color:var(--petroleo)}
+.post-autor{margin-top:40px;padding-top:20px;border-top:1px solid var(--line);color:var(--muted);font-size:15px}
+.post-en{display:none}
+html[lang="en"] .post-en{display:block}
+html[lang="en"] .post-es:has(+ .post-en){display:none}
+.vacio-blog{color:var(--muted)}

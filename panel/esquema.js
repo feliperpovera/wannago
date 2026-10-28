@@ -89,6 +89,10 @@ export const PAGINAS = [
     secciones: [seo, portada(), { id: 'canales', nombre: 'Canales y formulario', campos: [...encabezado, BL('Texto', 'texto')] }],
   },
   {
+    id: 'blog', nombre: 'Blog (índice)', ruta: 'blog/',
+    secciones: [seo, portada(), { id: 'listado', nombre: 'Listado', campos: [...encabezado, BL('Texto cuando no hay entradas', 'vacio')], ayuda: 'Las entradas se escriben en la sección Blog del panel.' }, cierre],
+  },
+  {
     id: 'popup', nombre: 'Pop-up del inicio', ruta: '',
     secciones: [{
       id: 'popup', nombre: 'Pop-up',

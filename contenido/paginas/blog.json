@@ -1,0 +1,51 @@
+{
+  "seo": {
+    "titulo": {
+      "es": "Blog de viajes por Colombia · Wanna Go",
+      "en": "Colombia travel blog · Wanna Go"
+    },
+    "descripcion": "Historias, consejos y destinos para viajar por Colombia con propósito, escritos desde Medellín por el equipo de Wanna Go.",
+    "foto": "cafe.jpg"
+  },
+  "portada": {
+    "foto": "cafe.jpg",
+    "alt": {
+      "es": "Granos de café maduros en la rama",
+      "en": "Ripe coffee cherries on the branch"
+    },
+    "etiqueta": {
+      "es": "Blog",
+      "en": "Blog"
+    },
+    "titulo": {
+      "es": "Historias para viajar con propósito",
+      "en": "Stories for purposeful travel"
+    },
+    "texto": {
+      "es": "Destinos, consejos y relatos de Colombia y del mundo, contados por quienes los recorren.",
+      "en": "Destinations, tips and stories from Colombia and the world, told by the people who travel them."
+    }
+  },
+  "listado": {
+    "ceja": {
+      "es": "Entradas",
+      "en": "Posts"
+    },
+    "titulo": {
+      "es": "Lo último del blog",
+      "en": "Latest from the blog"
+    },
+    "vacio": {
+      "es": "Muy pronto publicaremos aquí historias y consejos para tu próximo viaje.",
+      "en": "Coming soon: stories and tips for your next trip."
+    }
+  },
+  "cierre": {
+    "foto": "guatape.jpg",
+    "titulo": {
+      "es": "¿Te inspiraste? Diseñemos tu viaje",
+      "en": "Feeling inspired? Let's design your trip"
+    },
+    "whatsapp": "Hola Wanna Go, leí su blog y quiero diseñar un viaje."
+  }
+}

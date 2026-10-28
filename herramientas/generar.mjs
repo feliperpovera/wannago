@@ -8,7 +8,7 @@ import { PAGINAS } from '../panel/esquema.js';
 
 const BASE = 'https://wannago.com.co/'; // dominio propio (Hostinger)
 const INDEXAR = false; // true al salir en vivo: quita el noindex de todas las páginas
-const V = '20261023d';  // sube este número cuando cambies un CSS o JS
+const V = '20261028a';  // sube este número cuando cambies un CSS o JS
 const WA = 'https://wa.me/573122899185';
 const medidas = JSON.parse(readFileSync('dist/fotos/medidas.json', 'utf8'));
 
@@ -72,6 +72,30 @@ const VIAJES = leer('contenido/viajes.json');
 const hoy = new Date().toLocaleDateString('en-CA', { timeZone: 'America/Bogota' }); // AAAA-MM-DD en Colombia
 const TEMP = VIAJES.temporadas.find(v => v.activo && (!v.hasta || v.hasta >= hoy)) || null;
 
+// Blog: un archivo por entrada en contenido/blog/ (solo las publicadas), de la más nueva a la más vieja
+const BLOG = readdirSync('contenido/blog').filter(f => f.endsWith('.json'))
+  .map(f => leer('contenido/blog/' + f)).filter(e => e.publicado !== false)
+  .sort((a, b) => (a.fecha < b.fecha) - (a.fecha > b.fecha));
+const fechaLarga = f => {
+  const d = new Date(f + 'T12:00:00');
+  return L({ es: d.toLocaleDateString('es-CO', { day: 'numeric', month: 'long', year: 'numeric' }), en: d.toLocaleDateString('en-US', { day: 'numeric', month: 'long', year: 'numeric' }) });
+};
+
+// Formato sencillo del blog: ## subtítulo, ### subtítulo menor, **negrita**, *cursiva*, - lista, > cita, [texto](enlace)
+const md = texto => {
+  const enLinea = t => esc(t)
+    .replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>')
+    .replace(/\*(.+?)\*/g, '<em>$1</em>')
+    .replace(/\[([^\]]+)\]\(((?:https?:\/\/|\/|mailto:)[^)\s]+)\)/g, (_, txt, url) =>
+      `<a href="${url}"${url.startsWith('http') ? ' target="_blank" rel="noopener"' : ''}>${txt}</a>`);
+  return (texto || '').replace(/\r/g, '').split(/\n{2,}/).map(b => b.trim()).filter(Boolean).map(b =>
+    b.startsWith('### ') ? `<h3>${enLinea(b.slice(4))}</h3>`
+    : b.startsWith('## ') ? `<h2>${enLinea(b.slice(3))}</h2>`
+    : b.startsWith('> ') ? `<blockquote>${enLinea(b.replace(/^> ?/gm, ''))}</blockquote>`
+    : /^[-*] /.test(b) ? `<ul>${b.split('\n').map(l => `<li>${enLinea(l.replace(/^[-*] /, ''))}</li>`).join('')}</ul>`
+    : `<p>${b.split('\n').map(enLinea).join('<br>')}</p>`).join('\n');
+};
+
 // ---------- Datos estructurados ----------
 
 const ORG = {
@@ -99,6 +123,7 @@ const nav = () => `<nav class="nav" id="nav">
       <li><a href="${href('viajes-a-la-medida/')}">${t('A la medida', 'Tailor-made')}</a></li>
       <li><a href="${href('viajes-grupales/')}">Viajes grupales</a></li>
       <li><a href="${href('destinos/')}">${t('Destinos', 'Destinations')}</a></li>
+      <li><a href="${href('blog/')}">Blog</a></li>
       <li><a href="${href('contacto/')}">Contacto</a></li>
     </ul>
     <div class="nav-actions"><button class="lang-btn" type="button" aria-label="Switch to English">EN</button><a class="btn btn-rojo" href="${WA}" target="_blank" rel="noopener">Escríbenos</a><button class="menu-btn" type="button" popovertarget="menu" aria-label="${t('Abrir menú', 'Open menu')}"><svg viewBox="0 0 24 24"><path d="M4 8h16M4 16h16"/></svg></button></div>
@@ -111,6 +136,7 @@ const nav = () => `<nav class="nav" id="nav">
       ${SERVICIOS.map(s => `<li><a href="${href(s.slug + '/')}">${s.nombre}</a></li>`).join('\n      ')}
       <li><a href="${href('destinos/')}">${t('Destinos', 'Destinations')}</a></li>
       <li><a href="${href('marruecos/')}">Marruecos entre mujeres</a></li>
+      <li><a href="${href('blog/')}">Blog</a></li>
       <li><a href="${href('contacto/')}">Contacto</a></li>
     </ul>
     <div class="menu-foot">
@@ -128,9 +154,9 @@ const pie = () => `<footer class="foot">
     </div>
     <nav aria-label="Experiencias"><b>Experiencias</b>${SERVICIOS.map(s => `<a href="${href(s.slug + '/')}">${s.nombre}</a>`).join('')}<a href="${href('marruecos/')}">Marruecos entre mujeres</a></nav>
     <nav aria-label="Destinos"><b>Destinos</b>${DESTINOS.map(d => `<a href="${href('destinos/' + d.slug + '/')}">${d.nombre}</a>`).join('')}</nav>
-    <nav aria-label="Wanna Go"><b>Wanna Go</b><a href="${href('nosotros/')}">Nosotros</a><a href="${href('contacto/')}">Contacto</a><a href="${WA}" target="_blank" rel="noopener">WhatsApp</a><a href="mailto:wannagoco@gmail.com">wannagoco@gmail.com</a><a href="https://www.instagram.com/wannagocol/" target="_blank" rel="noopener">Instagram</a></nav>
+    <nav aria-label="Wanna Go"><b>Wanna Go</b><a href="${href('nosotros/')}">Nosotros</a><a href="${href('blog/')}">Blog</a><a href="${href('contacto/')}">Contacto</a><a href="${WA}" target="_blank" rel="noopener">WhatsApp</a><a href="mailto:wannagoco@gmail.com">wannagoco@gmail.com</a><a href="https://www.instagram.com/wannagocol/" target="_blank" rel="noopener">Instagram</a></nav>
   </div>
-  <div class="wrap foot-bottom"><span>Viajes con propósito · RNT 65568 · Medellín, Colombia</span><span>Fotos de referencia: Unsplash</span></div>
+  <div class="wrap foot-bottom"><span>Viajes con propósito · RNT 65568 · Medellín, Colombia</span><span>Fotos de referencia: Unsplash · <a href="${href('admin/')}" rel="nofollow">${t('Panel', 'Admin')}</a></span></div>
 </footer>`;
 
 const WA_FLOAT = `<a class="wa-float" href="${WA}" target="_blank" rel="noopener" aria-label="Escríbenos por WhatsApp"><span class="wa-btn"><svg viewBox="0 0 32 32"><path d="M16 3a13 13 0 0 0-11.2 19.6L3 29l6.6-1.7A13 13 0 1 0 16 3zm0 23.7c-2 0-4-.6-5.7-1.6l-.4-.2-3.9 1 1-3.8-.3-.4A10.7 10.7 0 1 1 16 26.7zm5.9-8c-.3-.2-1.9-1-2.2-1-.3-.1-.5-.2-.7.2l-1 1.2c-.2.2-.4.3-.7.1-.3-.2-1.4-.5-2.6-1.6-1-.9-1.6-1.9-1.8-2.2-.2-.3 0-.5.1-.7l.5-.6.3-.5v-.6l-1-2.4c-.3-.6-.5-.5-.7-.5h-.6c-.2 0-.6.1-.9.4-.3.3-1.2 1.1-1.2 2.8s1.2 3.2 1.4 3.5c.2.2 2.4 3.6 5.7 5 2.8 1.1 3.4.9 4 .8.6-.1 1.9-.8 2.2-1.5.3-.8.3-1.4.2-1.5l-.6-.4z"/></svg><span class="wa-badge" aria-hidden="true">1</span></span><span class="wa-label">¿Planeamos tu viaje? <b>Escríbenos</b></span></a>`;
@@ -541,6 +567,62 @@ pagina('contacto/', () => {
   };
 });
 
+// Blog: índice y una página por entrada
+const tarjetaEntrada = e => `<a class="svc rv" href="${href('blog/' + e.url + '/')}">
+        ${img(e.foto, '', '(max-width:900px) 100vw, 33vw')}
+        <div><span class="label">${fechaLarga(e.fecha)}</span><h3>${L(e.titulo)}</h3><p>${L(e.resumen)}</p><span class="go">${t('Leer', 'Read')} <span>→</span></span></div>
+      </a>`;
+const entradas = (s, lista, fondo = '') => `<section class="sec${fondo}">
+  <div class="wrap">
+    ${encabezado(s)}
+    ${lista.length ? `<div class="services">
+      ${lista.map(tarjetaEntrada).join('\n      ')}
+    </div>` : `<p class="body-lg vacio-blog">${L(s.vacio)}</p>`}
+  </div>
+</section>`;
+
+pagina('blog/', () => {
+  const P = PG.blog;
+  const m = [INICIO, ['Blog', 'blog/']];
+  return {
+    seo: P.seo,
+    schema: [migas(m), { '@type': 'Blog', name: L(P.portada.titulo), url: BASE + 'blog/', publisher: { '@id': ORG['@id'] },
+      blogPost: BLOG.map(e => ({ '@type': 'BlogPosting', headline: e.titulo.es, url: BASE + `blog/${e.url}/`, datePublished: e.fecha })) }],
+    portada: portada(P.portada, m),
+    cuerpo: [entradas(P.listado, BLOG), cierre(P.cierre)].join('\n\n'),
+  };
+});
+
+for (const e of BLOG) pagina(`blog/${e.url}/`, () => {
+  const P = PG.blog;
+  const ruta = `blog/${e.url}/`;
+  const m = [INICIO, ['Blog', 'blog/'], [L(e.titulo), ruta]];
+  const otras = BLOG.filter(x => x !== e).slice(0, 3);
+  return {
+    seo: { titulo: { es: `${e.titulo.es} · Blog Wanna Go`, en: `${e.titulo.en || e.titulo.es} · Wanna Go Blog` }, descripcion: e.resumen.es.slice(0, 160), foto: e.foto },
+    schema: [migas(m), { '@type': 'BlogPosting', headline: e.titulo.es, description: e.resumen.es, datePublished: e.fecha, dateModified: (e.actualizado || e.fecha).slice(0, 10),
+      image: BASE + `fotos/og/${nf(e.foto)}.jpg`, url: BASE + ruta, author: { '@type': 'Person', name: e.autor || 'Wanna Go' }, publisher: { '@id': ORG['@id'] } }],
+    portada: portada({ foto: e.foto, alt: e.alt, etiqueta: fechaLarga(e.fecha), titulo: e.titulo, texto: e.resumen }, m),
+    cuerpo: [
+      `<section class="sec">
+  <div class="wrap">
+    <article class="post rv">
+      <div class="post-es" lang="es">
+${md(e.cuerpo.es)}
+      </div>${e.cuerpo.en ? `
+      <div class="post-en" lang="en">
+${md(e.cuerpo.en)}
+      </div>` : ''}
+      <p class="post-autor"><span>${t('Por', 'By')}</span> ${esc(e.autor || 'Wanna Go')}</p>
+    </article>
+  </div>
+</section>`,
+      otras.length ? entradas({ ceja: P.listado.ceja, titulo: { es: 'Sigue leyendo', en: 'Keep reading' } }, otras, ' bg-arena') : '',
+      cierre(P.cierre),
+    ].filter(Boolean).join('\n\n'),
+  };
+});
+
 // ---------- Marruecos: solo el bloque SEO entre <!-- seo --> … <!-- /seo --> ----------
 
 {
@@ -574,6 +656,7 @@ writeFileSync('dist/admin/demo.json', JSON.stringify({
   paginas: Object.fromEntries(PAGINAS.map(({ id }) => [id, leer(`contenido/paginas/${id}.json`)])),
   destinos: readdirSync('contenido/destinos').filter(f => f.endsWith('.json')).map(f => leer('contenido/destinos/' + f)),
   viajes: VIAJES,
+  blog: readdirSync('contenido/blog').filter(f => f.endsWith('.json')).map(f => leer('contenido/blog/' + f)),
 }));
 
 console.log(`Temporada: ${TEMP ? L(TEMP.titulo) + ' ' + L(TEMP.titulo_resalte) : 'ninguna'} · ${URLS.length} URLs · ${INDEXAR ? 'indexables' : 'con noindex (borrador)'}`);

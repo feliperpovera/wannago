@@ -145,6 +145,10 @@
     ]
   },
   "fundadora": {
+    "alt": {
+      "en": "María Lucía Vásquez Cock, Luchy, founder of Wanna Go, in Cartagena",
+      "es": "María Lucía Vásquez Cock, Luchy, fundadora de Wanna Go, en Cartagena"
+    },
     "ceja": {
       "en": "02 · Founder",
       "es": "02 · Fundadora"
@@ -153,6 +157,7 @@
       "en": "“I believe in trips that transform you: the ones that seat you at a local family's table and send you home with stories.”",
       "es": "“Creo en los viajes que transforman: los que te sientan a la mesa de una familia local y te devuelven a casa con historias.”"
     },
+    "foto": "luchy.jpg",
     "cargo": {
       "en": "Founder and experience designer",
       "es": "Fundadora y diseñadora de experiencias"

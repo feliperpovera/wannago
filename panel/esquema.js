@@ -28,7 +28,7 @@ const cifras = { tipo: 'lista', name: 'cifras', label: 'Cifras', nuevo: { valor:
 const items = (label = 'Tarjetas') => ({ tipo: 'lista', name: 'items', label, nuevo: { titulo: bi(), texto: bi() }, campos: [B('Título', 'titulo'), B('Texto', 'texto')] });
 const intro = (nombre = 'Introducción') => ({ id: 'intro', nombre, campos: [...encabezado, parrafos, F('Foto'), B('Descripción de la foto', 'alt')] });
 const resenas = { id: 'resenas', nombre: 'Reseñas', campos: encabezado, ayuda: 'Las reseñas vienen de Google.' };
-const fundadora = { id: 'fundadora', nombre: 'Fundadora', campos: [B('Etiqueta de la sección', 'ceja'), BL('Frase', 'cita'), T('Nombre', 'nombre'), B('Cargo', 'cargo')] };
+const fundadora = { id: 'fundadora', nombre: 'Fundadora', campos: [F('Foto de Luchy'), B('Descripción de la foto', 'alt'), B('Etiqueta de la sección', 'ceja'), BL('Frase', 'cita'), T('Nombre', 'nombre'), B('Cargo', 'cargo')] };
 const pilares = { id: 'pilares', nombre: 'Pilares', campos: [...encabezado, items('Pilares')], ayuda: 'Los íconos se asignan en orden.' };
 const MARCAS = 'Usa *palabras* para resaltarlas en rojo y {texto} para marcarlo como pendiente (recuadro punteado).';
 const cierre = { id: 'cierre', nombre: 'Cierre (franja con foto)', campos: [F('Foto de fondo'), B('Título', 'titulo'), whatsapp()] };
@@ -128,6 +128,11 @@ export const PAGINAS = [
         campos: [...encabezado, { tipo: 'lista', name: 'lista', label: 'Preguntas', nuevo: { pregunta: bi(), respuesta: bi() }, campos: [B('Pregunta', 'pregunta'), BL('Respuesta', 'respuesta')] }] },
       { id: 'reserva', nombre: 'Lista de espera', ayuda: MARCAS, campos: [F('Foto de fondo'), ...encabezado, BL('Texto', 'texto'), B('Botón del formulario', 'boton')] },
     ],
+  },
+  {
+    id: 'gracias', nombre: 'Gracias (después del formulario)', ruta: 'gracias/',
+    secciones: [seo, { id: 'portada', nombre: 'Mensaje', ayuda: 'La ve quien envía un formulario. No sale en Google.',
+      campos: [F('Foto de fondo'), B('Descripción de la foto', 'alt'), B('Etiqueta', 'etiqueta'), B('Título', 'titulo'), BL('Texto', 'texto'), B('Botón de WhatsApp', 'boton')] }],
   },
   {
     id: 'popup', nombre: 'Pop-up del inicio', ruta: '',

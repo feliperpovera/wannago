@@ -8,7 +8,7 @@ import { PAGINAS } from '../panel/esquema.js';
 
 const BASE = 'https://wannago.com.co/'; // dominio propio (Hostinger)
 const INDEXAR = true; // false = todo el sitio con noindex (fuera de Google)
-const V = '20261028b';  // sube este número cuando cambies un CSS o JS
+const V = '20261028c';  // sube este número cuando cambies un CSS o JS
 const WA = 'https://wa.me/573122899185';
 const medidas = JSON.parse(readFileSync('dist/fotos/medidas.json', 'utf8'));
 
@@ -47,8 +47,8 @@ const PG = Object.fromEntries(PAGINAS.map(({ id, secciones }) => {
   return [id, datos];
 }));
 
-// Páginas fuera de Google y del sitemap: Marruecos hasta que en el panel se active «Mostrar en Google»
-const BORRADORES = PG.marruecos.seo.indexar ? [] : ['marruecos/'];
+// Páginas fuera de Google y del sitemap: Gracias siempre; Marruecos hasta que en el panel se active «Mostrar en Google»
+const BORRADORES = ['gracias/', ...(PG.marruecos.seo.indexar ? [] : ['marruecos/'])];
 
 const SERVICIOS = [
   { slug: 'viajes-a-la-medida', nombre: 'Viajes a la medida' },
@@ -227,7 +227,7 @@ const pilares = s => `<section class="sec">
 
 const fundadora = s => `<section class="sec bg-petroleo">
   <div class="wrap founder">
-    <div class="ph rv">Foto de Luchy<br>(pendiente)</div>
+    ${s.foto ? `<figure class="rv">${img(s.foto, L(s.alt), '(max-width:860px) 100vw, 45vw')}</figure>` : `<div class="ph rv">${t('Foto pendiente', 'Photo pending')}</div>`}
     <div class="rv">
       <span class="eyebrow on-dark">${L(s.ceja)}</span>
       <blockquote style="margin-top:20px">${L(s.cita)}</blockquote>
@@ -299,14 +299,8 @@ const contacto = (s, oficina) => `<section class="sec bg-arena" id="contacto">
         <a class="channel" href="https://www.google.com/maps/search/?api=1&amp;query=${encodeURIComponent('Cra. 30 #5F-185, El Poblado, Medellín')}" target="_blank" rel="noopener"><span class="ico rojo sm"><svg viewBox="0 0 24 24"><path d="M12 21s-7-7.6-7-12a7 7 0 0 1 14 0c0 4.4-7 12-7 12z"/><circle cx="12" cy="9" r="2.5"/></svg></span><span><small>${t('Oficina', 'Office')}</small><b>Cra. 30 #5F-185 Int 701, El Poblado, Medellín</b></span></a>` : ''}
       </div>
     </div>
-    <form class="form rv" id="lead" novalidate>
+    <form class="form rv" id="lead" data-gracias="${href('gracias/')}" novalidate>
       <label for="f-name">Nombre<input id="f-name" name="name" autocomplete="name" placeholder="Tu nombre"></label>
-      <div class="two">
-        <label for="f-wa">WhatsApp<input id="f-wa" name="wa" type="tel" autocomplete="tel" placeholder="+57 300 000 0000"></label>
-        <label for="f-type">Tipo de viaje
-          <select id="f-type" name="type"><option>A la medida</option><option>Viaje grupal</option><option>Evento corporativo</option></select>
-        </label>
-      </div>
       <label for="f-msg">¿Qué te gustaría vivir?<textarea id="f-msg" name="msg" rows="4" placeholder="Destino, fechas, número de personas…"></textarea></label>
       <button class="btn btn-rojo" type="submit">Enviar por WhatsApp</button>
       <p class="ok" id="msg" hidden></p>
@@ -626,6 +620,28 @@ ${md(e.cuerpo.en)}
   };
 });
 
+// Gracias: a donde llegan los formularios (fuera de Google)
+pagina('gracias/', () => {
+  const P = PG.gracias.portada;
+  return {
+    seo: PG.gracias.seo,
+    schema: [],
+    portada: `<header class="hero">
+  ${img(P.foto, L(P.alt), '100vw', true)}
+  <div class="wrap">
+    <span class="label">${L(P.etiqueta)}</span>
+    <h1>${L(P.titulo)}</h1>
+    <p class="lead">${L(P.texto)}</p>
+    <div class="row">
+      <a class="btn btn-rojo" href="${WA}" target="_blank" rel="noopener">${L(P.boton)}</a>
+      <a class="btn btn-line" href="./">${t('Volver al inicio', 'Back to home')}</a>
+    </div>
+  </div>
+</header>`,
+    cuerpo: '',
+  };
+});
+
 // ---------- Marruecos entre mujeres: landing con diseño propio (css/marruecos.css) ----------
 
 {
@@ -824,15 +840,8 @@ ${md(e.cuerpo.en)}
       <p style="font-size:18px;max-width:42ch;opacity:.9">${R(Rs.texto)}</p>
       <p style="font-size:14px;opacity:.85">WhatsApp: <a href="${WA}" target="_blank" rel="noopener">+57 312 289 9185</a> · wannagoco@gmail.com</p>
     </div>
-    <form id="lead" class="rv" novalidate>
+    <form id="lead" class="rv" data-gracias="../gracias/" novalidate>
       <label for="f-name">Nombre completo<input id="f-name" name="name" autocomplete="name" placeholder="Tu nombre"></label>
-      <div class="two">
-        <label for="f-wa">WhatsApp<input id="f-wa" name="wa" type="tel" autocomplete="tel" placeholder="+57 300 000 0000"></label>
-        <label for="f-city">Ciudad<input id="f-city" name="city" autocomplete="address-level2" placeholder="Medellín"></label>
-      </div>
-      <label for="f-room">Habitación
-        <select id="f-room" name="room"><option>Doble compartida</option><option>Individual</option><option>Aún no sé</option></select>
-      </label>
       <button class="btn btn-coral" type="submit">${L(Rs.boton)}</button>
       <p id="msg" class="ok" hidden></p>
     </form>

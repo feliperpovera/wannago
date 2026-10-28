@@ -2,7 +2,7 @@
 // Guardar cambia la base de datos; «Publicar cambios» regenera el sitio en GitHub (2 a 3 minutos).
 // Con ?demo se prueba sin Supabase: lee demo.json (el contenido actual) y no guarda nada.
 import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.117.2/+esm';
-import { PAGINAS } from './esquema.js?v=4';
+import { PAGINAS } from './esquema.js?v=5';
 
 const CFG = window.WG_SUPABASE || {};
 const DEMO = new URLSearchParams(location.search).has('demo');

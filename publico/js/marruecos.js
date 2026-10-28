@@ -34,13 +34,13 @@ if (!reduce) addEventListener('scroll', () => {
 const bar = document.getElementById('seatbar');
 if (bar) new IntersectionObserver(([e], o) => { if (e.isIntersecting) { bar.style.width = bar.dataset.pct + '%'; o.disconnect(); } }).observe(bar);
 
-// Lead form (borrador: aún no envía datos)
+// Lista de espera → abre WhatsApp con el mensaje armado y pasa a la página de gracias
 document.getElementById('lead').addEventListener('submit', e => {
   e.preventDefault();
   const f = e.target, msg = document.getElementById('msg');
-  const name = f.name.value.trim(), wa = f.wa.value.trim();
-  msg.hidden = false;
-  if (!name || wa.replace(/\D/g, '').length < 7) { msg.textContent = wgT('Escribe tu nombre y un WhatsApp válido para poder contactarte.'); return; }
-  msg.textContent = wgLang === 'en' ? `Done, ${name.split(' ')[0]}! You're on the waiting list. (Draft: no data is sent yet.)` : `¡Listo, ${name.split(' ')[0]}! Quedaste en la lista de espera. (Borrador: aún no se envían datos.)`;
-  f.reset();
+  const name = f.name.value.trim();
+  if (!name) { msg.hidden = false; msg.textContent = wgT('Escribe tu nombre para que sepamos a quién responder.'); return; }
+  const text = `Hola Wanna Go, soy ${name}. Quiero entrar a la lista de espera de Marruecos entre mujeres.`;
+  window.open('https://wa.me/573122899185?text=' + encodeURIComponent(text), '_blank', 'noopener');
+  location.href = f.dataset.gracias;
 });

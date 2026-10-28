@@ -188,6 +188,7 @@ img{display:block;max-width:100%}
 .founder{display:grid;grid-template-columns:1fr 1.2fr;gap:64px;align-items:center}
 @media (max-width:860px){.founder{grid-template-columns:1fr}}
 .founder .ph{aspect-ratio:4/5;max-width:100%;border-radius:var(--r);background:rgba(255,255,255,.08);border:1px dashed rgba(255,255,255,.45);display:grid;place-items:center;text-align:center;padding:20px;font-size:13px;letter-spacing:.14em;text-transform:uppercase;color:rgba(255,255,255,.75)}
+.founder figure{margin:0}.founder img{width:100%;aspect-ratio:4/5;object-fit:cover;border-radius:var(--r)}
 .founder blockquote{margin:0;font-weight:500;font-size:clamp(22px,2.6vw,30px);line-height:1.35}
 .founder .who{margin-top:24px;display:grid;gap:2px}
 .founder .who b{font-weight:600;font-size:18px}

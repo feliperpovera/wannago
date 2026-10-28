@@ -85,12 +85,12 @@ Luego abre http://localhost:8765 para el sitio y http://localhost:8765/admin/?de
 
 | Sección | Qué permite |
 |---|---|
-| **Páginas** | Inicio, Nosotros, A la medida, Viajes grupales, Eventos corporativos, Destinos, Contacto, Blog, Marruecos entre mujeres y Pop-up. Cada una con sus mismas secciones y en el mismo orden del sitio: textos en español e inglés, fotos y textos para Google. |
+| **Páginas** | Inicio, Nosotros, A la medida, Viajes grupales, Eventos corporativos, Destinos, Contacto, Blog, Marruecos entre mujeres, Gracias y Pop-up. Cada una con sus mismas secciones y en el mismo orden del sitio: textos en español e inglés, fotos y textos para Google. |
 | **Viajes de temporada** | La fila de viajes destacados. Sale el primero activo cuya fecha «hasta» no haya pasado; al día siguiente entra el próximo solo. |
 | **Cuadros de Colombia** | Qué destinos salen en el inicio, en qué orden y con qué aviso. |
 | **Destinos** | Editar, crear (con su propia página) y borrar destinos. |
 | **Blog** | Escribir entradas con foto, en español e inglés, como borrador o publicadas. Cada una tiene su página en `blog/<url>/`. Formato sencillo: `## subtítulo`, `**negrita**`, `*cursiva*`, `- lista`, `> cita`, `[texto](enlace)`. |
-| **Solicitudes** | Lo que llega por los formularios (se conectan cuando esté la política de datos, Ley 1581). |
+| **Solicitudes** | Por ahora vacío: los formularios (Nombre + mensaje) abren WhatsApp con el mensaje listo y llevan a `gracias/` (fuera de Google; sirve para medir conversiones en Meta y Google Ads). Guardarlos aquí requiere la política de datos (Ley 1581). |
 | **Publicaciones** | Historial del botón «Publicar cambios». |
 
 **Fijo a propósito** (para no romper el diseño): menú, pie, colores, formulario, canales de contacto y orden de las secciones. Para volver editable algo nuevo: agregar el campo en `panel/esquema.js`, en el archivo de `contenido/paginas/` y en la plantilla de `herramientas/generar.mjs`.
@@ -114,7 +114,7 @@ Luego abre http://localhost:8765 para el sitio y http://localhost:8765/admin/?de
 ## Conectar Supabase (ya hecho; referencia)
 
 1. Crear el proyecto en Supabase (región São Paulo, la más cercana).
-2. Aplicar en orden los archivos de `supabase/migrations/` (esquema inicial, blog y Marruecos) (SQL Editor, o con la herramienta de Supabase desde Claude).
+2. Aplicar en orden los archivos de `supabase/migrations/` (esquema inicial, blog, Marruecos y gracias) (SQL Editor, o con la herramienta de Supabase desde Claude).
 3. Cargar el contenido actual: `npm run semilla`, poner los correos de los editores en la última línea de `supabase/seed.sql` y ejecutarlo. Subir las fotos: `SUPABASE_URL=… SUPABASE_SERVICE_ROLE_KEY=… npm run semilla -- --fotos`.
 4. Authentication → URL Configuration: Site URL y Redirect URL `https://feliperpovera.github.io/wannago/admin/`. Invitar a cada editor en Authentication → Users.
 5. Correos: configurar un SMTP propio en Authentication → Emails (el envío que trae Supabase tiene un límite bajo por hora).

@@ -21,16 +21,15 @@
   }, { passive: true });
 })();
 
-// Formulario → abre WhatsApp con el mensaje armado
+// Formulario → abre WhatsApp con el mensaje armado y pasa a la página de gracias
 document.getElementById('lead')?.addEventListener('submit', e => {
   e.preventDefault();
   const f = e.target, msg = document.getElementById('msg');
   const name = f.name.value.trim();
-  msg.hidden = false;
-  if (!name) { msg.textContent = wgT('Escribe tu nombre para que sepamos a quién responder.'); return; }
-  const text = `Hola Wanna Go, soy ${name}. Me interesa un ${f.type.value.toLowerCase()}. ${f.msg.value.trim()}`.trim();
+  if (!name) { msg.hidden = false; msg.textContent = wgT('Escribe tu nombre para que sepamos a quién responder.'); return; }
+  const text = `Hola Wanna Go, soy ${name}. ${f.msg.value.trim()}`.trim();
   window.open('https://wa.me/573122899185?text=' + encodeURIComponent(text), '_blank', 'noopener');
-  msg.textContent = wgT('Te abrimos WhatsApp con tu mensaje listo para enviar.');
+  location.href = f.dataset.gracias;
 });
 
 // Menú de celular: se cierra al tocar un enlace

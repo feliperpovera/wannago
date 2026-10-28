@@ -1,0 +1,33 @@
+{
+  "seo": {
+    "foto": "grupo-atardecer.jpg",
+    "titulo": {
+      "en": "Thank you · Wanna Go",
+      "es": "Gracias · Wanna Go"
+    },
+    "descripcion": "Recibimos tu mensaje. Te respondemos por WhatsApp lo más rápido posible."
+  },
+  "portada": {
+    "alt": {
+      "en": "Group of travelers at sunset",
+      "es": "Grupo de viajeras al atardecer"
+    },
+    "foto": "grupo-atardecer.jpg",
+    "boton": {
+      "en": "Didn't open? Message us here",
+      "es": "¿No se abrió? Escríbenos aquí"
+    },
+    "texto": {
+      "en": "We opened WhatsApp with your message ready. Just hit send and we'll reply as soon as possible.",
+      "es": "Te abrimos WhatsApp con tu mensaje listo. Solo dale enviar y te respondemos lo más rápido posible."
+    },
+    "titulo": {
+      "en": "We're almost on our way",
+      "es": "Ya casi nos vamos"
+    },
+    "etiqueta": {
+      "en": "Thank you!",
+      "es": "¡Gracias!"
+    }
+  }
+}

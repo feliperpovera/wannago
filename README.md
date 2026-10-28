@@ -47,10 +47,9 @@ wannago/
 │   └── viajes.json         Viajes de temporada y cuadros de Colombia
 ├── fotos/                  Fotos originales (las optimiza la construcción)
 ├── publico/                Archivos fijos del sitio
-│   ├── css/                marca.css, menu.css, wa.css, carrusel.css
-│   ├── js/                 marca.js, i18n.js (español ⇄ inglés), wa.js, resenas.js, carrusel.js
-│   ├── fuentes/            Montserrat
-│   └── marruecos/          Landing de Marruecos (HTML hecho a mano)
+│   ├── css/                marca.css, menu.css, wa.css, carrusel.css, marruecos.css
+│   ├── js/                 marca.js, i18n.js (español ⇄ inglés), wa.js, resenas.js, carrusel.js, marruecos.js
+│   └── fuentes/            Montserrat
 ├── panel/                  Panel de edición, se publica en /admin
 │   ├── esquema.js          Secciones y campos editables de cada página
 │   ├── panel.js · panel.css
@@ -86,7 +85,7 @@ Luego abre http://localhost:8765 para el sitio y http://localhost:8765/admin/?de
 
 | Sección | Qué permite |
 |---|---|
-| **Páginas** | Inicio, Nosotros, A la medida, Viajes grupales, Eventos corporativos, Destinos, Contacto y Pop-up. Cada una con sus mismas secciones y en el mismo orden del sitio: textos en español e inglés, fotos y textos para Google. |
+| **Páginas** | Inicio, Nosotros, A la medida, Viajes grupales, Eventos corporativos, Destinos, Contacto, Blog, Marruecos entre mujeres y Pop-up. Cada una con sus mismas secciones y en el mismo orden del sitio: textos en español e inglés, fotos y textos para Google. |
 | **Viajes de temporada** | La fila de viajes destacados. Sale el primero activo cuya fecha «hasta» no haya pasado; al día siguiente entra el próximo solo. |
 | **Cuadros de Colombia** | Qué destinos salen en el inicio, en qué orden y con qué aviso. |
 | **Destinos** | Editar, crear (con su propia página) y borrar destinos. |
@@ -96,7 +95,9 @@ Luego abre http://localhost:8765 para el sitio y http://localhost:8765/admin/?de
 
 **Fijo a propósito** (para no romper el diseño): menú, pie, colores, formulario, canales de contacto y orden de las secciones. Para volver editable algo nuevo: agregar el campo en `panel/esquema.js`, en el archivo de `contenido/paginas/` y en la plantilla de `herramientas/generar.mjs`.
 
-**Todavía en el código:** las reseñas de Google (`publico/js/resenas.js`), los datos de contacto y la landing de Marruecos.
+**Marruecos:** en sus textos, `*palabras*` salen resaltadas en rojo y `{texto}` sale en recuadro punteado como pendiente (precios y fechas). La franja de borrador y «Mostrar en Google» se apagan/encienden desde el panel.
+
+**Todavía en el código:** las reseñas de Google (`publico/js/resenas.js`) y los datos de contacto.
 
 ## Seguridad
 
@@ -113,7 +114,7 @@ Luego abre http://localhost:8765 para el sitio y http://localhost:8765/admin/?de
 ## Conectar Supabase (ya hecho; referencia)
 
 1. Crear el proyecto en Supabase (región São Paulo, la más cercana).
-2. Aplicar en orden los archivos de `supabase/migrations/` (esquema inicial y blog) (SQL Editor, o con la herramienta de Supabase desde Claude).
+2. Aplicar en orden los archivos de `supabase/migrations/` (esquema inicial, blog y Marruecos) (SQL Editor, o con la herramienta de Supabase desde Claude).
 3. Cargar el contenido actual: `npm run semilla`, poner los correos de los editores en la última línea de `supabase/seed.sql` y ejecutarlo. Subir las fotos: `SUPABASE_URL=… SUPABASE_SERVICE_ROLE_KEY=… npm run semilla -- --fotos`.
 4. Authentication → URL Configuration: Site URL y Redirect URL `https://feliperpovera.github.io/wannago/admin/`. Invitar a cada editor en Authentication → Users.
 5. Correos: configurar un SMTP propio en Authentication → Emails (el envío que trae Supabase tiene un límite bajo por hora).
@@ -123,6 +124,5 @@ Luego abre http://localhost:8765 para el sitio y http://localhost:8765/admin/?de
 
 ## Antes de salir en vivo
 
-- Google: el sitio ya está abierto (`INDEXAR = true`). La landing de Marruecos sigue fuera (lista `BORRADORES` en `herramientas/generar.mjs`): quitarla de ahí cuando tenga precios y fechas reales.
-- Quitar la franja de BORRADOR y los datos marcados «por definir» de la landing de Marruecos.
+- Google: el sitio ya está abierto (`INDEXAR = true`). Marruecos sigue fuera hasta que, con precios y fechas reales, se active «Mostrar en Google» y se apague la franja de borrador en el panel (Páginas → Marruecos entre mujeres).
 - Ver la lista completa en [docs/CONTEXTO.md](docs/CONTEXTO.md#6-pendientes).

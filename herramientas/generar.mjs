@@ -8,8 +8,7 @@ import { PAGINAS } from '../panel/esquema.js';
 
 const BASE = 'https://wannago.com.co/'; // dominio propio (Hostinger)
 const INDEXAR = true; // false = todo el sitio con noindex (fuera de Google)
-const BORRADORES = ['marruecos/']; // páginas que siguen fuera de Google y del sitemap hasta tener datos reales
-const V = '20261028a';  // sube este número cuando cambies un CSS o JS
+const V = '20261028b';  // sube este número cuando cambies un CSS o JS
 const WA = 'https://wa.me/573122899185';
 const medidas = JSON.parse(readFileSync('dist/fotos/medidas.json', 'utf8'));
 
@@ -47,6 +46,9 @@ const PG = Object.fromEntries(PAGINAS.map(({ id, secciones }) => {
   for (const s of secciones) if (!datos[s.id]) throw new Error(`contenido/paginas/${id}.json: falta la sección «${s.id}»`);
   return [id, datos];
 }));
+
+// Páginas fuera de Google y del sitemap: Marruecos hasta que en el panel se active «Mostrar en Google»
+const BORRADORES = PG.marruecos.seo.indexar ? [] : ['marruecos/'];
 
 const SERVICIOS = [
   { slug: 'viajes-a-la-medida', nombre: 'Viajes a la medida' },
@@ -624,22 +626,252 @@ ${md(e.cuerpo.en)}
   };
 });
 
-// ---------- Marruecos: solo el bloque SEO entre <!-- seo --> … <!-- /seo --> ----------
+// ---------- Marruecos entre mujeres: landing con diseño propio (css/marruecos.css) ----------
 
 {
   pre = '../';
-  const archivo = 'dist/marruecos/index.html';
-  const m = [INICIO, ['Viajes grupales', 'viajes-grupales/'], ['Marruecos entre mujeres', 'marruecos/']];
-  const bloque = seo({
-    ruta: 'marruecos/', foto: 'mujer-dunas',
-    titulo: 'Marruecos entre mujeres · Wanna Go',
-    desc: 'Viaje grupal solo para mujeres a Marruecos: 10 días, 7 destinos y máximo 16 viajeras, con anfitriona de Wanna Go. Medinas, palacios y una noche en el Sahara.',
-    schema: [migas(m), { '@type': 'TouristTrip', name: 'Marruecos entre mujeres', description: 'Viaje grupal solo para mujeres a Marruecos: 10 días, 7 destinos y máximo 16 viajeras.', url: BASE + 'marruecos/', image: BASE + 'fotos/og/mujer-dunas.jpg', touristType: 'Mujeres', provider: { '@id': ORG['@id'] } }],
-  }, '');
-  const h = readFileSync(archivo, 'utf8');
-  const a = h.indexOf('<!-- seo -->') + '<!-- seo -->'.length, b = h.indexOf('<!-- /seo -->');
-  if (a < 12 || b < 0) throw new Error(`Falta el marcador <!-- seo --> en ${archivo}`);
-  writeFileSync(archivo, h.slice(0, a) + '\n' + bloque + '\n' + h.slice(b));
+  ENP = {};
+  const M = PG.marruecos, ruta = 'marruecos/';
+  // Texto con marcas: *resaltado* → <em>, {pendiente} → recuadro punteado. Cada pieza lleva su inglés.
+  const R = v => {
+    if (typeof v === 'string') v = { es: v, en: v };
+    const corta = s => s.split(/(\*[^*]+\*|\{[^}]+\})/);
+    const es = corta(v.es), en = corta(v.en || v.es);
+    return es.map((p, i) => {
+      const m = p.match(/^([*{])(.*)[*}]$/), txt = m ? m[2] : p, k = txt.trim();
+      if (k && es.length === en.length) t(k, (en[i].match(/^[*{](.*)[*}]$/)?.[1] ?? en[i]).trim() || k);
+      return !m ? txt : m[1] === '*' ? `<em>${txt}</em>` : `<span class="tbd">${txt}</span>`;
+    }).join('');
+  };
+  const { portada: P, viaje: Vj, itinerario: I, noche: N, incluye: Inc, precio: Pr, anfitriona: A, preguntas: Q, reserva: Rs } = M;
+  const enlaces = [['#viaje', 'El viaje'], ['#ruta', 'Itinerario'], ['#incluye', 'Incluye'], ['#precio', 'Inversión'], ['#faq', 'Preguntas']]
+    .map(([h, n]) => `<li><a href="${h}">${n}</a></li>`);
+  const m = [INICIO, ['Viajes grupales', 'viajes-grupales/'], ['Marruecos entre mujeres', ruta]];
+  const pct = Pr.cupos_total ? Math.min(100, Math.round(Pr.cupos_reservados / Pr.cupos_total * 100)) : 0;
+  const cuerpo = `<nav id="nav">${M.aviso.activo ? `
+  <div class="draft">${R(M.aviso.texto)}</div>` : ''}
+  <div class="wrap">
+    <a class="logo" href="../" aria-label="Wanna Go Colombia, volver al inicio">${ISO}</a>
+    <ul>
+      <li><a href="../">Wanna Go</a></li>
+      ${enlaces.join('\n      ')}
+    </ul>
+    <div class="nav-actions"><button class="lang-btn" type="button" aria-label="Switch to English">EN</button><a class="btn btn-coral" href="#reserva">Reservar</a><button class="menu-btn" type="button" popovertarget="menu" aria-label="Abrir menú"><svg viewBox="0 0 24 24"><path d="M4 8h16M4 16h16"/></svg></button></div>
+  </div>
+  <div class="menu" id="menu" popover>
+    <div class="menu-top"><span class="label">Menú</span><button class="lang-btn" type="button" aria-label="Switch to English">EN</button><button class="menu-close" type="button" popovertarget="menu" popovertargetaction="hide" aria-label="Cerrar"><svg viewBox="0 0 24 24"><path d="M6 6l12 12M18 6 6 18"/></svg></button></div>
+    <ul>
+      ${enlaces.join('\n      ')}
+      <li><a href="../">Wanna Go</a></li>
+    </ul>
+    <div class="menu-foot">
+      <a class="btn btn-coral" href="#reserva">${L(P.boton1)}</a>
+      <p>Viajes con propósito · RNT 65568 · Medellín, Colombia</p>
+    </div>
+  </div>
+</nav>
+
+<header class="hero" id="top">
+  ${img(P.foto, L(P.alt), '100vw', true)}
+  <div class="wrap">
+    <span class="kicker">${R(P.etiqueta)}</span>
+    <h1><span><i>${R(P.titulo)}</i></span><span><i><em>${R(P.titulo_resalte)}</em></i></span></h1>
+    <div class="hero-row">
+      <div style="display:grid;gap:26px">
+        <p class="lead">${R(P.texto)}</p>
+        <div class="ctas">
+          <a class="btn btn-coral" href="#reserva">${L(P.boton1)}</a>
+          <a class="btn btn-line" href="#ruta">${L(P.boton2)}</a>
+        </div>
+      </div>
+      <div class="facts">
+        ${P.datos.map(d => `<div><b>${d.numero}</b>${L(d.texto)}</div>`).join('\n        ')}
+      </div>
+    </div>
+  </div>
+</header>
+
+<section id="viaje">
+  <div class="wrap intro">
+    <div class="rv">
+      <span class="kicker c">${R(Vj.ceja)}</span>
+      <h2 style="margin-top:18px">${R(Vj.titulo)}</h2>
+      <div class="pillars">
+        ${Vj.pilares.map(x => `<div><h3>${R(x.titulo)}</h3><p>${R(x.texto)}</p></div>`).join('\n        ')}
+      </div>
+    </div>
+    <div class="pics rv">
+      ${img(Vj.foto1, L(Vj.alt1))}
+      ${img(Vj.foto2, L(Vj.alt2))}
+    </div>
+  </div>
+</section>
+
+<div class="strip carousel" aria-label="Fotos del destino">
+  <div class="strip-track" tabindex="0">
+    ${M.galeria.fotos.map(f => `<figure>${img(f.foto, '', '(max-width:700px) 70vw, 330px')}<figcaption>${L(f.nombre)}</figcaption></figure>`).join('\n    ')}
+  </div>
+</div>
+
+<section class="trip" id="ruta">
+  <div class="wrap">
+    <div class="head rv">
+      <span class="kicker c">${R(I.ceja)}</span>
+      <h2>${R(I.titulo)}</h2>
+      <p>${R(I.texto)}</p>
+    </div>
+    <div class="trip-grid">
+      <div class="stage" id="stage">
+        ${I.capitulos.map((c, i) => img(c.foto, '', '100vw', false, i ? '' : ' class="on"')).join('\n        ')}
+        <span class="place" id="place">${esc(I.capitulos[0]?.lugar || '')}</span>
+      </div>
+      <div class="chapters">
+        ${I.capitulos.map((c, i) => `<article class="ch" data-i="${i}" data-place="${esc(c.lugar)}">
+          ${img(c.foto, '', '100vw', false, ' class="mob"')}
+          <span class="days">${R(c.dias)}</span>
+          <h3>${R(c.titulo)}</h3>
+          <p>${R(c.texto)}</p>${c.detalle?.length ? `
+          <ul>${c.detalle.map(d => `<li><b>${R(d.dia)}</b>${R(d.texto)}</li>`).join('')}</ul>` : ''}
+        </article>`).join('\n        ')}
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="night">
+  ${img(N.foto, L(N.alt), '100vw', false, ' id="par"')}
+  <div class="wrap">
+    <span class="kicker" style="color:var(--sand)">${R(N.ceja)}</span>
+    <h2>${R(N.titulo).replace('<em>', '<em style="color:#fff">')}</h2>
+    <p>${R(N.texto)}</p>
+  </div>
+</section>
+
+<section id="incluye">
+  <div class="wrap">
+    <div class="head rv">
+      <span class="kicker c">${R(Inc.ceja)}</span>
+      <h2>${R(Inc.titulo)}</h2>
+    </div>
+    <div class="inc">
+      <div class="rv">
+        <h3>${L(Inc.titulo_si)}</h3>
+        <ul>
+          ${Inc.si.map(x => `<li>${R(x)}</li>`).join('\n          ')}
+        </ul>
+      </div>
+      <div class="rv no">
+        <h3>${L(Inc.titulo_no)}</h3>
+        <ul>
+          ${Inc.no.map(x => `<li>${R(x)}</li>`).join('\n          ')}
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="price" id="precio">
+  <div class="wrap">
+    <figure class="rv">${img(Pr.foto, L(Pr.alt))}</figure>
+    <div class="stack rv">
+      <span class="kicker c">${R(Pr.ceja)}</span>
+      <h2>${R(Pr.titulo)}</h2>
+      <div>
+        <p style="color:var(--muted);font-size:14px">${R(Pr.nota)}</p>
+        <div class="amt">${R(Pr.valor)}</div>
+      </div>
+      <div class="rows">
+        ${Pr.filas.map(f => `<div class="row"><span>${R(f.etiqueta)}</span><b>${R(f.valor)}</b></div>`).join('\n        ')}
+      </div>${Pr.mostrar_cupos ? `
+      <div class="seats">
+        <div class="row" style="border:0;padding:0"><span>${R(Pr.cupos_etiqueta)}</span><b>${Pr.cupos_reservados} <span>${t('de', 'of')}</span> ${Pr.cupos_total}</b></div>
+        <div class="bar"><i id="seatbar" data-pct="${pct}"></i></div>
+      </div>` : ''}
+      <a class="btn btn-coral" href="#reserva" style="justify-self:start">${L(Pr.boton)}</a>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap host">
+    ${A.foto ? `<div class="rv">${img(A.foto, L(A.alt), '(max-width:860px) 100vw, 45vw')}</div>` : `<div class="ph rv">${t('Foto pendiente', 'Photo pending')}</div>`}
+    <div class="rv">
+      <span class="kicker c">${R(A.ceja)}</span>
+      <blockquote style="margin-top:20px">${R(A.cita)}</blockquote>
+      <cite>${R(A.firma)}</cite>
+    </div>
+  </div>
+</section>
+
+<section id="faq" style="background:var(--paper)">
+  <div class="wrap">
+    <div class="head rv">
+      <span class="kicker c">${R(Q.ceja)}</span>
+      <h2>${R(Q.titulo)}</h2>
+    </div>
+    <div class="faq">
+      ${Q.lista.map(x => `<details><summary>${R(x.pregunta)}</summary><p>${R(x.respuesta)}</p></details>`).join('\n      ')}
+    </div>
+  </div>
+</section>
+
+<section class="join" id="reserva">
+  ${img(Rs.foto)}
+  <div class="wrap">
+    <div class="rv" style="display:grid;gap:22px">
+      <span class="kicker" style="color:var(--sand)">${R(Rs.ceja)}</span>
+      <h2>${R(Rs.titulo).replace('<em>', '<em style="color:#fff">')}</h2>
+      <p style="font-size:18px;max-width:42ch;opacity:.9">${R(Rs.texto)}</p>
+      <p style="font-size:14px;opacity:.85">WhatsApp: <a href="${WA}" target="_blank" rel="noopener">+57 312 289 9185</a> · wannagoco@gmail.com</p>
+    </div>
+    <form id="lead" class="rv" novalidate>
+      <label for="f-name">Nombre completo<input id="f-name" name="name" autocomplete="name" placeholder="Tu nombre"></label>
+      <div class="two">
+        <label for="f-wa">WhatsApp<input id="f-wa" name="wa" type="tel" autocomplete="tel" placeholder="+57 300 000 0000"></label>
+        <label for="f-city">Ciudad<input id="f-city" name="city" autocomplete="address-level2" placeholder="Medellín"></label>
+      </div>
+      <label for="f-room">Habitación
+        <select id="f-room" name="room"><option>Doble compartida</option><option>Individual</option><option>Aún no sé</option></select>
+      </label>
+      <button class="btn btn-coral" type="submit">${L(Rs.boton)}</button>
+      <p id="msg" class="ok" hidden></p>
+    </form>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <a class="logo" href="../" aria-label="Wanna Go Colombia">${ISO}</a>
+    <span>Viajes con propósito · RNT 65568 · Medellín, Colombia</span>
+    <a href="../admin/" rel="nofollow">Panel</a>
+  </div>
+</footer>
+
+${WA_FLOAT}`;
+  const titulo = L(M.seo.titulo);
+  const head = seo({
+    ruta, foto: M.seo.foto, titulo, desc: M.seo.descripcion,
+    schema: [migas(m), { '@type': 'TouristTrip', name: 'Marruecos entre mujeres', description: M.seo.descripcion, url: BASE + ruta, image: BASE + `fotos/og/${nf(M.seo.foto)}.jpg`, touristType: 'Mujeres', provider: { '@id': ORG['@id'] } }],
+  }, titulo + cuerpo);
+  mkdirSync('dist/' + ruta, { recursive: true });
+  writeFileSync(`dist/${ruta}index.html`, `<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+${head}
+<link rel="icon" href="${ICONO}">
+${['marruecos.css', 'carrusel.css', 'wa.css', 'menu.css'].map(c => `<link rel="stylesheet" href="../css/${c}?v=${V}">`).join('\n')}
+</head>
+<body>
+${cuerpo}
+
+<script src="../js/marruecos.js?v=${V}"></script>
+${['carrusel.js', 'i18n.js', 'wa.js'].map(s => `<script src="../js/${s}?v=${V}"></script>`).join('\n')}
+</body>
+</html>
+`);
+  ENP = null;
 }
 
 // ---------- sitemap.xml y robots.txt ----------

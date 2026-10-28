@@ -1,5 +1,6 @@
 // Estructura editable de cada página: secciones y campos, en el mismo orden en que se ven en el sitio.
 // La usan el panel /admin (para armar los formularios) y herramientas/generar.mjs (para validar los datos y armar las páginas).
+// Marcas en textos de Marruecos: *resaltado* y {pendiente}.
 // Tipos de campo: bi (español + inglés), texto, largo, numero, fecha, bool, foto, lista, grupo, destinos.
 
 const B = (label, name, o = {}) => ({ tipo: 'bi', label, name, ...o });
@@ -29,6 +30,7 @@ const intro = (nombre = 'Introducción') => ({ id: 'intro', nombre, campos: [...
 const resenas = { id: 'resenas', nombre: 'Reseñas', campos: encabezado, ayuda: 'Las reseñas vienen de Google.' };
 const fundadora = { id: 'fundadora', nombre: 'Fundadora', campos: [B('Etiqueta de la sección', 'ceja'), BL('Frase', 'cita'), T('Nombre', 'nombre'), B('Cargo', 'cargo')] };
 const pilares = { id: 'pilares', nombre: 'Pilares', campos: [...encabezado, items('Pilares')], ayuda: 'Los íconos se asignan en orden.' };
+const MARCAS = 'Usa *palabras* para resaltarlas en rojo y {texto} para marcarlo como pendiente (recuadro punteado).';
 const cierre = { id: 'cierre', nombre: 'Cierre (franja con foto)', campos: [F('Foto de fondo'), B('Título', 'titulo'), whatsapp()] };
 
 const servicio = (id, nombre, ruta) => ({
@@ -91,6 +93,41 @@ export const PAGINAS = [
   {
     id: 'blog', nombre: 'Blog (índice)', ruta: 'blog/',
     secciones: [seo, portada(), { id: 'listado', nombre: 'Listado', campos: [...encabezado, BL('Texto cuando no hay entradas', 'vacio')], ayuda: 'Las entradas se escriben en la sección Blog del panel.' }, cierre],
+  },
+  {
+    id: 'marruecos', nombre: 'Marruecos entre mujeres', ruta: 'marruecos/',
+    secciones: [
+      { ...seo, ayuda: MARCAS, campos: [...seo.campos, { tipo: 'bool', name: 'indexar', label: 'Mostrar en Google (activar cuando tenga precios y fechas reales)' }] },
+      { id: 'aviso', nombre: 'Franja de borrador', ayuda: 'Franja roja arriba de la página. Apágala cuando la página esté lista.',
+        campos: [{ tipo: 'bool', name: 'activo', label: 'Mostrar la franja' }, B('Texto', 'texto', { ayuda: MARCAS })] },
+      { id: 'portada', nombre: 'Portada', ayuda: MARCAS,
+        campos: [F('Foto de portada'), B('Descripción de la foto', 'alt'), B('Etiqueta', 'etiqueta'), B('Título', 'titulo'), B('Parte resaltada del título', 'titulo_resalte'), BL('Texto', 'texto'),
+          B('Botón principal (lleva al formulario)', 'boton1'), B('Botón secundario (lleva al itinerario)', 'boton2'),
+          { tipo: 'lista', name: 'datos', label: 'Datos', nuevo: { numero: '', texto: bi() }, campos: [T('Número', 'numero'), B('Texto', 'texto')] }] },
+      { id: 'viaje', nombre: 'El viaje', ayuda: MARCAS,
+        campos: [...encabezado, { ...items('Pilares'), name: 'pilares' }, F('Foto 1', 'foto1'), B('Descripción foto 1', 'alt1'), F('Foto 2', 'foto2'), B('Descripción foto 2', 'alt2')] },
+      { id: 'galeria', nombre: 'Carrusel de fotos',
+        campos: [{ tipo: 'lista', name: 'fotos', label: 'Fotos', nuevo: { foto: '', nombre: bi() }, campos: [F('Foto'), B('Nombre', 'nombre')] }] },
+      { id: 'itinerario', nombre: 'Itinerario', ayuda: MARCAS,
+        campos: [...encabezado, BL('Texto', 'texto'),
+          { tipo: 'lista', name: 'capitulos', label: 'Capítulos', nuevo: { foto: '', lugar: '', dias: bi(), titulo: bi(), texto: bi(), detalle: [] },
+            campos: [F('Foto'), T('Lugar (sale sobre la foto)', 'lugar'), B('Días', 'dias'), B('Título', 'titulo'), BL('Texto', 'texto'),
+              { tipo: 'lista', name: 'detalle', label: 'Día a día', nuevo: { dia: bi(), texto: bi() }, campos: [B('Día', 'dia'), B('Plan', 'texto')] }] }] },
+      { id: 'noche', nombre: 'Noche en el Sahara', ayuda: MARCAS, campos: [F('Foto de fondo'), B('Descripción de la foto', 'alt'), ...encabezado, BL('Texto', 'texto')] },
+      { id: 'incluye', nombre: 'Qué incluye', ayuda: MARCAS,
+        campos: [...encabezado, B('Título incluido', 'titulo_si'), { tipo: 'lista', name: 'si', label: 'Incluido', nuevo: bi(), item: B('', '') },
+          B('Título no incluido', 'titulo_no'), { tipo: 'lista', name: 'no', label: 'No incluido', nuevo: bi(), item: B('', '') }] },
+      { id: 'precio', nombre: 'Precio y cupos', ayuda: MARCAS + ' Ej.: USD {0.000} mientras no haya precio; USD 4.900 cuando lo haya.',
+        campos: [F('Foto'), B('Descripción de la foto', 'alt'), ...encabezado, B('Nota sobre el precio', 'nota'), B('Precio', 'valor'),
+          { tipo: 'lista', name: 'filas', label: 'Detalles', nuevo: { etiqueta: bi(), valor: bi() }, campos: [B('Dato', 'etiqueta'), B('Valor', 'valor')] },
+          { tipo: 'bool', name: 'mostrar_cupos', label: 'Mostrar la barra de cupos' }, B('Texto de cupos', 'cupos_etiqueta'),
+          { tipo: 'numero', name: 'cupos_reservados', label: 'Cupos reservados' }, { tipo: 'numero', name: 'cupos_total', label: 'Cupos en total' }, B('Botón', 'boton')] },
+      { id: 'anfitriona', nombre: 'Anfitriona', ayuda: 'Sin foto se ve un recuadro gris de «Foto pendiente».',
+        campos: [F('Foto de Luchy'), B('Descripción de la foto', 'alt'), B('Etiqueta de la sección', 'ceja'), BL('Frase', 'cita'), B('Firma', 'firma')] },
+      { id: 'preguntas', nombre: 'Preguntas frecuentes', ayuda: MARCAS,
+        campos: [...encabezado, { tipo: 'lista', name: 'lista', label: 'Preguntas', nuevo: { pregunta: bi(), respuesta: bi() }, campos: [B('Pregunta', 'pregunta'), BL('Respuesta', 'respuesta')] }] },
+      { id: 'reserva', nombre: 'Lista de espera', ayuda: MARCAS, campos: [F('Foto de fondo'), ...encabezado, BL('Texto', 'texto'), B('Botón del formulario', 'boton')] },
+    ],
   },
   {
     id: 'popup', nombre: 'Pop-up del inicio', ruta: '',

@@ -64,7 +64,7 @@ El PDF completo está en `manual/Manual_de_marca_Wanna_Go.pdf`.
 ## 6. Pendientes
 
 **Del cliente**
-- Precio, anticipo, suplemento de habitación individual, fecha de salida y número de cuotas de Marruecos. Hoy salen marcados como `por definir` con la clase `.tbd`.
+- Precio, anticipo, suplemento de habitación individual, fecha de salida y número de cuotas de Marruecos. Hoy salen marcados como pendientes (`{texto}` en el panel, recuadro punteado en la página). Se llenan desde el panel: Páginas → Marruecos entre mujeres.
 - Fechas de Cartagena y Eje Cafetero.
 - Foto de Luchy y su aprobación de las frases que se le atribuyen. La frase del inicio es inventada como borrador; la de la landing salió del primer borrador.
 - Logo original en SVG o PNG grande, y fotos propias.
@@ -78,7 +78,7 @@ El PDF completo está en `manual/Manual_de_marca_Wanna_Go.pdf`.
 
 **Nuestros, antes de salir en vivo**
 - Quitar la franja BORRADOR y todos los `.tbd`.
-- Landing de Marruecos: cuando tenga datos reales, quitar la franja BORRADOR y sacarla de `BORRADORES` en `herramientas/generar.mjs` para que Google la indexe.
+- Landing de Marruecos: cuando tenga datos reales, en el panel apagar «Mostrar la franja» y activar «Mostrar en Google». También la foto de Luchy (sección Anfitriona).
 - **El formulario de lista de espera de la landing no envía datos.** Hay que conectarlo a WhatsApp, como el del inicio.
 - Redactar una política de tratamiento de datos (Ley 1581 de Colombia), porque los formularios piden nombre y teléfono.
 - Opcional: renombrar el repositorio o la URL, y agregar analítica.

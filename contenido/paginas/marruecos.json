@@ -1,0 +1,669 @@
+{
+  "seo": {
+    "foto": "mujer-dunas.jpg",
+    "titulo": {
+      "en": "Morocco among women · Wanna Go",
+      "es": "Marruecos entre mujeres · Wanna Go"
+    },
+    "indexar": false,
+    "descripcion": "Viaje solo para mujeres a Marruecos: 10 días, 7 destinos y máximo 16 viajeras, con anfitriona de Wanna Go. Medinas, palacios y una noche en el Sahara."
+  },
+  "aviso": {
+    "texto": {
+      "en": "DRAFT · Prices and dates marked {to be confirmed} will be completed with Wanna Go · Reference photos: Unsplash",
+      "es": "BORRADOR · Precios y fechas marcados como {por definir} se completan con Wanna Go · Fotos de referencia: Unsplash"
+    },
+    "activo": true
+  },
+  "noche": {
+    "alt": {
+      "en": "Desert tent camp lit up under the starry Sahara sky",
+      "es": "Campamento de jaimas iluminado bajo el cielo estrellado del Sahara"
+    },
+    "ceja": {
+      "en": "The highlight of the trip",
+      "es": "El momento del viaje"
+    },
+    "foto": "jaima.jpg",
+    "texto": {
+      "en": "A campfire, mint tea, Berber drums and more stars than you've ever seen.",
+      "es": "Fogata, té de menta, tambores bereberes y un cielo con más estrellas de las que has visto en tu vida."
+    },
+    "titulo": {
+      "en": "A night *in the Sahara*",
+      "es": "Una noche *en el Sahara*"
+    }
+  },
+  "viaje": {
+    "alt1": {
+      "en": "Blue courtyard with plants in Chefchaouen",
+      "es": "Patio azul con plantas en Chefchaouen"
+    },
+    "alt2": {
+      "en": "Moroccan lanterns glowing in a souk",
+      "es": "Faroles marroquíes iluminados en un zoco"
+    },
+    "ceja": {
+      "en": "The trip",
+      "es": "El viaje"
+    },
+    "foto1": "patio-azul.jpg",
+    "foto2": "faroles.jpg",
+    "titulo": {
+      "en": "A trip you'll remember *for a lifetime*, with women who experience it just like you",
+      "es": "Un viaje que se recuerda *toda la vida*, con mujeres que lo viven igual que tú"
+    },
+    "pilares": [
+      {
+        "texto": {
+          "en": "Certified local guides, private transfers and a host with you around the clock.",
+          "es": "Guías locales certificadas, traslados privados y anfitriona contigo las 24 horas."
+        },
+        "titulo": {
+          "en": "Safe",
+          "es": "Segura"
+        }
+      },
+      {
+        "texto": {
+          "en": "16 travelers max. Arrive on your own, leave with friends.",
+          "es": "Máximo 16 viajeras. Llegas sola y te vas con amigas."
+        },
+        "titulo": {
+          "en": "Intimate",
+          "es": "Íntima"
+        }
+      },
+      {
+        "texto": {
+          "en": "Traditional hammam, cooking with a local family and a night at a desert camp.",
+          "es": "Hammam tradicional, cocina con una familia local y noche en campamento del desierto."
+        },
+        "titulo": {
+          "en": "Authentic",
+          "es": "Auténtica"
+        }
+      },
+      {
+        "texto": {
+          "en": "Hotels, transport, tickets and key meals already booked.",
+          "es": "Hoteles, transporte, entradas y comidas clave ya reservados."
+        },
+        "titulo": {
+          "en": "No logistics",
+          "es": "Sin logística"
+        }
+      }
+    ]
+  },
+  "precio": {
+    "alt": {
+      "en": "Blue stairs in Chefchaouen",
+      "es": "Escaleras azules en Chefchaouen"
+    },
+    "ceja": {
+      "en": "Price",
+      "es": "Inversión"
+    },
+    "foto": "chefchaouen-escaleras.jpg",
+    "nota": {
+      "en": "From, per person in a double room",
+      "es": "Desde, por persona en habitación doble"
+    },
+    "boton": {
+      "en": "Hold my spot",
+      "es": "Apartar mi cupo"
+    },
+    "filas": [
+      {
+        "valor": {
+          "en": "{USD 000}",
+          "es": "{USD 000}"
+        },
+        "etiqueta": {
+          "en": "Deposit to book",
+          "es": "Anticipo para reservar"
+        }
+      },
+      {
+        "valor": {
+          "en": "{USD 000}",
+          "es": "{USD 000}"
+        },
+        "etiqueta": {
+          "en": "Single room supplement",
+          "es": "Suplemento habitación individual"
+        }
+      },
+      {
+        "valor": {
+          "en": "{dd / mm / 2027}",
+          "es": "{dd / mm / 2027}"
+        },
+        "etiqueta": {
+          "en": "Departure date",
+          "es": "Fecha de salida"
+        }
+      },
+      {
+        "valor": {
+          "en": "In installments before the trip",
+          "es": "En cuotas antes del viaje"
+        },
+        "etiqueta": {
+          "en": "Balance",
+          "es": "Saldo"
+        }
+      }
+    ],
+    "valor": {
+      "en": "USD {0.000}",
+      "es": "USD {0.000}"
+    },
+    "titulo": {
+      "en": "Your place in *the group*",
+      "es": "Tu lugar en *el grupo*"
+    },
+    "cupos_total": 16,
+    "mostrar_cupos": true,
+    "cupos_etiqueta": {
+      "en": "Spots booked {example}",
+      "es": "Cupos reservados {ejemplo}"
+    },
+    "cupos_reservados": 9
+  },
+  "galeria": {
+    "fotos": [
+      {
+        "foto": "chefchaouen-escaleras.jpg",
+        "nombre": {
+          "en": "Chefchaouen",
+          "es": "Chefchaouen"
+        }
+      },
+      {
+        "foto": "camellos.jpg",
+        "nombre": {
+          "en": "Erg Chebbi",
+          "es": "Erg Chebbi"
+        }
+      },
+      {
+        "foto": "majorelle.jpg",
+        "nombre": {
+          "en": "Majorelle Garden",
+          "es": "Jardín Majorelle"
+        }
+      },
+      {
+        "foto": "especias.jpg",
+        "nombre": {
+          "en": "The souk",
+          "es": "El zoco"
+        }
+      },
+      {
+        "foto": "kasbah.jpg",
+        "nombre": {
+          "en": "Dades Valley",
+          "es": "Valle del Dades"
+        }
+      },
+      {
+        "foto": "fez.jpg",
+        "nombre": {
+          "en": "Fez",
+          "es": "Fez"
+        }
+      },
+      {
+        "foto": "jaima.jpg",
+        "nombre": {
+          "en": "Night in a desert tent",
+          "es": "Noche en jaima"
+        }
+      }
+    ]
+  },
+  "incluye": {
+    "no": [
+      {
+        "en": "International flights {quote from MDE / BOG}",
+        "es": "Tiquetes internacionales {cotizar desde MDE / BOG}"
+      },
+      {
+        "en": "Travel insurance (required)",
+        "es": "Seguro de viaje (obligatorio)"
+      },
+      {
+        "en": "Lunches and drinks not listed",
+        "es": "Almuerzos y bebidas no mencionadas"
+      },
+      {
+        "en": "Tips for guides and drivers",
+        "es": "Propinas a guías y conductores"
+      },
+      {
+        "en": "Personal expenses",
+        "es": "Gastos personales"
+      }
+    ],
+    "si": [
+      {
+        "en": "9 nights in riads and boutique hotels",
+        "es": "9 noches en riads y hoteles boutique"
+      },
+      {
+        "en": "A night at a luxury desert camp",
+        "es": "Noche en campamento de lujo en el desierto"
+      },
+      {
+        "en": "Daily breakfast and {no.} dinners",
+        "es": "Desayunos diarios y {n°} cenas"
+      },
+      {
+        "en": "Private transport for the whole trip",
+        "es": "Transporte privado durante todo el recorrido"
+      },
+      {
+        "en": "Spanish-speaking local guides",
+        "es": "Guías locales en español"
+      },
+      {
+        "en": "Wanna Go host for the entire trip",
+        "es": "Anfitriona de Wanna Go en todo el viaje"
+      },
+      {
+        "en": "Hammam, cooking class and camel ride",
+        "es": "Hammam, clase de cocina y paseo en camello"
+      },
+      {
+        "en": "Entrance fees to the itinerary's monuments",
+        "es": "Entradas a los monumentos del itinerario"
+      }
+    ],
+    "ceja": {
+      "en": "Everything clear from the start",
+      "es": "Todo claro desde el inicio"
+    },
+    "titulo": {
+      "en": "What's included",
+      "es": "Qué incluye"
+    },
+    "titulo_no": {
+      "en": "Not included",
+      "es": "No incluido"
+    },
+    "titulo_si": {
+      "en": "Included",
+      "es": "Incluido"
+    }
+  },
+  "portada": {
+    "alt": {
+      "en": "Woman sitting in the Sahara dunes at sunset",
+      "es": "Mujer sentada en las dunas del Sahara al atardecer"
+    },
+    "foto": "mujer-dunas.jpg",
+    "datos": [
+      {
+        "texto": {
+          "en": "days",
+          "es": "días"
+        },
+        "numero": "10"
+      },
+      {
+        "texto": {
+          "en": "destinations",
+          "es": "destinos"
+        },
+        "numero": "7"
+      },
+      {
+        "texto": {
+          "en": "travelers max.",
+          "es": "viajeras máx."
+        },
+        "numero": "16"
+      }
+    ],
+    "texto": {
+      "en": "Ten days of blue medinas, mosaic palaces and a night under the Sahara stars. In a small group, with a Wanna Go host and everything taken care of. Purposeful travel, far from home too.",
+      "es": "Diez días entre medinas azules, palacios de mosaico y una noche bajo las estrellas del Sahara. En grupo pequeño, con anfitriona de Wanna Go y todo resuelto. Viajes con propósito, también lejos de casa."
+    },
+    "boton1": {
+      "en": "Save my spot",
+      "es": "Quiero mi cupo"
+    },
+    "boton2": {
+      "en": "See itinerary",
+      "es": "Ver itinerario"
+    },
+    "titulo": {
+      "en": "Morocco",
+      "es": "Marruecos"
+    },
+    "etiqueta": {
+      "en": "Women-only trip · Departs {2027}",
+      "es": "Viaje exclusivo para mujeres · Salida {2027}"
+    },
+    "titulo_resalte": {
+      "en": "is yours",
+      "es": "es tuyo"
+    }
+  },
+  "reserva": {
+    "ceja": {
+      "en": "Waiting list",
+      "es": "Lista de espera"
+    },
+    "foto": "camellos.jpg",
+    "boton": {
+      "en": "Join the list",
+      "es": "Unirme a la lista"
+    },
+    "texto": {
+      "en": "Leave your details and we'll message you on WhatsApp with the full itinerary and the date bookings open.",
+      "es": "Déjanos tus datos y te escribimos por WhatsApp con el itinerario completo y la fecha de apertura de reservas."
+    },
+    "titulo": {
+      "en": "Shall we head *to the desert?*",
+      "es": "¿Nos vamos *al desierto?*"
+    }
+  },
+  "preguntas": {
+    "ceja": {
+      "en": "Frequently asked questions",
+      "es": "Preguntas frecuentes"
+    },
+    "lista": [
+      {
+        "pregunta": {
+          "en": "Is Morocco safe for women?",
+          "es": "¿Es seguro Marruecos para mujeres?"
+        },
+        "respuesta": {
+          "en": "Yes, traveling as a group with local guides. Before departure we send you a guide to dress and customs, and your host is with you the whole trip.",
+          "es": "Sí, viajando en grupo y con guías locales. Antes de salir te enviamos una guía de vestimenta y costumbres, y la anfitriona está contigo todo el viaje."
+        }
+      },
+      {
+        "pregunta": {
+          "en": "Can I go alone, without knowing anyone?",
+          "es": "¿Puedo ir sola, sin conocer a nadie?"
+        },
+        "respuesta": {
+          "en": "That's the most common case. We pair you with a like-minded roommate, or you can pay the single room supplement.",
+          "es": "Es lo más común. Te asignamos compañera de habitación afín, o puedes pagar el suplemento de habitación individual."
+        }
+      },
+      {
+        "pregunta": {
+          "en": "Do I need a visa?",
+          "es": "¿Necesito visa?"
+        },
+        "respuesta": {
+          "en": "Colombian travelers need an e-visa {check current requirements}. We help you through the process.",
+          "es": "Las viajeras colombianas necesitan visa electrónica {verificar requisitos vigentes}. Te acompañamos en el trámite."
+        }
+      },
+      {
+        "pregunta": {
+          "en": "How do payments work?",
+          "es": "¿Cómo son los pagos?"
+        },
+        "respuesta": {
+          "en": "A deposit to book and the balance in {no.} installments. Payment methods {to be confirmed}.",
+          "es": "Anticipo para reservar y el saldo en {n°} cuotas. Medios de pago {por confirmar}."
+        }
+      },
+      {
+        "pregunta": {
+          "en": "What fitness level do I need?",
+          "es": "¿Qué condición física necesito?"
+        },
+        "respuesta": {
+          "en": "Basic. We walk through medinas and climb some stairs. The camel ride requires no experience.",
+          "es": "Básica. Caminamos por medinas y subimos algunas escaleras. El paseo en camello no requiere experiencia."
+        }
+      }
+    ],
+    "titulo": {
+      "en": "What everyone *asks*",
+      "es": "Lo que todas *preguntan*"
+    }
+  },
+  "anfitriona": {
+    "alt": {
+      "en": "María Lucía Vásquez Cock, Luchy",
+      "es": "María Lucía Vásquez Cock, Luchy"
+    },
+    "ceja": {
+      "en": "Your host",
+      "es": "Tu anfitriona"
+    },
+    "cita": {
+      "en": "“I want every woman who travels with us to go home feeling braver than when she arrived.”",
+      "es": "“Quiero que cada mujer que viaje con nosotras vuelva sintiéndose más valiente de lo que llegó.”"
+    },
+    "foto": "",
+    "firma": {
+      "en": "María Lucía Vásquez Cock, Luchy · Founder of Wanna Go",
+      "es": "María Lucía Vásquez Cock, Luchy · Fundadora de Wanna Go"
+    }
+  },
+  "itinerario": {
+    "ceja": {
+      "en": "Itinerary · 10 days",
+      "es": "Itinerario · 10 días"
+    },
+    "texto": {
+      "en": "Five chapters, seven destinations. A relaxed pace, free time every day and experiences you can't get traveling on your own.",
+      "es": "Cinco capítulos, siete destinos. Ritmo tranquilo, tiempo libre cada día y las experiencias que no se consiguen viajando por tu cuenta."
+    },
+    "titulo": {
+      "en": "From the Atlantic *to the Sahara*",
+      "es": "Del Atlántico *al Sahara*"
+    },
+    "capitulos": [
+      {
+        "dias": {
+          "en": "Days 1 – 2",
+          "es": "Días 1 – 2"
+        },
+        "foto": "marrakech.jpg",
+        "lugar": "Casablanca",
+        "texto": {
+          "en": "Arrival, welcome dinner by the Atlantic and a first look at imperial architecture.",
+          "es": "Llegada, cena de bienvenida frente al Atlántico y primer contacto con la arquitectura imperial."
+        },
+        "titulo": {
+          "en": "Casablanca and Rabat",
+          "es": "Casablanca y Rabat"
+        },
+        "detalle": [
+          {
+            "dia": {
+              "en": "Day 1",
+              "es": "Día 1"
+            },
+            "texto": {
+              "en": "Airport pickup, hotel and welcome dinner",
+              "es": "Recepción, hotel y cena de bienvenida"
+            }
+          },
+          {
+            "dia": {
+              "en": "Day 2",
+              "es": "Día 2"
+            },
+            "texto": {
+              "en": "Hassan II Mosque, Kasbah of the Udayas",
+              "es": "Mezquita Hassan II, Kasbah de los Oudayas"
+            }
+          }
+        ]
+      },
+      {
+        "dias": {
+          "en": "Day 3",
+          "es": "Día 3"
+        },
+        "foto": "chefchaouen.jpg",
+        "lugar": "Chefchaouen",
+        "texto": {
+          "en": "Indigo-painted alleys in the Rif Mountains. A guided photo session and sunset from the Spanish Mosque.",
+          "es": "Callejones pintados de añil en las montañas del Rif. Sesión de fotos guiada y atardecer desde la mezquita española."
+        },
+        "titulo": {
+          "en": "Chefchaouen, the blue city",
+          "es": "Chefchaouen, la ciudad azul"
+        },
+        "detalle": [
+          {
+            "dia": {
+              "en": "Day 3",
+              "es": "Día 3"
+            },
+            "texto": {
+              "en": "Local photographer {to be confirmed}",
+              "es": "Fotógrafa local {por confirmar}"
+            }
+          }
+        ]
+      },
+      {
+        "dias": {
+          "en": "Days 4 – 5",
+          "es": "Días 4 – 5"
+        },
+        "foto": "faroles.jpg",
+        "lugar": "Fez",
+        "texto": {
+          "en": "More than nine thousand alleys, centuries-old tanneries and zellige workshops. A hammam ritual and a cooking class with a local family.",
+          "es": "Más de nueve mil callejones, curtiembres centenarias y talleres de zellige. Ritual de hammam y clase de cocina con una familia local."
+        },
+        "titulo": {
+          "en": "Fez, the living medina",
+          "es": "Fez, la medina viva"
+        },
+        "detalle": [
+          {
+            "dia": {
+              "en": "Day 4",
+              "es": "Día 4"
+            },
+            "texto": {
+              "en": "Medina, Bou Inania Madrasa, tanneries",
+              "es": "Medina, madrasa Bou Inania, curtiembres"
+            }
+          },
+          {
+            "dia": {
+              "en": "Day 5",
+              "es": "Día 5"
+            },
+            "texto": {
+              "en": "Hammam and traditional cooking",
+              "es": "Hammam y cocina tradicional"
+            }
+          }
+        ]
+      },
+      {
+        "dias": {
+          "en": "Days 6 – 7",
+          "es": "Días 6 – 7"
+        },
+        "foto": "desierto.jpg",
+        "lugar": "Merzouga",
+        "texto": {
+          "en": "We cross the Atlas through cedar forests to the dunes of Erg Chebbi. Arrival by camel, dinner under the stars and sunrise over the dunes.",
+          "es": "Cruzamos el Atlas por los bosques de cedros hasta las dunas de Erg Chebbi. Llegada en camello, cena bajo las estrellas y amanecer en las dunas."
+        },
+        "titulo": {
+          "en": "The Sahara",
+          "es": "El Sahara"
+        },
+        "detalle": [
+          {
+            "dia": {
+              "en": "Day 6",
+              "es": "Día 6"
+            },
+            "texto": {
+              "en": "Drive through the Atlas, night in a luxury desert tent",
+              "es": "Ruta por el Atlas, noche en jaima de lujo"
+            }
+          },
+          {
+            "dia": {
+              "en": "Day 7",
+              "es": "Día 7"
+            },
+            "texto": {
+              "en": "Sunrise, Berber village and Gnawa music",
+              "es": "Amanecer, pueblo bereber y música gnawa"
+            }
+          }
+        ]
+      },
+      {
+        "dias": {
+          "en": "Day 8",
+          "es": "Día 8"
+        },
+        "foto": "kasbah.jpg",
+        "lugar": "Aït Ben Haddou",
+        "texto": {
+          "en": "Todra Gorge, the Dades palm groves and the kasbah of Aït Ben Haddou, a UNESCO World Heritage Site.",
+          "es": "Gargantas del Todra, palmerales del Dades y la kasbah de Aït Ben Haddou, patrimonio de la UNESCO."
+        },
+        "titulo": {
+          "en": "The road of a thousand kasbahs",
+          "es": "La ruta de las mil kasbahs"
+        },
+        "detalle": []
+      },
+      {
+        "dias": {
+          "en": "Days 9 – 10",
+          "es": "Días 9 – 10"
+        },
+        "foto": "majorelle.jpg",
+        "lugar": "Marrakech",
+        "texto": {
+          "en": "Majorelle Garden, Bahia Palace and the souks. Farewell on a rooftop overlooking Jemaa el-Fna square.",
+          "es": "Jardín Majorelle, palacio Bahía y los zocos. Despedida en un rooftop con vista a la plaza Jemaa el-Fna."
+        },
+        "titulo": {
+          "en": "Marrakech, the red city",
+          "es": "Marrakech, la ciudad roja"
+        },
+        "detalle": [
+          {
+            "dia": {
+              "en": "Day 9",
+              "es": "Día 9"
+            },
+            "texto": {
+              "en": "Gardens, palaces and farewell dinner",
+              "es": "Jardines, palacios y cena de despedida"
+            }
+          },
+          {
+            "dia": {
+              "en": "Day 10",
+              "es": "Día 10"
+            },
+            "texto": {
+              "en": "Shopping and airport transfer",
+              "es": "Compras y traslado al aeropuerto"
+            }
+          }
+        ]
+      }
+    ]
+  }
+}

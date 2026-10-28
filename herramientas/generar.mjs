@@ -6,7 +6,7 @@
 import { readFileSync, writeFileSync, mkdirSync, readdirSync, cpSync, rmSync } from 'node:fs';
 import { PAGINAS } from '../panel/esquema.js';
 
-const BASE = 'https://feliperpovera.github.io/wannago/'; // cambiar al conectar el dominio propio
+const BASE = 'https://wannago.com.co/'; // dominio propio (Hostinger)
 const INDEXAR = false; // true al salir en vivo: quita el noindex de todas las páginas
 const V = '20261023d';  // sube este número cuando cambies un CSS o JS
 const WA = 'https://wa.me/573122899185';

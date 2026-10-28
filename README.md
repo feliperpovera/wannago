@@ -4,10 +4,11 @@ Sitio de la agencia de turismo receptivo **Wanna Go Colombia** (Medellín) con s
 
 | | Dirección |
 |---|---|
-| Sitio (borrador) | https://feliperpovera.github.io/wannago/ |
-| Landing de Marruecos | https://feliperpovera.github.io/wannago/marruecos/ |
-| Panel de edición | https://feliperpovera.github.io/wannago/admin/ |
-| Panel en modo demo (sin Supabase, no guarda) | https://feliperpovera.github.io/wannago/admin/?demo |
+| Sitio (borrador, en Hostinger) | https://wannago.com.co/ |
+| Landing de Marruecos | https://wannago.com.co/marruecos/ |
+| Panel de edición | https://wannago.com.co/admin/ |
+| Panel en modo demo (no guarda) | https://wannago.com.co/admin/?demo |
+| Copia en GitHub Pages | https://feliperpovera.github.io/wannago/ |
 
 Contexto del cliente, manual de marca y pendientes: [docs/CONTEXTO.md](docs/CONTEXTO.md).
 
@@ -23,17 +24,18 @@ flowchart LR
   F -->|avisa| A["GitHub Actions"]
   A -->|baja contenido y fotos| S
   A -->|optimiza fotos y arma las páginas| D["dist/"]
-  D -->|publica| W["GitHub Pages<br/>sitio estático"]
+  D -->|sube por FTP| H["Hostinger<br/>wannago.com.co"]
+  D -->|copia| W["GitHub Pages"]
 ```
 
 1. **El panel** (`/admin`) guarda en **Supabase** lo que se edita: textos de cada página en español e inglés, viajes de temporada, cuadros de Colombia, destinos y fotos.
 2. **«Publicar cambios»** le pide a GitHub que construya el sitio.
 3. **GitHub Actions** baja el contenido de Supabase a `contenido/` (queda una copia versionada en el repositorio), optimiza las fotos y arma todas las páginas en `dist/`.
-4. **GitHub Pages** publica `dist/`. El sitio es estático: carga rápido y Google lo lee completo. Tarda de 2 a 3 minutos en verse.
+4. La acción sube `dist/` a **Hostinger** por FTPS (wannago.com.co) y deja una copia en GitHub Pages. El sitio es estático: carga rápido y Google lo lee completo. Tarda de 2 a 3 minutos en verse.
 
 Además, la acción corre **cada mañana a las 6:00 a. m.** (para cambiar solo el viaje de temporada cuando pasa su fecha) y con **cada cambio que se sube** al repositorio.
 
-> **Estado:** todo el código está listo. Falta crear el proyecto de Supabase y conectarlo (pasos abajo). Mientras tanto, el sitio se construye con lo que hay en `contenido/`, y el panel se puede ver en modo demo.
+> **Estado:** Supabase conectado (proyecto WannaGo) y sitio publicado en Hostinger. Editor: wannagoco@gmail.com. Falta el token de GitHub para el botón «Publicar cambios» (paso 6 de abajo).
 
 ## Estructura
 
@@ -101,7 +103,13 @@ Luego abre http://localhost:8765 para el sitio y http://localhost:8765/admin/?de
 - **Permisos en la base (RLS):** el público solo lee lo publicado y puede enviar formularios. Solo los editores escriben, suben fotos y leen solicitudes. Probado contra Postgres con las políticas reales.
 - **Claves:** en el repositorio solo va la clave pública de Supabase (`panel/config.js`). La clave `service_role` y el token de GitHub nunca se suben.
 
-## Conectar Supabase (una sola vez)
+## Hostinger
+
+- Sitio PHP/HTML `wannago.com.co` en el plan Premium. El usuario FTP entra directo en `public_html`.
+- GitHub: variable `FTP_SERVIDOR` y secretos `FTP_USUARIO` y `FTP_CLAVE`. Para dejar `public_html` igual al sitio (borra lo que sobre): Actions → Construir y publicar → Run workflow → «limpiar_hostinger».
+- DNS: el dominio usa los servidores de Hostinger (`pixel.dns-parking.com`, `byte.dns-parking.com`). SSL de por vida de Hostinger.
+
+## Conectar Supabase (ya hecho; referencia)
 
 1. Crear el proyecto en Supabase (región São Paulo, la más cercana).
 2. Aplicar `supabase/migrations/20261023000000_esquema_inicial.sql` (SQL Editor, o con la herramienta de Supabase desde Claude).
@@ -115,6 +123,5 @@ Luego abre http://localhost:8765 para el sitio y http://localhost:8765/admin/?de
 ## Antes de salir en vivo
 
 - Poner `INDEXAR = true` en `herramientas/generar.mjs` (quita el `noindex`) y quitarlo también de `publico/marruecos/index.html`.
-- Cambiar `BASE` en `herramientas/generar.mjs` cuando se conecte el dominio propio.
 - Quitar la franja de BORRADOR y los datos marcados «por definir» de la landing de Marruecos.
 - Ver la lista completa en [docs/CONTEXTO.md](docs/CONTEXTO.md#6-pendientes).

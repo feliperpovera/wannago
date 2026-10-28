@@ -13,7 +13,10 @@ Para continuar el proyecto con Claude: pásale este archivo y el README.
 
 ## 2. Dónde está
 
-- **En vivo (borrador):** https://feliperpovera.github.io/wannago/ · Landing: https://feliperpovera.github.io/wannago/marruecos/ · Panel: https://feliperpovera.github.io/wannago/admin/
+- **En vivo (borrador):** https://wannago.com.co/ · Landing: https://wannago.com.co/marruecos/ · Panel: https://wannago.com.co/admin/
+- **Hosting:** Hostinger (plan Premium de la cuenta de Luchy, que también aloja medellinconestilo.com). Copia en GitHub Pages: https://feliperpovera.github.io/wannago/
+- **Dominio:** wannago.com.co, en traslado de GoDaddy a Hostinger (pagado el 28-10-2026). Sus DNS ya apuntan a Hostinger. medellinconestilo.com sigue registrado en GoDaddy.
+- **Backend:** Supabase, proyecto «WannaGo» (cuenta wannagoco@gmail.com).
 - **Repositorio:** https://github.com/feliperpovera/wannago (público). El original de la agencia era https://github.com/RevUpAG/wannago-marruecos.
 - **Manual de marca y referencias:** fuera del repositorio, en la carpeta `manual/` y `referencias/` del traspaso.
 

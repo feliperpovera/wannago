@@ -306,8 +306,8 @@ a.svc{text-decoration:none}
 .post{max-width:720px;margin:0 auto;font-size:18px;line-height:1.75}
 .post h2{font-size:clamp(26px,3vw,34px);color:var(--petroleo);margin:48px 0 16px}
 .post h3{font-size:22px;color:var(--petroleo);margin:36px 0 12px}
-.post p,.post ul,.post blockquote{margin:0 0 20px}
-.post ul{padding-left:22px}
+.post p,.post ul,.post ol,.post blockquote{margin:0 0 20px}
+.post ul,.post ol{padding-left:22px}
 .post li{margin-bottom:8px}
 .post a{color:var(--rojo)}
 .post blockquote{border-left:3px solid var(--rojo);padding:4px 0 4px 20px;font-weight:500;font-size:20px;color:var(--petroleo)}
@@ -316,3 +316,13 @@ a.svc{text-decoration:none}
 html[lang="en"] .post-en{display:block}
 html[lang="en"] .post-es:has(+ .post-en){display:none}
 .vacio-blog{color:var(--muted)}
+
+/* preguntas frecuentes (destinos) */
+.faq{max-width:860px}
+.faq details{border-bottom:1px solid var(--line)}
+.faq summary{list-style:none;cursor:pointer;padding-block:22px;font-weight:500;font-size:clamp(17px,1.8vw,19px);color:var(--petroleo);display:flex;justify-content:space-between;gap:20px;align-items:center}
+.faq summary::-webkit-details-marker{display:none}
+.faq summary::after{content:"+";flex:none;color:var(--rojo);font-size:24px;line-height:1;transition:transform .35s}
+.faq details[open] summary::after{transform:rotate(45deg)}
+.faq details p{margin:0;padding-bottom:22px;color:var(--muted);max-width:62ch}
+.hero h1 .label{display:block;width:max-content;max-width:calc(100vw - 48px);margin-bottom:24px;line-height:1.65;letter-spacing:.22em}

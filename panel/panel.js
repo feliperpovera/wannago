@@ -177,6 +177,8 @@ const CAMPOS = {
     { tipo: 'lista', name: 'vivir', label: 'Qué vivir', nuevo: { titulo: bi(), texto: bi() }, campos: [B('Título', 'titulo'), B('Texto', 'texto')] },
     { tipo: 'grupo', name: 'datos', label: 'Datos prácticos',
       campos: [B('Cómo llegar', 'llegar'), B('Mejor época', 'epoca'), B('Tiempo sugerido', 'tiempo'), B('Ideal para', 'ideal')] },
+    B('Guía completa (opcional)', 'guia', { largo: true, ayuda: 'Sale después de «Qué vivir». Formato: línea en blanco entre párrafos · ### Subtítulo · **negrita** · - lista' }),
+    { tipo: 'lista', name: 'faq', label: 'Preguntas frecuentes (salen en Google)', nuevo: { pregunta: bi(), respuesta: bi() }, campos: [B('Pregunta', 'pregunta'), B('Respuesta', 'respuesta', { largo: true })] },
     { tipo: 'destinos', name: 'otros', label: 'Combínalo con', ayuda: 'Destinos que salen al final de la página.' },
   ],
 };
@@ -431,7 +433,7 @@ async function vistaDestinos(main) {
     try { await api.borrar('destinos', 'url', d.url); listo('Destino borrado.'); volver(); } catch (e) { fallo(e); }
   };
   const vacio = { url: '', orden: destinos.length + 1, publicado: true, nombre: bi(), h1: bi(), region: bi(), corto: bi(), foto: '', alt: bi(), foto2: '', alt2: bi(),
-    titulo_seo: bi(), descripcion_seo: '', lead: bi(), h2: bi(), parrafos: [bi()], vivir: [], datos: { llegar: bi(), epoca: bi(), tiempo: bi(), ideal: bi() }, otros: [] };
+    titulo_seo: bi(), descripcion_seo: '', lead: bi(), h2: bi(), parrafos: [bi()], vivir: [], guia: bi(), faq: [], datos: { llegar: bi(), epoca: bi(), tiempo: bi(), ideal: bi() }, otros: [] };
   main.replaceChildren(
     h('div', { class: 'cabeza' }, h('h1', {}, 'Destinos'), boton('+ Nuevo destino', () => abrir(copia(vacio), false), { cls: 'btn rojo' })),
     h('p', { class: 'intro' }, 'Cada destino tiene su propia página en destinos/<url>/ y aparece en el pie y en el índice de destinos. Para que salga en el inicio, agrégalo en «Cuadros de Colombia».'),

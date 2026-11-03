@@ -31,6 +31,7 @@ let pre = ''; // prefijo relativo de la página en curso: '', '../' o '../../'
 const href = ruta => pre + ruta || './';
 const img = (foto, alt = '', sizes = '100vw', portada = false, extra = '') => {
   foto = nf(foto);
+  alt ||= ALT[foto] || '';
   if (!medidas[foto]) throw new Error(`Falta la foto «${foto}»: sube el original a fotos/ y corre npm run construir`);
   const w = medidas[foto][0];
   return `<img${extra} src="${pre}fotos/${foto}.webp" srcset="${pre}fotos/${foto}-800.webp ${Math.round(w / 2)}w, ${pre}fotos/${foto}.webp ${w}w" sizes="${sizes}" alt="${esc(alt)}"${portada ? ' fetchpriority="high"' : ' loading="lazy" decoding="async"'}>`;
@@ -67,8 +68,11 @@ const DESTINOS = readdirSync('contenido/destinos').filter(f => f.endsWith('.json
     region: L(d.region), corto: L(d.corto), titulo: L(d.titulo_seo), desc: d.descripcion_seo, lead: L(d.lead), h2: L(d.h2),
     ps: d.parrafos.map(L), vivir: d.vivir.map(v => [L(v.titulo), L(v.texto)]),
     datos: ['llegar', 'epoca', 'tiempo', 'ideal'].map(k => L(d.datos[k])), otros: d.otros || [],
+    guia: d.guia?.es ? d.guia : null, faq: (d.faq || []).filter(x => x.pregunta?.es && x.respuesta?.es),
   }));
 const D = Object.fromEntries(DESTINOS.map(d => [d.slug, d]));
+// Descripción de cada foto de destino: la usa img() cuando una plantilla no trae la suya (tarjetas, fondos)
+const ALT = Object.fromEntries(DESTINOS.flatMap(d => [[nf(d.foto2), d.alt2], [nf(d.foto), d.alt]]));
 
 // Viajes de temporada y cuadros de Colombia: contenido/viajes.json
 const VIAJES = leer('contenido/viajes.json');
@@ -91,11 +95,12 @@ const md = texto => {
     .replace(/\*(.+?)\*/g, '<em>$1</em>')
     .replace(/\[([^\]]+)\]\(((?:https?:\/\/|\/|mailto:)[^)\s]+)\)/g, (_, txt, url) =>
       `<a href="${url}"${url.startsWith('http') ? ' target="_blank" rel="noopener"' : ''}>${txt}</a>`);
-  return (texto || '').replace(/\r/g, '').split(/\n{2,}/).map(b => b.trim()).filter(Boolean).map(b =>
+  return (texto || '').replace(/\r/g, '').split(/\n{2,}/).map(b => b.trim()).filter(b => b && !b.startsWith('<!--')).map(b => // <!-- notas --> no se publican
     b.startsWith('### ') ? `<h3>${enLinea(b.slice(4))}</h3>`
     : b.startsWith('## ') ? `<h2>${enLinea(b.slice(3))}</h2>`
     : b.startsWith('> ') ? `<blockquote>${enLinea(b.replace(/^> ?/gm, ''))}</blockquote>`
     : /^[-*] /.test(b) ? `<ul>${b.split('\n').map(l => `<li>${enLinea(l.replace(/^[-*] /, ''))}</li>`).join('')}</ul>`
+    : /^\d+\. /.test(b) ? `<ol>${b.split('\n').map(l => `<li>${enLinea(l.replace(/^\d+\. /, ''))}</li>`).join('')}</ol>`
     : `<p>${b.split('\n').map(enLinea).join('<br>')}</p>`).join('\n');
 };
 
@@ -388,8 +393,7 @@ pagina('', () => {
     portada: `<header class="hero">
   ${img(P.portada.foto, L(P.portada.alt), '100vw', true)}
   <div class="wrap">
-    <span class="label">${L(P.portada.etiqueta)}</span>
-    <h1>${L(P.portada.titulo)}</h1>
+    <h1><span class="label">${L(P.portada.etiqueta)}</span> ${L(P.portada.titulo)}</h1>
     <p class="lead">${L(P.portada.texto)}</p>
     <div class="row">
       <a class="btn btn-rojo" href="#viajes">${L(P.portada.boton1)}</a>
@@ -473,14 +477,38 @@ for (const d of DESTINOS) pagina(`destinos/${d.slug}/`, () => {
   const enIngles = (es, plantilla) => plantilla(EN[es] || es);
   return {
     seo: { titulo: d.titulo, descripcion: d.desc, foto: d.foto },
-    schema: [migas(m), { '@type': 'TouristDestination', name: d.h1, description: d.desc, url: BASE + ruta, image: BASE + `fotos/og/${nf(d.foto)}.jpg` }],
+    schema: [migas(m), { '@type': 'TouristDestination', name: d.h1, description: d.desc, url: BASE + ruta, image: BASE + `fotos/og/${nf(d.foto)}.jpg` },
+      ...(d.faq.length ? [{ '@type': 'FAQPage', mainEntity: d.faq.map(x => ({ '@type': 'Question', name: x.pregunta.es, acceptedAnswer: { '@type': 'Answer', text: x.respuesta.es } })) }] : [])],
     portada: portada({ foto: d.foto, alt: d.alt, etiqueta: d.region, titulo: d.h1, texto: d.lead }, m, `Hola Wanna Go, quiero viajar a ${d.nombre}.`),
     cuerpo: [
       intro({ ceja: t('01 · Por qué ir', '01 · Why go'), titulo: d.h2, parrafos: d.ps, foto: d.foto2, alt: d.alt2 }),
       tarjetas({ ceja: t('02 · Qué vivir', '02 · What to experience'), titulo: t(`Qué hacer en ${d.nombre}`, enIngles(d.nombre, n => `Things to do in ${n}`)) },
         d.vivir.map(([titulo, texto]) => ({ titulo, texto }))),
-      datos(t('03 · Datos prácticos', '03 · Practical info'), d.datos),
-      destinos({ ceja: t('04 · Sigue explorando', '04 · Keep exploring'), titulo: t('Combínalo con', 'Pair it with') }, d.otros, ' bg-arena'),
+      ...[
+        d.guia && (n => `<section class="sec">
+  <div class="wrap">
+    ${encabezado({ ceja: t(`${n} · Guía`, `${n} · Guide`), titulo: t(`Guía de ${d.nombre}`, enIngles(d.nombre, x => `${x} guide`)) })}
+    <article class="post rv">
+      <div class="post-es" lang="es">
+${md(d.guia.es)}
+      </div>${d.guia.en ? `
+      <div class="post-en" lang="en">
+${md(d.guia.en)}
+      </div>` : ''}
+    </article>
+  </div>
+</section>`),
+        n => datos(t(`${n} · Datos prácticos`, `${n} · Practical info`), d.datos),
+        d.faq.length && (n => `<section class="sec bg-arena">
+  <div class="wrap">
+    ${encabezado({ ceja: t(`${n} · Preguntas frecuentes`, `${n} · FAQ`), titulo: t(`Preguntas sobre ${d.nombre}`, enIngles(d.nombre, x => `Questions about ${x}`)) })}
+    <div class="faq rv">
+      ${d.faq.map(x => `<details><summary>${esc(L(x.pregunta))}</summary><p>${esc(L(x.respuesta))}</p></details>`).join('\n      ')}
+    </div>
+  </div>
+</section>`),
+        n => destinos({ ceja: t(`${n} · Sigue explorando`, `${n} · Keep exploring`), titulo: t('Combínalo con', 'Pair it with') }, d.otros, d.faq.length ? '' : ' bg-arena'),
+      ].filter(Boolean).map((f, i) => f(String(i + 3).padStart(2, '0'))),
       cierre({ titulo: t(`Diseñemos tu viaje a ${d.nombre}`, enIngles(d.nombre, n => `Let's design your trip to ${n}`)), whatsapp: `Hola Wanna Go, quiero viajar a ${d.nombre}.`, foto: d.foto2 }),
     ].join('\n\n'),
   };

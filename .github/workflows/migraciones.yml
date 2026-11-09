@@ -1,0 +1,65 @@
+# Aplica en Supabase las migraciones SQL que se suben a supabase/migrations/ y luego vuelve a
+# construir el sitio, para que el contenido nuevo salga sin entrar al SQL Editor.
+# - Al subir a main: aplica solo los archivos .sql nuevos o cambiados en ese push.
+# - A mano (pestaña Actions): aplica los archivos que escribas, separados por coma.
+# Necesita el secreto SUPABASE_DB_URL (cadena de conexión de Postgres del proyecto, en
+# Supabase > Project Settings > Database > Connection string > URI, con la contraseña).
+# Sin ese secreto no hace nada.
+name: Aplicar migraciones
+
+on:
+  push:
+    branches: [main]
+    paths: ['supabase/migrations/**.sql']
+  workflow_dispatch:
+    inputs:
+      archivos:
+        description: 'Archivos en supabase/migrations/, separados por coma (ej. 20261103000000_seo_destinos.sql)'
+        required: true
+
+concurrency:
+  group: migraciones
+  cancel-in-progress: false
+
+permissions:
+  contents: read
+  actions: write
+
+jobs:
+  aplicar:
+    runs-on: ubuntu-latest
+    env:
+      SUPABASE_DB_URL: ${{ secrets.SUPABASE_DB_URL }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 2
+      - name: Elegir archivos
+        id: lista
+        env:
+          ENTRADA: ${{ inputs.archivos }}
+        run: |
+          if [ -n "$ENTRADA" ]; then
+            echo "$ENTRADA" | tr ',' '\n' | sed 's/^ *//; s/ *$//' | sed 's#^#supabase/migrations/#' > lista.txt
+          else
+            git diff --name-only --diff-filter=AM HEAD~1 HEAD -- 'supabase/migrations/*.sql' | sort > lista.txt
+          fi
+          cat lista.txt
+          [ -s lista.txt ] && echo "hay=1" >> "$GITHUB_OUTPUT" || echo "hay=0" >> "$GITHUB_OUTPUT"
+      - name: Sin conexión configurada
+        if: env.SUPABASE_DB_URL == ''
+        run: echo "::warning::Falta el secreto SUPABASE_DB_URL; no se aplicó ninguna migración."
+      - name: Aplicar
+        if: env.SUPABASE_DB_URL != '' && steps.lista.outputs.hay == '1'
+        run: |
+          sudo apt-get -qq install -y postgresql-client >/dev/null
+          while read -r f; do
+            test -f "$f" || { echo "::error::No existe $f"; exit 1; }
+            echo "Aplicando $f"
+            psql "$SUPABASE_DB_URL" -v ON_ERROR_STOP=1 --single-transaction -q -f "$f"
+          done < lista.txt
+      - name: Reconstruir el sitio
+        if: env.SUPABASE_DB_URL != '' && steps.lista.outputs.hay == '1'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: gh workflow run sitio.yml --ref main

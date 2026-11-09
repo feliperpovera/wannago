@@ -124,8 +124,8 @@
   },
   "destinos": {
     "ceja": {
-      "en": "03 · Inspiration",
-      "es": "03 · Inspiración"
+      "es": "04 · Inspiración",
+      "en": "04 · Inspiration"
     },
     "lista": [
       "guatape",
@@ -136,5 +136,81 @@
       "en": "Destinations to start with",
       "es": "Destinos para empezar"
     }
+  },
+  "guia": {
+    "ceja": {
+      "es": "03 · Guía",
+      "en": ""
+    },
+    "titulo": {
+      "es": "Todo sobre los viajes a la medida",
+      "en": ""
+    },
+    "texto": {
+      "es": "### Qué es un viaje a la medida con Wanna Go\n\nUn viaje a la medida es un itinerario privado que se diseña desde cero para ti y para quienes viajan contigo. No partimos de un paquete cerrado ni de una lista de hoteles que hay que llenar: partimos de una conversación sobre lo que te mueve, ya sea el café, la naturaleza, la cocina, el arte o simplemente descansar.\n\nWanna Go es una agencia de turismo receptivo con sede en Medellín, fundada en 2019 por María Lucía Vásquez Cock, Luchy, y registrada con el RNT 65568. Huimos del turismo masivo y de lo predecible: te mostramos cada destino desde adentro, con su gente, su cocina y sus paisajes, para que vuelvas distinto de como te fuiste.\n\n### Cómo funciona, paso a paso\n\n1. **Nos escribes.** Por WhatsApp o desde la página de [contacto](/contacto/) nos cuentas qué quieres vivir, en qué fechas, quiénes viajan y con qué presupuesto.\n2. **Conversamos.** Entendemos el ritmo que buscas: si prefieres días llenos de planes o tiempo libre, ciudad o naturaleza, caminatas o mesa larga.\n3. **Te proponemos un itinerario día a día.** Con alojamientos, guías locales y experiencias que elegimos una por una.\n4. **Lo ajustamos.** Cambiamos lo necesario hasta que sea tu viaje, no el de otra persona.\n5. **Viajas tranquilo.** La logística queda resuelta y tienes contacto directo con nosotros durante todo el viaje.\n\n### Destinos de Colombia para tu viaje a la medida\n\nTu ruta puede tener un solo destino o combinar varios:\n\n- **Medellín:** la [Comuna 13](/destinos/comuna-13/), con su grafiti, su hip hop y su historia de transformación, y las [plazas de mercado](/destinos/plazas-de-mercado/), con frutas exóticas y cocina popular. Cada plan toma medio día.\n- **Antioquia:** [Guatapé](/destinos/guatape/), con sus zócalos de colores y la Piedra del Peñol, a unas dos horas por carretera desde Medellín. Se vive en uno o dos días.\n- **Eje Cafetero:** el [Eje Cafetero](/destinos/eje-cafetero/), con fincas, pueblos y café de origen, y el [Valle de Cocora](/destinos/valle-de-cocora/), para caminar entre las palmas de cera. Para esta región sugerimos de tres a cinco días.\n- **Caribe colombiano:** [Cartagena](/destinos/cartagena/), la ciudad amurallada frente al mar, con vuelo directo desde Medellín, y el [Parque Tayrona](/destinos/tayrona/), donde la selva llega a las playas al pie de la Sierra Nevada.\n\nPor ejemplo, puedes empezar en Medellín, pasar un día en Guatapé y seguir hacia el Eje Cafetero, o cerrar el viaje con unos días en el Caribe. Puedes ver todos los lugares en la sección de [destinos](/destinos/).\n\n### Para quién es un viaje a la medida\n\n- **Parejas** que quieren celebrar algo o simplemente viajar a su ritmo.\n- **Familias** que necesitan planes que funcionen para grandes y pequeños.\n- **Grupos de amigas y amigos** que quieren un viaje solo para ellos.\n- **Viajeros curiosos** que llegan a Medellín y quieren conocer Colombia desde adentro, más allá de lo obvio.\n- **Amantes del café, la cocina o la naturaleza** que quieren que todo el viaje gire alrededor de eso.\n\nSi prefieres viajar en un grupo pequeño con fecha fija y una anfitriona de Wanna Go de principio a fin, mira nuestros [viajes grupales](/viajes-grupales/). Si es para tu empresa, conoce los [eventos corporativos](/eventos-corporativos/).\n\n### Qué incluye\n\nCada propuesta se arma para ti, así que lo que incluye depende de tu viaje. En todos los casos cuentas con:\n\n- El diseño de un itinerario día a día pensado para ti.\n- Alojamientos y experiencias que elegimos uno por uno.\n- Guías locales que conocen cada destino desde adentro.\n- La logística del viaje resuelta.\n- Contacto directo con nosotros durante el viaje.\n\nLo hacemos con nuestro sello: fomentar el comercio local, respetar la cultura y proteger el entorno natural, con una hospitalidad cálida en cada punto del viaje.\n\n<!-- TODO-DATO: confirmar con Luchy qué entra en cada cotización (vuelos, traslados, alimentación, seguros) y si hay precio desde o rango de referencia por persona o por día; no publicar valores hasta tenerlos -->",
+      "en": ""
+    }
+  },
+  "faq": {
+    "ceja": {
+      "es": "05 · Preguntas frecuentes",
+      "en": ""
+    },
+    "titulo": {
+      "es": "Preguntas sobre los viajes a la medida",
+      "en": ""
+    },
+    "lista": [
+      {
+        "pregunta": {
+          "es": "¿Qué es un viaje a la medida?",
+          "en": ""
+        },
+        "respuesta": {
+          "es": "Es un itinerario privado que diseñamos desde cero para ti y para quienes viajan contigo, alrededor de lo que te mueve: café, naturaleza, cocina, arte o descanso. No trabajamos con paquetes cerrados.",
+          "en": ""
+        }
+      },
+      {
+        "pregunta": {
+          "es": "¿Cuánto cuesta un viaje a la medida por Colombia?",
+          "en": ""
+        },
+        "respuesta": {
+          "es": "Depende de los destinos, la cantidad de días, el tipo de alojamiento y cuántas personas viajan. No manejamos tarifas fijas: con lo que nos cuentes te enviamos una propuesta con su valor.",
+          "en": ""
+        }
+      },
+      {
+        "pregunta": {
+          "es": "¿Cuántos días necesito?",
+          "en": ""
+        },
+        "respuesta": {
+          "es": "Depende de la ruta. La Comuna 13 o las plazas de mercado de Medellín toman medio día, Guatapé uno o dos días, el Eje Cafetero de tres a cinco días, y Cartagena o el Parque Tayrona de tres a cuatro días.",
+          "en": ""
+        }
+      },
+      {
+        "pregunta": {
+          "es": "¿Puedo combinar varios destinos en un mismo viaje?",
+          "en": ""
+        },
+        "respuesta": {
+          "es": "Sí. Por ejemplo, Medellín, Guatapé y el Eje Cafetero. También puedes sumar el Caribe: a Cartagena hay vuelo directo desde Medellín, y al Parque Tayrona se llega con vuelo directo a Santa Marta y una hora por carretera.",
+          "en": ""
+        }
+      },
+      {
+        "pregunta": {
+          "es": "¿Cómo empiezo a diseñar mi viaje?",
+          "en": ""
+        },
+        "respuesta": {
+          "es": "Escríbenos por WhatsApp al +57 312 289 9185 o desde la página de contacto. Cuéntanos qué quieres vivir, las fechas, quiénes viajan y tu presupuesto, y te proponemos un itinerario día a día.",
+          "en": ""
+        }
+      }
+    ]
   }
 }

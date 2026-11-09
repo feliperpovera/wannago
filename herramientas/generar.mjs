@@ -44,7 +44,7 @@ const leer = ruta => JSON.parse(readFileSync(ruta, 'utf8'));
 // Textos de cada página: contenido/paginas/<id>.json, con las secciones de panel/esquema.js
 const PG = Object.fromEntries(PAGINAS.map(({ id, secciones }) => {
   const datos = leer(`contenido/paginas/${id}.json`);
-  for (const s of secciones) if (!datos[s.id]) throw new Error(`contenido/paginas/${id}.json: falta la sección «${s.id}»`);
+  for (const s of secciones) if (!s.opcional && !datos[s.id]) throw new Error(`contenido/paginas/${id}.json: falta la sección «${s.id}»`);
   return [id, datos];
 }));
 
@@ -59,6 +59,9 @@ const SERVICIOS = [
 
 const DATOS = [t('Cómo llegar', 'Getting there'), t('Mejor época', 'Best time'), t('Tiempo sugerido', 'Suggested time'), t('Ideal para', 'Ideal for')];
 
+// Preguntas frecuentes completas (con pregunta y respuesta en español)
+const conRespuesta = lista => (lista || []).filter(x => x.pregunta?.es && x.respuesta?.es);
+
 // Destinos: un archivo por destino en contenido/destinos/
 const DESTINOS = readdirSync('contenido/destinos').filter(f => f.endsWith('.json'))
   .map(f => leer('contenido/destinos/' + f))
@@ -68,7 +71,7 @@ const DESTINOS = readdirSync('contenido/destinos').filter(f => f.endsWith('.json
     region: L(d.region), corto: L(d.corto), titulo: L(d.titulo_seo), desc: d.descripcion_seo, lead: L(d.lead), h2: L(d.h2),
     ps: d.parrafos.map(L), vivir: d.vivir.map(v => [L(v.titulo), L(v.texto)]),
     datos: ['llegar', 'epoca', 'tiempo', 'ideal'].map(k => L(d.datos[k])), otros: d.otros || [],
-    guia: d.guia?.es ? d.guia : null, faq: (d.faq || []).filter(x => x.pregunta?.es && x.respuesta?.es),
+    guia: d.guia?.es ? d.guia : null, faq: conRespuesta(d.faq),
   }));
 const D = Object.fromEntries(DESTINOS.map(d => [d.slug, d]));
 // Descripción de cada foto de destino: la usa img() cuando una plantilla no trae la suya (tarjetas, fondos)
@@ -249,6 +252,30 @@ const datos = (ceja, valores) => `<section class="sec">
     </div>
   </div>
 </section>`;
+
+// Guía larga (formato del blog) y preguntas frecuentes: destinos y páginas de servicio
+const guiaSec = (s, texto) => `<section class="sec">
+  <div class="wrap">
+    ${encabezado(s)}
+    <article class="post rv">
+      <div class="post-es" lang="es">
+${md(texto.es)}
+      </div>${texto.en ? `
+      <div class="post-en" lang="en">
+${md(texto.en)}
+      </div>` : ''}
+    </article>
+  </div>
+</section>`;
+const faqSec = (s, lista, fondo = ' bg-arena') => `<section class="sec${fondo}">
+  <div class="wrap">
+    ${encabezado(s)}
+    <div class="faq rv">
+      ${lista.map(x => `<details><summary>${esc(L(x.pregunta))}</summary><p>${esc(L(x.respuesta))}</p></details>`).join('\n      ')}
+    </div>
+  </div>
+</section>`;
+const faqLD = lista => lista.length ? [{ '@type': 'FAQPage', mainEntity: lista.map(x => ({ '@type': 'Question', name: x.pregunta.es, acceptedAnswer: { '@type': 'Answer', text: x.respuesta.es } })) }] : [];
 
 const tarjetaDestino = d => `<a class="svc rv" href="${href('destinos/' + d.slug + '/')}">
         ${img(d.foto, '', '(max-width:900px) 100vw, 33vw')}
@@ -478,35 +505,16 @@ for (const d of DESTINOS) pagina(`destinos/${d.slug}/`, () => {
   return {
     seo: { titulo: d.titulo, descripcion: d.desc, foto: d.foto },
     schema: [migas(m), { '@type': 'TouristDestination', name: d.h1, description: d.desc, url: BASE + ruta, image: BASE + `fotos/og/${nf(d.foto)}.jpg` },
-      ...(d.faq.length ? [{ '@type': 'FAQPage', mainEntity: d.faq.map(x => ({ '@type': 'Question', name: x.pregunta.es, acceptedAnswer: { '@type': 'Answer', text: x.respuesta.es } })) }] : [])],
+      ...faqLD(d.faq)],
     portada: portada({ foto: d.foto, alt: d.alt, etiqueta: d.region, titulo: d.h1, texto: d.lead }, m, `Hola Wanna Go, quiero viajar a ${d.nombre}.`),
     cuerpo: [
       intro({ ceja: t('01 · Por qué ir', '01 · Why go'), titulo: d.h2, parrafos: d.ps, foto: d.foto2, alt: d.alt2 }),
       tarjetas({ ceja: t('02 · Qué vivir', '02 · What to experience'), titulo: t(`Qué hacer en ${d.nombre}`, enIngles(d.nombre, n => `Things to do in ${n}`)) },
         d.vivir.map(([titulo, texto]) => ({ titulo, texto }))),
       ...[
-        d.guia && (n => `<section class="sec">
-  <div class="wrap">
-    ${encabezado({ ceja: t(`${n} · Guía`, `${n} · Guide`), titulo: t(`Guía de ${d.nombre}`, enIngles(d.nombre, x => `${x} guide`)) })}
-    <article class="post rv">
-      <div class="post-es" lang="es">
-${md(d.guia.es)}
-      </div>${d.guia.en ? `
-      <div class="post-en" lang="en">
-${md(d.guia.en)}
-      </div>` : ''}
-    </article>
-  </div>
-</section>`),
+        d.guia && (n => guiaSec({ ceja: t(`${n} · Guía`, `${n} · Guide`), titulo: t(`Guía de ${d.nombre}`, enIngles(d.nombre, x => `${x} guide`)) }, d.guia)),
         n => datos(t(`${n} · Datos prácticos`, `${n} · Practical info`), d.datos),
-        d.faq.length && (n => `<section class="sec bg-arena">
-  <div class="wrap">
-    ${encabezado({ ceja: t(`${n} · Preguntas frecuentes`, `${n} · FAQ`), titulo: t(`Preguntas sobre ${d.nombre}`, enIngles(d.nombre, x => `Questions about ${x}`)) })}
-    <div class="faq rv">
-      ${d.faq.map(x => `<details><summary>${esc(L(x.pregunta))}</summary><p>${esc(L(x.respuesta))}</p></details>`).join('\n      ')}
-    </div>
-  </div>
-</section>`),
+        d.faq.length && (n => faqSec({ ceja: t(`${n} · Preguntas frecuentes`, `${n} · FAQ`), titulo: t(`Preguntas sobre ${d.nombre}`, enIngles(d.nombre, x => `Questions about ${x}`)) }, d.faq)),
         n => destinos({ ceja: t(`${n} · Sigue explorando`, `${n} · Keep exploring`), titulo: t('Combínalo con', 'Pair it with') }, d.otros, d.faq.length ? '' : ' bg-arena'),
       ].filter(Boolean).map((f, i) => f(String(i + 3).padStart(2, '0'))),
       cierre({ titulo: t(`Diseñemos tu viaje a ${d.nombre}`, enIngles(d.nombre, n => `Let's design your trip to ${n}`)), whatsapp: `Hola Wanna Go, quiero viajar a ${d.nombre}.`, foto: d.foto2 }),
@@ -530,6 +538,7 @@ pagina('destinos/', () => {
 for (const { slug, nombre } of SERVICIOS) pagina(`${slug}/`, () => {
   const P = PG[slug];
   const m = [INICIO, [nombre, `${slug}/`]];
+  const guia = P.guia?.texto?.es ? P.guia : null, faq = conRespuesta(P.faq?.lista);
   const salidas = () => `<section class="sec bg-petroleo">
   <div class="wrap">
     ${encabezado(P.salidas, true)}
@@ -556,15 +565,17 @@ for (const { slug, nombre } of SERVICIOS) pagina(`${slug}/`, () => {
 </section>`;
   return {
     seo: P.seo,
-    schema: [migas(m), { '@type': 'Service', name: nombre, serviceType: nombre, description: P.seo.descripcion, url: BASE + slug + '/', provider: { '@id': ORG['@id'] }, areaServed: { '@type': 'Country', name: 'Colombia' } }],
+    schema: [migas(m), { '@type': 'Service', name: nombre, serviceType: nombre, description: P.seo.descripcion, url: BASE + slug + '/', provider: { '@id': ORG['@id'] }, areaServed: { '@type': 'Country', name: 'Colombia' } }, ...faqLD(faq)],
     portada: portada(P.portada, m, P.portada.whatsapp),
     cuerpo: [
       intro(P.intro),
       P.salidas ? salidas() : tarjetas(P.pasos),
-      P.salidas ? tarjetas(P.siempre) : destinos(P.destinos, P.destinos.lista),
+      guia && guiaSec(guia, guia.texto),
+      P.salidas ? tarjetas(P.siempre) : destinos(P.destinos, P.destinos.lista, guia ? ' bg-arena' : ''),
+      faq.length && faqSec(P.faq, faq, ''),
       resenas(P.resenas),
       cierre(P.cierre),
-    ].join('\n\n'),
+    ].filter(Boolean).join('\n\n'),
   };
 });
 

@@ -38,7 +38,11 @@ const servicio = (id, nombre, ruta) => ({
   secciones: [
     seo, portada([whatsapp()]), intro(),
     { id: 'pasos', nombre: 'Tarjetas', campos: [...encabezado, items()] },
+    { id: 'guia', nombre: 'Guía (opcional)', opcional: true, ayuda: 'Sale después de las tarjetas. Formato: línea en blanco entre párrafos · ### Subtítulo · **negrita** · - lista · 1. pasos · [texto](/destinos/guatape/)',
+      campos: [...encabezado, BL('Texto', 'texto', { filas: 18 })] },
     { id: 'destinos', nombre: 'Destinos sugeridos', campos: [...encabezado, { tipo: 'destinos', name: 'lista', label: 'Destinos' }] },
+    { id: 'faq', nombre: 'Preguntas frecuentes (opcional, salen en Google)', opcional: true,
+      campos: [...encabezado, { tipo: 'lista', name: 'lista', label: 'Preguntas', nuevo: { pregunta: bi(), respuesta: bi() }, campos: [B('Pregunta', 'pregunta'), BL('Respuesta', 'respuesta')] }] },
     resenas, cierre,
   ],
 });
